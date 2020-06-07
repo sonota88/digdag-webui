@@ -133,18 +133,7 @@ def _api_v2(params)
   })
 end
 
-get "/" do
-  redirect to("/my_app/")
-end
-
-get "/my_app/" do
-  puts_e "development? (#{ settings.development? })"
-  puts_e "production? (#{ settings.production? })"
-  puts_e "test? (#{ settings.test? })"
-  puts_e "$PROFILE (#{ $PROFILE })"
-
-  _render "index", { x: 123 }
-end
+# --------------------------------
 
 # ruby - Sinatra - terminate server from request - Stack Overflow
 # https://stackoverflow.com/questions/19523889/sinatra-terminate-server-from-request
