@@ -40,9 +40,9 @@ class Page {
     this.env = __g.getEnv();
     this.workflowId = this.getWorkflowId();
     this.state = {
-      workflows: [
-        { id: 1, name: "wf1" },
-        { id: 2, name: "wf2" },
+      sessions: [
+        { id: 1, time: "t1" },
+        { id: 2, time: "t2" },
       ]
     };
   }
