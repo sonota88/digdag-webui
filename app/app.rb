@@ -207,6 +207,21 @@ end
 
 # --------------------------------
 
+ENDPOINT_MAP = {
+  :devel => "http://localhost:65432",
+  :prod => "http://localhost:65432",
+}
+
+def endpoint(env)
+  unless ENDPOINT_MAP.key?(env)
+    raise "invalid env"
+  end
+
+  ENDPOINT_MAP[env]
+end
+
+# --------------------------------
+
 get "/:env/projects" do
   _render_dyn_js("project/page_index")
 end
