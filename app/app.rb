@@ -337,7 +337,7 @@ get "/api/:env/projects" do
       }
 
     {
-      projects: pjs.map{ |pj| pj.to_plain }
+      projects: pjs.map(&:to_plain)
     }
   end
 end
@@ -362,7 +362,7 @@ get "/api/:env/projects/:id" do
       }
 
     {
-      workflows: wfs.map{ |wf| wf.to_plain }
+      workflows: wfs.map(&:to_plain)
     }
   end
 end
@@ -393,7 +393,7 @@ get "/api/:env/workflows/:id" do
       }
 
     {
-      sessions: sessions.map{ |s| s.to_plain }
+      sessions: sessions.map(&:to_plain)
     }
   end
 end
@@ -418,7 +418,7 @@ get "/api/:env/sessions/:id" do
       }
 
     {
-      attempts: attempts.map{ |att| att.to_plain }
+      attempts: attempts.map(&:to_plain)
     }
   end
 end
