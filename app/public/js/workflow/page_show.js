@@ -48,7 +48,7 @@ class Page {
   }
 
   getTitle(){
-    return "project";
+    return "workflow";
   }
 
   getWorkflowId(){
