@@ -276,7 +276,10 @@ end
 module Digdag
   class Client
     module Workflow
-      def get_workflow_v2(id)
+      # Project#get_workflow との衝突を避けるためのワークアラウンド
+      # 本来は Project#get_workflow の方をリネームして
+      # Workflow#get_workflow を生かすべき？
+      def get_workflow_by_id(id)
         get("workflows/#{id}")
       end
     end
@@ -347,7 +350,7 @@ get "/api/:env/workflows/:id" do
 
     wf =
       DigdagUtils::Workflow.from_api_data(
-        client.get_workflow_v2(wf_id)
+        client.get_workflow_by_id(wf_id)
       )
     pj_id = wf.project.id
 
