@@ -2,7 +2,15 @@ class SearchResult {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
-      , "todo"
+      , h("table", {}
+        , state.projects.map(pj =>
+            h("tr", {}
+            , h("td", {}
+              , h("a", { href: `/deve/projects/${pj.id}` }, pj.name)
+              )
+            )
+          )
+        )
       )
     );
   }
