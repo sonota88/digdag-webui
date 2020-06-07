@@ -86,8 +86,11 @@ class Page {
   showGraph(){
     puts("onclick_showGraph");
     __g.guard();
-  
-    const attemptId = "94";
+
+    const attemptId =
+      Math.max(
+        ...this.state.attempts.map(att => _parseInt(att.id))
+      );
 
     __g.api_v2(
       "get",
