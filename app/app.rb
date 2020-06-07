@@ -326,22 +326,39 @@ get "/api/:env/workflows/:id" do
   end
 end
 
-## get "/api/:env/workflows/:id/graph" do
-##   env = params[:env].to_sym
-##   wf_id = params[:id]
-## 
-##   _api_v2 (params) do |_params|
-##     client = Digdag::Client.new(
-##       endpoint: endpoint(env)
-##     )
-## 
-##     wfs = client.get_workflows(pj_id)
-##       .map{ |api_wf|
-##         DigdagUtils::Workflow.from_api_data(api_wf)
-##       }
-## 
-##     {
-##       path: "/graph/z_000.png"
-##     }
-##   end
-## end
+
+get "/:env/sessions/:id" do
+  _render_dyn_js("session/page_show")
+end
+
+get "/api/:env/sessions/:id" do
+  env = params[:env].to_sym
+  sess_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    {
+      attempts: [] # TODO
+    }
+  end
+end
+
+
+get "/api/:env/attempts/:id/graph" do
+  env = params[:env].to_sym
+  att_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    # client = Digdag::Client.new(
+    #   endpoint: endpoint(env)
+    # )
+
+    # wfs = client.get_workflows(pj_id)
+    #   .map{ |api_wf|
+    #     DigdagUtils::Workflow.from_api_data(api_wf)
+    #   }
+
+    {
+      path: "/graph/z_000.png"
+    }
+  end
+end
