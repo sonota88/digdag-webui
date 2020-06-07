@@ -270,3 +270,30 @@ get "/api/:env/projects/:id" do
     }
   end
 end
+
+
+get "/:env/workflows/:id" do
+  _render_dyn_js("workflow/page_show")
+end
+
+get "/api/:env/workflows/:id" do
+  env = params[:env].to_sym
+  wf_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    {
+      sessions: [] # TODO
+    }
+  end
+end
+
+get "/api/:env/workflows/:id/graph" do
+  env = params[:env].to_sym
+  wf_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    {
+      path: "/graph/z_000.png"
+    }
+  end
+end
