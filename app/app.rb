@@ -176,3 +176,14 @@ get "/api/reload_libs" do
     {}
   end
 end
+
+# --------------------------------
+
+get "/" do
+  <<-EOB
+  <pre>
+    <a href="/devel/projects">devel</a>
+    <a href="/prod/projects">prod</a>
+  </pre>
+  EOB
+end
