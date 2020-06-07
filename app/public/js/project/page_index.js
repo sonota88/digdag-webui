@@ -32,8 +32,7 @@ class Page {
 
   init(){
     puts("init");
-    __g.api_v2("get", "/api/sample", {
-        fooBar: 123, b: { c: 456 }
+    __g.api_v2("get", "/api/devel/projects", {
       }, (result)=>{
       __g.unguard();
       puts(result);

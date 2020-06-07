@@ -210,3 +210,14 @@ end
 get "/:env/projects" do
   _render_dyn_js("project/page_index")
 end
+
+get "/api/:env/projects" do
+  env = params[:env]
+  _api_v2 (params) do |_params|
+    pjs = [1,2,3] # TODO
+    
+    {
+      projects: pjs
+    }
+  end
+end
