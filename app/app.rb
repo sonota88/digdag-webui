@@ -246,18 +246,27 @@ get "/api/:env/projects" do
   end
 end
 
+
 get "/:env/projects/:id" do
   _render_dyn_js("project/page_show")
 end
 
 get "/api/:env/projects/:id" do
   env = params[:env].to_sym
+  pj_id = params[:id]
+
   _api_v2 (params) do |_params|
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+
+    wfs = client.get_workflows(pj_id)
+      .map{ |api_wf|
+        DigdagUtils::Workflow.from_api_data(api_wf)
+      }
+
     {
-      workflows: [
-        { id: 1, name: "wf 1" },
-        { id: 2, name: "wf 2" },
-      ] # TODO
+      workflows: wfs.map{ |wf| wf.to_plain }
     }
   end
 end
