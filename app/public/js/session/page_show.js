@@ -26,7 +26,9 @@ class View {
         , { onclick: ()=>{ __p.onclick_showGraph(); } }
         , "show graph"
         )
+      , h("hr")
       , h("img", { id: "graph_img" })
+      , h("hr")
       , Attempts.render(state.attempts)
       )
     );

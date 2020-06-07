@@ -238,11 +238,51 @@ module Digdag
   end
 end
 
+require "digdag_utils/task"
+
 module DigdagUtils
   class Workflow
   end
 
   class Session
+  end
+
+  class Task
+    attr_reader :full_name
+    attr_reader :parent_id, :upstreams
+    attr_reader :is_group
+
+    def initialize(
+      id: nil,
+      name: nil,
+      state: nil,
+      full_name:        nil,
+      cancel_requested: nil,
+      parent_id:        nil,
+      upstreams:        nil,
+      is_group:         nil
+    )
+      @id = id
+      @name = name
+      @state = state
+      @full_name        = full_name
+      @cancel_requested = cancel_requested
+      @parent_id        = parent_id
+      @upstreams        = upstreams
+      @is_group         = is_group
+    end
+
+    def self.from_api_response(data)
+      new(
+        id:               data["id"],
+        full_name:        data["fullName"],
+        state:            data["state"],
+        cancel_requested: data["cancelRequested"],
+        parent_id:        data["parentId"],
+        upstreams:        data["upstreams"],
+        is_group:         data["isGroup"]
+      )
+    end
   end
 end
 
@@ -343,22 +383,91 @@ get "/api/:env/sessions/:id" do
 end
 
 
+def make_graph(tasks, img_path)
+
+  node_defs = []
+  tasks.each{|t|
+    name = t.full_name.split("+").last
+    # label = t.full_name
+    label = "+" + name
+
+    unless t.state == "success"
+      label += " / st=#{t.state}"
+    end
+
+    label += " / #{ t.is_group ? :G : nil }"
+
+    color =
+      case t.state
+      when "error"       then "#ff0000"
+      when "group_error" then "#ff00ff"
+      else                    "black"
+      end
+
+    node_defs << %Q!  #{t.id} [ label = "#{label}", fontcolor = "#{color}" ]!
+  }
+
+  deps = []
+  tasks.each{|t|
+    deps << "  #{t.id} -> #{t.parent_id || 'root'};"
+
+    t.upstreams.each{|uid|
+      deps << "  #{t.id} -> #{uid} [ color = \"green\" ];"
+    }
+  }
+
+  src = <<-EOB
+digraph gname {
+  graph [
+    rankdir = RL;
+  ]
+
+  # node_id [ label = "..." ]
+  root [ label = "root" ]
+  #{node_defs.join("\n")}
+
+  # node_id -> node_id
+  #{ deps.join("\n") }
+}
+  EOB
+
+puts_e src
+
+  src_path = File.join(__dir__, "public/graph/tmp.txt")
+
+  open(src_path, "wb"){ |f| f.puts src }
+
+  system %Q! dot -Tsvg "#{src_path}" -o "#{img_path}" !
+end
+
+
 get "/api/:env/attempts/:id/graph" do
   env = params[:env].to_sym
   att_id = params[:id]
 
   _api_v2 (params) do |_params|
-    # client = Digdag::Client.new(
-    #   endpoint: endpoint(env)
-    # )
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
 
-    # wfs = client.get_workflows(pj_id)
-    #   .map{ |api_wf|
-    #     DigdagUtils::Workflow.from_api_data(api_wf)
-    #   }
+    pp_e [355, client.get_tasks_of_attempt(att_id)
+         ]
+
+    tasks = client.get_tasks_of_attempt(att_id)
+      .map{ |api_task|
+        DigdagUtils::Task.from_api_response(api_task)
+      }
+
+    img_id = "000"
+    img_path = File.join(
+      __dir__,
+      "public/graph/#{img_id}.svg",
+    )
+
+    make_graph(tasks, img_path)
 
     {
-      path: "/graph/z_000.png"
+      path: "/graph/#{img_id}.svg"
     }
   end
 end
