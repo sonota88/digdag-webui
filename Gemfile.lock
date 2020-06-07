@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/sonota88/digdag_client.git
-  revision: c21bb2d9174fff962d7efdb2748a812e86c856ea
+  revision: e30fad087897813d90b8b7e0a39a530f89e09fc4
   branch: wip
   specs:
     digdag_client (0.0.4)
@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/sonota88/digdag_utils.git
-  revision: a2054f57df7e9cbb635a36d19f866b3ebb5ba078
+  revision: b9b564a7476f539713b320af434e615a10c37603
   branch: wip
   specs:
     digdag_utils (0.0.1)

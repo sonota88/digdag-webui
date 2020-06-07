@@ -275,13 +275,6 @@ end
 
 module Digdag
   class Client
-    module Project
-      def get_sessions_of_project(id, params={})
-        options = params
-        get("projects/#{id}/sessions", options)['sessions']
-      end
-    end
-
     module Workflow
       def get_workflow_v2(id)
         get("workflows/#{id}")
