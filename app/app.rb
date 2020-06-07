@@ -245,3 +245,16 @@ get "/api/:env/projects" do
     }
   end
 end
+
+get "/:env/projects/:id" do
+  _render_dyn_js("project/page_show")
+end
+
+get "/api/:env/projects/:id" do
+  env = params[:env].to_sym
+  _api_v2 (params) do |_params|
+    {
+      workflows: [1,2,3] # TODO
+    }
+  end
+end
