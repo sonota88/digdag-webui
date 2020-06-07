@@ -9,8 +9,8 @@ GIT
 
 GIT
   remote: https://github.com/sonota88/digdag_utils.git
-  revision: 48a7e49c0e7542692d9cdaeda621a9a143957167
-  branch: master
+  revision: a2054f57df7e9cbb635a36d19f866b3ebb5ba078
+  branch: wip
   specs:
     digdag_utils (0.0.1)
 
@@ -56,4 +56,4 @@ DEPENDENCIES
   sinatra-contrib (= 2.0.5)
 
 BUNDLED WITH
-   1.17.2
+   2.1.4

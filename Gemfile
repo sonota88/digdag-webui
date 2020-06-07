@@ -6,7 +6,7 @@ gem "sinatra-contrib", "2.0.5"
 
 gem "digdag_utils",
     :git => "https://github.com/sonota88/digdag_utils.git",
-    :branch => "master"
+    :branch => "wip"
 
 gem "digdag_client",
     :git => "https://github.com/sonota88/digdag_client.git",
