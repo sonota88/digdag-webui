@@ -8,6 +8,7 @@ set :method_override, true
 
 require "pp"
 require "json"
+require "digdag_client"
 
 require "./lib/erb_context"
 require "./lib/myhash"
@@ -227,9 +228,12 @@ get "/:env/projects" do
 end
 
 get "/api/:env/projects" do
-  env = params[:env]
+  env = params[:env].to_sym
   _api_v2 (params) do |_params|
-    pjs = [1,2,3] # TODO
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+    pjs = client.get_projects()
     
     {
       projects: pjs
