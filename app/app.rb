@@ -271,6 +271,73 @@ get "/api/:env/projects/:id" do
   end
 end
 
+##>>
+
+module Digdag
+  class Client
+    module Project
+      def get_sessions_of_project(id, params={})
+        options = params
+        get("projects/#{id}/sessions", options)['sessions']
+      end
+    end
+
+    module Workflow
+      def get_workflow_v2(id)
+        get("workflows/#{id}")
+      end
+    end
+  end
+end
+
+module DigdagUtils
+  class Workflow
+    attr_reader :id, :name, :project
+
+    def initialize(
+          id: nil,
+          name: nil,
+          project: nil
+        )
+      @id = id
+      @name = name
+      @project = project
+    end
+
+    def self.from_api_data(data)
+      pj = DigdagUtils::Project.new(
+        id:   data["project"]["id"],
+      )
+
+      new(
+        id:   data["id"],
+        name: data["name"],
+        project: pj,
+      )
+    end
+  end
+
+  class Session
+    def self.from_api_data(data)
+      new(
+        id:   data["id"],
+        time: data["sessionTime"],
+      )
+    end
+
+    def to_plain
+      {
+        id: @id,
+        time: @time,
+        attempts: @attempts,
+      }
+    end
+  end
+
+end
+
+##<<
+
 
 get "/:env/workflows/:id" do
   _render_dyn_js("workflow/page_show")
@@ -281,19 +348,43 @@ get "/api/:env/workflows/:id" do
   wf_id = params[:id]
 
   _api_v2 (params) do |_params|
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+
+    wf =
+      DigdagUtils::Workflow.from_api_data(
+        client.get_workflow_v2(wf_id)
+      )
+    pj_id = wf.project.id
+
+    sessions = client.get_sessions_of_project(pj_id)
+      .map{ |api_session|
+        DigdagUtils::Session.from_api_data(api_session)
+      }
+
     {
-      sessions: [] # TODO
+      sessions: sessions.map{ |s| s.to_plain }
     }
   end
 end
 
-get "/api/:env/workflows/:id/graph" do
-  env = params[:env].to_sym
-  wf_id = params[:id]
-
-  _api_v2 (params) do |_params|
-    {
-      path: "/graph/z_000.png"
-    }
-  end
-end
+## get "/api/:env/workflows/:id/graph" do
+##   env = params[:env].to_sym
+##   wf_id = params[:id]
+## 
+##   _api_v2 (params) do |_params|
+##     client = Digdag::Client.new(
+##       endpoint: endpoint(env)
+##     )
+## 
+##     wfs = client.get_workflows(pj_id)
+##       .map{ |api_wf|
+##         DigdagUtils::Workflow.from_api_data(api_wf)
+##       }
+## 
+##     {
+##       path: "/graph/z_000.png"
+##     }
+##   end
+## end
