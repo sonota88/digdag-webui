@@ -76,6 +76,22 @@ def _render(name, context)
 end
 
 
+def _render_dyn(body, context={})
+  header = File.read("views/_header.html")
+  footer = File.read("views/_footer.html")
+  erb = ERB.new(header + body + footer)
+  erb.result ErbContext.hash_to_binding(context)
+end
+
+def _render_dyn_js(js_name, context={})
+  body = <<-EOB
+    <script src="/js/#{js_name}.js"></script>
+  EOB
+
+  _render_dyn(body)
+end
+
+
 def _api(params)
   result = {}
   context = {
@@ -186,4 +202,10 @@ get "/" do
     <a href="/prod/projects">prod</a>
   </pre>
   EOB
+end
+
+# --------------------------------
+
+get "/:env/projects" do
+  _render_dyn_js("project/page_index")
 end

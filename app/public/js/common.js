@@ -68,7 +68,7 @@ const __g = {
     window.__p = page;
     document.addEventListener("DOMContentLoaded", ()=>{
       page.init();
-      document.title = page.getTitle() + " | {app_name}";
+      document.title = page.getTitle() + " | my-digdag-webui";
     });
   }
 };
