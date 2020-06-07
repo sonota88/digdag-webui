@@ -9,6 +9,7 @@ set :method_override, true
 require "pp"
 require "json"
 require "digdag_client"
+require "digdag_utils"
 
 require "./lib/erb_context"
 require "./lib/myhash"
@@ -227,41 +228,17 @@ get "/:env/projects" do
   _render_dyn_js("project/page_index")
 end
 
-module DigdagUtils
-  class Project
-    def initialize(id: nil, name: nil)
-      @id = id
-      @name = name
-    end
-
-    def self.from_api_data(data)
-      new(
-        id:   data["id"],
-        name: data["name"],
-      )
-    end
-
-    def to_plain
-      {
-        id:   @id,
-        name: @name,
-      }
-    end
-  end
-end
-
 get "/api/:env/projects" do
   env = params[:env].to_sym
   _api_v2 (params) do |_params|
     client = Digdag::Client.new(
       endpoint: endpoint(env)
     )
-    api_pjs = client.get_projects()
-    pp_e api_pjs
 
-    pjs = api_pjs.map{ |api_pj|
-      DigdagUtils::Project.from_api_data(api_pj)
-    }
+    pjs = client.get_projects()
+      .map{ |api_pj|
+        DigdagUtils::Project.from_api_data(api_pj)
+      }
 
     {
       projects: pjs.map{ |pj| pj.to_plain }
