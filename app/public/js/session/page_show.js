@@ -68,7 +68,7 @@ class Page {
 
       this.render();
 
-      this.showGraph();
+      // this.showGraph();
 
     }, (errors)=>{
       __g.unguard();

@@ -247,6 +247,38 @@ module DigdagUtils
   class Session
   end
 
+  class Attempt
+    def initialize(
+          id:               nil,
+          done:             nil,
+          success:          nil,
+          cancel_requested: nil
+        )
+      @id               = id
+      @done             = done
+      @success          = success
+      @cancel_requested = cancel_requested
+    end
+    
+    def self.from_api_response(data)
+      new(
+        id:               data["id"],
+        done:             data["done"],
+        success:          data["success"],
+        cancel_requested: data["cancelRequested"]
+      )
+    end
+
+    def to_plain
+      {
+        id:               @id,
+        done:             @done,
+        success:          @success,
+        cancel_requested: @cancel_requested,
+      }
+    end
+  end
+
   class Task
     attr_reader :full_name
     attr_reader :parent_id, :upstreams
@@ -376,8 +408,17 @@ get "/api/:env/sessions/:id" do
   sess_id = params[:id]
 
   _api_v2 (params) do |_params|
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+
+    attempts = client.get_session_attempts(sess_id, nil)["attempts"]
+      .map{ |api_att|
+        DigdagUtils::Attempt.from_api_response(api_att)
+      }
+
     {
-      attempts: [] # TODO
+      attempts: attempts.map{ |att| att.to_plain }
     }
   end
 end
@@ -458,7 +499,7 @@ digraph gname {
 }
   EOB
 
-puts_e src
+  puts_e src
 
   src_path = File.join(__dir__, "public/graph/tmp.txt")
 
