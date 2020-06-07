@@ -25,6 +25,8 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , h("a", { href: `/${__p.env}/projects` }, "プロジェクト一覧に戻る")
+      , h("hr")
       , Workflow.render(state)
       )
     );
