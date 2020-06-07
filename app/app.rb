@@ -85,6 +85,7 @@ end
 
 def _render_dyn_js(js_name, context={})
   body = <<-EOB
+    <div id="main"></div>
     <script src="/js/#{js_name}.js"></script>
   EOB
 

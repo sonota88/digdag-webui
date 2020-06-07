@@ -1,8 +1,19 @@
+class SearchResult {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , "todo"
+      )
+    );
+  }
+}
+
 class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
       , h("input", { style: {} })
+      , h("div", { id: "search_result" })
       )
     );
   }
@@ -11,9 +22,7 @@ class View {
 class Page {
   constructor(){
     this.state = {
-      optionId: 2,
-      checkedIds: [1, 3],
-      toggle: true
+      projects: []
     };
   }
 
@@ -40,9 +49,17 @@ class Page {
   }
 
   render(){
-    $("#tree_builder_container")
+    $("#main")
       .empty()
       .append(View.render(this.state));
+
+    this.renderSearchResult();
+  }
+
+  renderSearchResult(){
+    $("#search_result")
+      .empty()
+      .append(SearchResult.render(this.state));
   }
 }
 
