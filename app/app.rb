@@ -223,55 +223,7 @@ def endpoint(env)
 end
 
 # --------------------------------
-
-get "/:env/projects" do
-  _render_dyn_js("project/page_index")
-end
-
-get "/api/:env/projects" do
-  env = params[:env].to_sym
-  _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
-
-    pjs = client.get_projects()
-      .map{ |api_pj|
-        DigdagUtils::Project.from_api_data(api_pj)
-      }
-
-    {
-      projects: pjs.map{ |pj| pj.to_plain }
-    }
-  end
-end
-
-
-get "/:env/projects/:id" do
-  _render_dyn_js("project/page_show")
-end
-
-get "/api/:env/projects/:id" do
-  env = params[:env].to_sym
-  pj_id = params[:id]
-
-  _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
-
-    wfs = client.get_workflows(pj_id)
-      .map{ |api_wf|
-        DigdagUtils::Workflow.from_api_data(api_wf)
-      }
-
-    {
-      workflows: wfs.map{ |wf| wf.to_plain }
-    }
-  end
-end
-
-##>>
+# Patches
 
 module Digdag
   class Client
@@ -329,10 +281,56 @@ module DigdagUtils
       }
     end
   end
-
 end
 
-##<<
+# --------------------------------
+
+get "/:env/projects" do
+  _render_dyn_js("project/page_index")
+end
+
+get "/api/:env/projects" do
+  env = params[:env].to_sym
+  _api_v2 (params) do |_params|
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+
+    pjs = client.get_projects()
+      .map{ |api_pj|
+        DigdagUtils::Project.from_api_data(api_pj)
+      }
+
+    {
+      projects: pjs.map{ |pj| pj.to_plain }
+    }
+  end
+end
+
+
+get "/:env/projects/:id" do
+  _render_dyn_js("project/page_show")
+end
+
+get "/api/:env/projects/:id" do
+  env = params[:env].to_sym
+  pj_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    client = Digdag::Client.new(
+      endpoint: endpoint(env)
+    )
+
+    wfs = client.get_workflows(pj_id)
+      .map{ |api_wf|
+        DigdagUtils::Workflow.from_api_data(api_wf)
+      }
+
+    {
+      workflows: wfs.map{ |wf| wf.to_plain }
+    }
+  end
+end
 
 
 get "/:env/workflows/:id" do
