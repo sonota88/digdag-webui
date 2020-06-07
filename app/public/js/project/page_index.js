@@ -15,7 +15,7 @@ class SearchResult {
         , filtered.map(pj =>
             h("tr", {}
             , h("td", {}
-              , h("a", { href: `/deve/projects/${pj.id}` }, pj.name)
+              , h("a", { href: `/${__p.env}/projects/${pj.id}` }, pj.name)
               )
             )
           )
@@ -41,6 +41,7 @@ class View {
 
 class Page {
   constructor(){
+    this.env = __g.getEnv();
     this.state = {
       projects: [],
       q: null
@@ -53,7 +54,7 @@ class Page {
 
   init(){
     puts("init");
-    __g.api_v2("get", "/api/devel/projects", {
+    __g.api_v2("get", `/api/${this.env}/projects`, {
       }, (result)=>{
       __g.unguard();
       puts(result);

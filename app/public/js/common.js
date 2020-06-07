@@ -70,5 +70,18 @@ const __g = {
       page.init();
       document.title = page.getTitle() + " | my-digdag-webui";
     });
+  },
+
+  getEnv: ()=>{
+    const parts = location.href.split("/");
+    const env = parts[3]
+
+    if (["devel", "prod"].includes(env)) {
+      // OK
+    } else {
+      throw new Error(`invalid env (${env})`);
+    }
+
+    return env;
   }
 };
