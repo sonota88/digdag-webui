@@ -27,7 +27,9 @@ class View {
         , "show graph"
         )
       , h("hr")
-      , h("img", { id: "graph_img" })
+      , h("img", { id: "graph_img"
+                   // , width: "100%"
+                 })
       , h("hr")
       , Attempts.render(state.attempts)
       )
@@ -66,6 +68,8 @@ class Page {
 
       this.render();
 
+      this.showGraph();
+
     }, (errors)=>{
       __g.unguard();
       __g.printApiErrors(errors);
@@ -79,7 +83,7 @@ class Page {
       .append(View.render(this.state));
   }
 
-  onclick_showGraph(){
+  showGraph(){
     puts("onclick_showGraph");
     __g.guard();
   
@@ -100,7 +104,10 @@ class Page {
         __g.printApiErrors(errors);
         alert("Check console.");
       });
-    
+  }
+
+  onclick_showGraph(){
+    this.showGraph();
   }
 }
 

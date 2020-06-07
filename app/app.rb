@@ -391,20 +391,34 @@ def make_graph(tasks, img_path)
     # label = t.full_name
     label = "+" + name
 
-    unless t.state == "success"
+    if t.is_group
+      label += "(G)"
+    end
+
+    case t.state
+    when "error"
+      label += " / st=E"
+    when "group_error"
+      label += " / st=GE"
+    when "success"
+      # do nothing
+    else
       label += " / st=#{t.state}"
     end
 
-    label += " / #{ t.is_group ? :G : nil }"
-
-    color =
+    fillcolor =
       case t.state
-      when "error"       then "#ff0000"
-      when "group_error" then "#ff00ff"
-      else                    "black"
+      when "error"       then "#ff8888"
+      when "group_error" then "#ffaa88"
+      else
+        if t.is_group
+          "#dddddd"
+        else
+          "#eeeeee"
+        end
       end
 
-    node_defs << %Q!  #{t.id} [ label = "#{label}", fontcolor = "#{color}" ]!
+    node_defs << %Q!  #{t.id} [ label = "#{label}", fillcolor = "#{fillcolor}" ]!
   }
 
   deps = []
@@ -412,7 +426,7 @@ def make_graph(tasks, img_path)
     deps << "  #{t.id} -> #{t.parent_id || 'root'};"
 
     t.upstreams.each{|uid|
-      deps << "  #{t.id} -> #{uid} [ color = \"green\" ];"
+      deps << "  #{t.id} -> #{uid} [ style = \"dashed\" ];"
     }
   }
 
@@ -420,6 +434,19 @@ def make_graph(tasks, img_path)
 digraph gname {
   graph [
     rankdir = RL;
+    fontname = "monospace";
+  ]
+
+  node [
+    fontname = "monospace";
+    style = "filled, rounded";
+    color = "#444444";
+    fillcolor = "#eeeeee";
+    shape = "box";
+  ]
+
+  edge [
+    color = "#444444"
   ]
 
   # node_id [ label = "..." ]
