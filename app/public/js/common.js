@@ -2,6 +2,10 @@ function puts(... args){
   console.log.apply(console, args);
 }
 
+function _parseInt(str){
+  return parseInt(str, 10);
+}
+
 const __g = {
   api: function(method, path, data, fnOk, fnNg){
     var _data = {
