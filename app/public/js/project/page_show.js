@@ -1,9 +1,6 @@
-class Workflow {
+class Workflows {
   static render(state){
-    const wfs = [
-      { id: 1, name: "wf1" },
-      { id: 2, name: "wf2" },
-    ];
+    const wfs = state.workflows;
 
     return TreeBuilder.build(h =>
       h("div", {}
@@ -27,7 +24,7 @@ class View {
       h("div", {}
       , h("a", { href: `/${__p.env}/projects` }, "プロジェクト一覧に戻る")
       , h("hr")
-      , Workflow.render(state)
+      , Workflows.render(state)
       )
     );
   }
@@ -38,7 +35,10 @@ class Page {
     this.env = __g.getEnv();
     this.projectId = this.getProjectId();
     this.state = {
-      project: []
+      workflows: [
+        { id: 1, name: "wf1" },
+        { id: 2, name: "wf2" },
+      ]
     };
   }
 

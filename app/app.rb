@@ -254,7 +254,10 @@ get "/api/:env/projects/:id" do
   env = params[:env].to_sym
   _api_v2 (params) do |_params|
     {
-      workflows: [1,2,3] # TODO
+      workflows: [
+        { id: 1, name: "wf 1" },
+        { id: 2, name: "wf 2" },
+      ] # TODO
     }
   end
 end
