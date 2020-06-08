@@ -360,6 +360,26 @@ get "/api/:env/sessions/:id" do
 end
 
 
+get "/:env/attempts/:id" do
+  _render_dyn_js("attempt/page_show")
+end
+
+get "/api/:env/attempts/:id" do
+  env = params[:env].to_sym
+  att_id = params[:id]
+
+  _api_v2 (params) do |_params|
+    { # TODO dummy
+      attempt: {
+        session: {
+          id: "130"
+        }
+      }
+    }
+  end
+end
+
+
 def make_graph(tasks, img_path)
 
   node_defs = []
