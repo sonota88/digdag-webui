@@ -47,7 +47,9 @@ class Page {
 
   init(){
     puts("init");
-    __g.api_v2("get", `/api/${this.env}/attempts/${this.workflowId}`, {
+    this.attemptId = this.getAttemptId();
+
+    __g.api_v2("get", `/api/${this.env}/attempts/${this.attemptId}`, {
       }, (result)=>{
       __g.unguard();
       puts(result);
@@ -74,11 +76,9 @@ class Page {
     puts("onclick_showGraph");
     __g.guard();
 
-    const attemptId = this.getAttemptId();
-
     __g.api_v2(
       "get",
-      `/api/${this.env}/attempts/${attemptId}/graph`,
+      `/api/${this.env}/attempts/${this.attemptId}/graph`,
       {},
       (result)=>{
         __g.unguard();

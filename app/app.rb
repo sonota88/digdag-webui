@@ -369,12 +369,13 @@ get "/api/:env/attempts/:id" do
   att_id = params[:id]
 
   _api_v2 (params) do |_params|
-    { # TODO dummy
-      attempt: {
-        session: {
-          id: "130"
-        }
-      }
+    client = get_client(env)
+
+    api_att = client.get_attempt(att_id)
+    att = DigdagUtils::Attempt.from_api_response(api_att)
+
+    {
+      attempt: att.to_plain,
     }
   end
 end
