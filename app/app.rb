@@ -254,6 +254,14 @@ end
 
 # --------------------------------
 
+def get_client(env)
+  Digdag::Client.new(
+    endpoint: endpoint(env)
+  )
+end
+
+# --------------------------------
+
 get "/:env/projects" do
   _render_dyn_js("project/page_index")
 end
@@ -261,9 +269,7 @@ end
 get "/api/:env/projects" do
   env = params[:env].to_sym
   _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
+    client = get_client(env)
 
     pjs = client.get_projects()
       .map{ |api_pj|
@@ -286,9 +292,7 @@ get "/api/:env/projects/:id" do
   pj_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
+    client = get_client(env)
 
     wfs = client.get_workflows(pj_id)
       .map{ |api_wf|
@@ -311,9 +315,7 @@ get "/api/:env/workflows/:id" do
   wf_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
+    client = get_client(env)
 
     wf =
       DigdagUtils::Workflow.from_api_response(
@@ -343,9 +345,7 @@ get "/api/:env/sessions/:id" do
   sess_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
+    client = get_client(env)
 
     attempts = client.get_session_attempts(sess_id, nil)["attempts"]
       .map{ |api_att|
@@ -470,9 +470,7 @@ get "/api/:env/attempts/:id/graph" do
   att_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = Digdag::Client.new(
-      endpoint: endpoint(env)
-    )
+    client = get_client(env)
 
     pp_e [
       "client.get_tasks_of_attempt(att_id)",
