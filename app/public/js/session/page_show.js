@@ -2,6 +2,9 @@ class Attempts {
   static render(attempts){
     return TreeBuilder.build(h =>
       h("table", {}
+      , h("tr", {}
+        , h("th", {}, "id")
+        )
       , attempts.map(att =>
           h("tr", {}
           , h("td", {}

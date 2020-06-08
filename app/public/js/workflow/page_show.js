@@ -2,6 +2,10 @@ class Sessions {
   static render(sessions){
     return TreeBuilder.build(h =>
       h("table", {}
+      , h("tr", {}
+        , h("th", {}, "id")
+        , h("th", {}, "time")
+        )
       , sessions.map(session =>
           h("tr", {}
           , h("td", {}
