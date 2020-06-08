@@ -10,13 +10,22 @@ class View {
 
       , h("hr")
 
+      , h("textarea"
+        , { style: { width: "90%", height: "10rem" } }
+        , JSON.stringify(state.attempt, null, "    ")
+        )
+
+      , h("hr")
+
       , h("button"
         , { onclick: ()=>{ __p.onclick_showGraph(); } }
         , "show graph"
         )
+
       , h("hr")
+
       , h("img", { id: "graph_img"
-                   // , width: "100%"
+                   , width: "100%"
                  })
       )
     );
