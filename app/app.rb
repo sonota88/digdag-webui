@@ -243,9 +243,82 @@ module DigdagUtils
   end
 
   class Session
+    attr_reader :workflow
+
+    def initialize(
+      id: nil,
+      time: nil,
+      attempts: nil,
+      workflow: nil
+    )
+      @id = id
+      @time = time
+      @attempts = attempts
+      @workflow = workflow
+    end
+
+    def to_plain
+      plain = {
+        id: @id,
+        time: @time,
+        attempts: @attempts,
+      }
+
+      if @workflow
+        plain[:workflow] = @workflow.to_plain
+      end
+
+      plain
+    end
   end
 
   class Attempt
+    attr_reader :id
+    attr_reader :session
+
+    def initialize(
+      id: nil,
+      done:             nil,
+      success:          nil,
+      cancel_requested: nil,
+      session:          nil
+    )
+      @id = id
+      @done             = done
+      @success          = success
+      @cancel_requested = cancel_requested
+      @session          = session
+    end
+
+    def self.from_api_response(data)
+      wf = Workflow.new(
+        id:   data["workflow"]["id"],
+        name: data["workflow"]["name"]
+      )
+
+      sess = Session.new(
+        id: data["sessionId"],
+        workflow: wf
+      )
+
+      new(
+        id:               data["id"],
+        done:             data["done"],
+        success:          data["success"],
+        cancel_requested: data["cancelRequested"],
+        session:          sess
+      )
+    end
+
+    def to_plain
+      {
+        id:               @id,
+        done:             @done,
+        success:          @success,
+        cancel_requested: @cancel_requested,
+        session:          @session.to_plain,
+      }
+    end
   end
 
   class Task
@@ -353,6 +426,7 @@ get "/api/:env/sessions/:id" do
       }
 
     {
+      workflow: attempts[0].session.workflow.to_plain,
       attempts: attempts.map(&:to_plain)
     }
   end
@@ -453,8 +527,10 @@ get "/api/:env/attempts/:id/graph" do
       endpoint: endpoint(env)
     )
 
-    pp_e [355, client.get_tasks_of_attempt(att_id)
-         ]
+    pp_e [
+      "client.get_tasks_of_attempt(att_id)",
+      client.get_tasks_of_attempt(att_id)
+    ]
 
     tasks = client.get_tasks_of_attempt(att_id)
       .map{ |api_task|
