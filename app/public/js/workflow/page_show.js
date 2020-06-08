@@ -23,12 +23,11 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
-      // , h("a", { href: `/${__p.env}/projects/...` }, "プロジェクトに戻る")
+      , h("a"
+        , { href: `/${__p.env}/projects/${state.project.id}` }
+        , "プロジェクトに戻る"
+        )
       , h("hr")
-      // , h("button"
-      //   , { onclick: ()=>{ __p.onclick_showGraph(); } }
-      //   , "show graph"
-      //   )
       , Sessions.render(state.sessions)
       )
     );
@@ -40,6 +39,7 @@ class Page {
     this.env = __g.getEnv();
     this.workflowId = this.getWorkflowId();
     this.state = {
+      project: { id: "0" },
       sessions: [
         { id: 1, time: "t1" },
         { id: 2, time: "t2" },

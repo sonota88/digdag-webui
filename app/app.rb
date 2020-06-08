@@ -327,6 +327,7 @@ get "/api/:env/workflows/:id" do
       }
 
     {
+      project: wf.project.to_plain,
       sessions: sessions.map(&:to_plain)
     }
   end
