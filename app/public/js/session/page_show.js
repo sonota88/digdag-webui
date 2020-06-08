@@ -46,7 +46,7 @@ class View {
 class Page {
   constructor(){
     this.env = __g.getEnv();
-    this.workflowId = this.getWorkflowId();
+    this.sessionId = this.getSessionId();
     this.state = {
       workflow: { id: "0" },
       attempts: [
@@ -60,14 +60,14 @@ class Page {
     return "session";
   }
 
-  getWorkflowId(){
+  getSessionId(){
     const m = location.href.match(/\/sessions\/(\d+)/)
     return m[1];
   }
 
   init(){
     puts("init");
-    __g.api_v2("get", `/api/${this.env}/sessions/${this.workflowId}`, {
+    __g.api_v2("get", `/api/${this.env}/sessions/${this.sessionId}`, {
       }, (result)=>{
       __g.unguard();
       puts(result);
