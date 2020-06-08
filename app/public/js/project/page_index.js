@@ -29,6 +29,7 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , h("h1", {}, __p.getTitle())
       , h("input", { style: {}
           , oninput: (ev)=>{ __p.oninput_q(ev); }
           }
