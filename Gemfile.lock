@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/sonota88/digdag_utils.git
-  revision: c7975329831c8b41d318ceb8fdeb7ce91ce91258
+  revision: 65c3714764cb62fc2f6d34132727199702e07e36
   branch: wip
   specs:
     digdag_utils (0.0.1)
