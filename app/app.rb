@@ -204,11 +204,7 @@ ENDPOINT_MAP = {
 }
 
 def endpoint(env)
-  unless ENDPOINT_MAP.key?(env)
-    raise "invalid env"
-  end
-
-  ENDPOINT_MAP[env]
+  ENDPOINT_MAP.fetch(env)
 end
 
 # --------------------------------
