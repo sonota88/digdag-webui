@@ -474,6 +474,24 @@ def make_graph_make_label(t)
   label
 end
 
+def task_bg_color(t)
+  case t.state
+  when "running"       then "#ccff00"
+  when "planned"       then "#88eeff"
+  when "blocked"       then "#ccffff"
+  when "retry_waiting" then "#ddaaff"
+  when "error"         then "#ffbbbb"
+  when "group_error"   then "#ffdddd"
+  when "canceled"      then "#ddcc88"
+  else # success
+    if t.is_group
+      "#dddddd"
+    else
+      "#eeeeee"
+    end
+  end
+end
+
 def make_graph(tasks, img_path)
   node_map = {}
 
@@ -502,22 +520,7 @@ def make_graph(tasks, img_path)
 
     styles = %w(rounded filled bold)
 
-    bg_color =
-      case t.state
-      when "running"       then "#ccff00"
-      when "planned"       then "#88eeff"
-      when "blocked"       then "#ccffff"
-      when "retry_waiting" then "#ddaaff"
-      when "error"         then "#ffbbbb"
-      when "group_error"   then "#ffdddd"
-      when "canceled"      then "#ddcc88"
-      else # success
-        if t.is_group
-          "#dddddd"
-        else
-          "#eeeeee"
-        end
-      end
+    bg_color = task_bg_color(t)
 
     border_color =
       if t.state == "error"
