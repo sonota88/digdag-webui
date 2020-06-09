@@ -443,12 +443,18 @@ end
 def make_graph_make_label(t)
   label = "< "
 
-  name = t.full_name.split("+").last
-  label += "+" + name
+  label += "("
+  label += t.id
 
   if t.is_group
-    label += "(G)"
+    label += " G"
   end
+
+  label += ")"
+
+  label += "<br />"
+  name = t.full_name.split("+").last
+  label += "+" + name
 
   case t.state
   when "error"
