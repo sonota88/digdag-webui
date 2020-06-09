@@ -67,7 +67,11 @@ class Page {
 
       this.render();
 
-      // this.showGraph();
+      this.showGraph();
+      setInterval(
+        ()=>{ this.showGraph(); }
+        ,10000
+      );
 
     }, (errors)=>{
       __g.unguard();
