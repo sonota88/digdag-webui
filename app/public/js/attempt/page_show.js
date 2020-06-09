@@ -23,6 +23,10 @@ class View {
         )
       , h("a", { id: "graph_img_link", href: "#"}, "image")
 
+      , ` / ${state.graph.zoom} `
+      , h("button", { onclick: ()=>{ __p.onclick_graphZoomOut(); } }, "-")
+      , h("button", { onclick: ()=>{ __p.onclick_graphZoomIn(); } }, "+")
+
       , h("br")
 
       , h("img", { id: "graph_img"
@@ -42,6 +46,9 @@ class Page {
         session: {
           id: "0"
         }
+      }
+      ,graph: {
+        zoom: 100
       }
     };
   }
@@ -106,8 +113,25 @@ class Page {
       });
   }
 
+  resizeGraph(){
+    $("#graph_img").css("width", this.state.graph.zoom + "%");
+  }
+
   onclick_showGraph(){
     this.showGraph();
+  }
+
+  onclick_graphZoomOut(){
+    this.state.graph.zoom -= 10;
+    if (this.state.graph.zoom < 10) {
+      this.state.graph.zoom = 10;
+    }
+    this.resizeGraph();
+  }
+
+  onclick_graphZoomIn(){
+    this.state.graph.zoom += 10;
+    this.resizeGraph();
   }
 }
 
