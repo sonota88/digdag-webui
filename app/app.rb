@@ -471,7 +471,7 @@ digraph gname {
   ]
 
   edge [
-    color = "#444444"
+    color = "#666666"
   ]
 
   # node_id [ label = "..." ]
