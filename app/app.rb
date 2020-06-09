@@ -482,7 +482,7 @@ get "/api/:env/attempts/:id/graph" do
         DigdagUtils::Task.from_api_response(api_task)
       }
 
-    img_id = "000"
+    img_id = Time.now.to_i.to_s
     img_path = File.join(
       __dir__,
       "public/graph/#{img_id}.svg",
