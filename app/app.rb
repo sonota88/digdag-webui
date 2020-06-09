@@ -508,7 +508,7 @@ def task_bg_color_v2(t)
   end
 end
 
-def make_graph(tasks, img_path)
+def make_node_map(tasks)
   node_map = {}
 
   tasks.each{ |t|
@@ -523,12 +523,13 @@ def make_graph(tasks, img_path)
     end
   }
 
-  tn_root = node_map.values
-    .find{ |tn| tn.root? }
+  node_map
+end
 
+def make_graph(tasks, img_path)
+  node_map = make_node_map(tasks)
+  tn_root = node_map.values.find{ |tn| tn.root? }
   subgraph_lines = tn_root.to_graph()
-
-  # --------
 
   node_defs = []
   tasks.each{|t|
