@@ -116,7 +116,8 @@ class Page {
         puts(result);
 
         this.state.graph.src = result.path;
-        this.render();
+        $("#graph_img").attr("src", result.path);
+        $("#graph_img_link").attr("href", result.path);
   
       }, (errors)=>{
         __g.unguard();
