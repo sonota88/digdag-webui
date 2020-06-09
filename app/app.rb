@@ -235,6 +235,7 @@ module DigdagUtils
   end
 
   class Task
+    attr_reader :cancel_requested
   end
 end
 
@@ -457,6 +458,11 @@ def make_graph_make_label(t)
   else
     label += "<br />"
     label += "st=#{t.state}"
+  end
+
+  if t.cancel_requested
+    label += "<br />"
+    label += "cancel_requested"
   end
 
   label += " >"
