@@ -318,7 +318,10 @@ get "/api/:env/workflows/:id" do
       )
     pj_id = wf.project.id
 
-    sessions = client.get_sessions_of_project(pj_id)
+    sessions = client.get_sessions_of_project(
+      pj_id,
+      workflow: wf.name
+    )
       .map{ |api_session|
         DigdagUtils::Session.from_api_response(api_session)
       }
