@@ -492,6 +492,22 @@ def task_bg_color(t)
   end
 end
 
+def task_bg_color_v2(t)
+  case t.state
+  when "running"       then "#88d4ff"
+  when "planned"       then "#c0eeff"
+  when "blocked"       then "#dddddd"
+  when "retry_waiting" then "#ddaaff"
+  when "error"         then "#ffbbbb"
+  when "group_error"   then "#ffdddd"
+  when "canceled"      then "#ddcc88"
+  when "success"
+    "#ddffcc"
+  else
+    raise "not yet supported"
+  end
+end
+
 def make_graph(tasks, img_path)
   node_map = {}
 
@@ -520,7 +536,7 @@ def make_graph(tasks, img_path)
 
     styles = %w(rounded filled bold)
 
-    bg_color = task_bg_color(t)
+    bg_color = task_bg_color_v2(t)
 
     border_color =
       if t.state == "error"
