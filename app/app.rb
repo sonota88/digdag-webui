@@ -418,7 +418,11 @@ def make_graph(tasks, img_path)
         end
       end
 
-    node_defs << %Q!  #{t.id} [ label = "#{label}", fillcolor = "#{bg_color}" ]!
+    node_def = %Q!  #{t.id} [ !
+    node_def += %Q! label = "#{label}" !
+    node_def += %Q! ,fillcolor = "#{bg_color}" !
+    node_def += %Q! ]!
+    node_defs << node_def
   }
 
   deps = []
