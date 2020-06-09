@@ -446,7 +446,9 @@ def make_graph(tasks, img_path)
 
   deps = []
   tasks.each{|t|
-    deps << "  #{t.id} -> #{t.parent_id || 'root'};"
+    if t.parent_id
+      deps << "  #{t.parent_id} -> #{t.id};"
+    end
 
     t.upstreams.each{|uid|
       deps << "  #{t.id} -> #{uid} [ style = \"dashed\" ];"
@@ -456,7 +458,7 @@ def make_graph(tasks, img_path)
   src = <<-EOB
 digraph gname {
   graph [
-    rankdir = RL;
+    rankdir = LR;
     fontname = "monospace";
   ]
 
@@ -473,7 +475,6 @@ digraph gname {
   ]
 
   # node_id [ label = "..." ]
-  root [ label = "root" ]
   #{node_defs.join("\n")}
 
   # node_id -> node_id
