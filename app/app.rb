@@ -561,7 +561,7 @@ def make_graph(tasks, img_path)
     end
 
     t.upstreams.each{|uid|
-      deps << "  #{t.id} -> #{uid} [ style = \"dashed\" ];"
+      deps << %Q!  #{t.id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
     }
   }
 
@@ -579,7 +579,7 @@ digraph gname {
   ]
 
   edge [
-    color = "#666666"
+    color = "#aaaaaa"
   ]
 
 #{ subgraph_lines.join("\n") }
