@@ -413,7 +413,7 @@ class TaskNode
     lines = []
     if is_group
       lines << indent(depth, "subgraph cluster_#{id} {")
-      lines << indent(depth, %Q!  color = "#cccccc"; !)
+      lines << indent(depth, %Q!  color = "#eeeeee"; !)
       # lines << %Q!    fillcolor = "#f8f8f8"; !
       lines << indent(depth, %Q!  style = "rounded"; !)
 
