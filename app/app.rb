@@ -406,6 +406,8 @@ def make_graph(tasks, img_path)
   tasks.each{|t|
     label = make_graph_make_label(t)
 
+    styles = %w(rounded filled bold)
+
     bg_color =
       case t.state
       when "error"       then "#ff8888"
@@ -429,6 +431,7 @@ def make_graph(tasks, img_path)
     node_def += %Q! label = "#{label}" !
     node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
+    node_def += %Q! ,style = "#{ styles.join(", ") }" !
     node_def += %Q! ]!
     node_defs << node_def
   }
