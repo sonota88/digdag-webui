@@ -380,6 +380,61 @@ get "/api/:env/attempts/:id" do
 end
 
 
+class TaskNode
+  extend Forwardable
+
+  def_delegators :@task, :id, :parent_id, :is_group
+
+  def initialize(task)
+    @children = []
+    @task = task
+  end
+
+  def add_child(c)
+    @children << c
+  end
+
+  def root?
+    parent_id.nil?
+  end
+
+  def indent(depth, line)
+    ("  " * depth) + line
+  end
+
+  def to_graph(depth=0)
+    next_depth = depth + 1
+
+    lines = []
+    if is_group
+      lines << indent(depth, "subgraph cluster_#{id} {")
+      lines << indent(depth, %Q!  color = "#cccccc"; !)
+      # lines << %Q!    fillcolor = "#f8f8f8"; !
+      lines << indent(depth, %Q!  style = "rounded"; !)
+
+      lines << indent(depth, "  #{id};")
+
+      @children.each{ |child|
+        lines += child.to_graph(next_depth)
+      }
+
+      if 2 <= @children.size
+        rank_same = @children.map{ |c| '"' + c.id + '";' }.join(" ")
+        lines << indent(depth, "  { rank=same; #{rank_same} }")
+      end
+
+      lines << indent(depth, "} # subgraph cluster_#{id}")
+    else
+      lines << indent(depth, "#{id};")
+      @children.each{ |child|
+        lines += child.to_graph(next_depth)
+      }
+    end
+
+    lines
+  end
+end
+
 def make_graph_make_label(t)
   label = "< "
 
