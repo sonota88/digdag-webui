@@ -21,8 +21,9 @@ class View {
         , { onclick: ()=>{ __p.onclick_showGraph(); } }
         , "show graph"
         )
+      , h("a", { id: "graph_img_link", href: "#"}, "image")
 
-      , h("hr")
+      , h("br")
 
       , h("img", { id: "graph_img"
                    , width: "100%"
@@ -92,6 +93,7 @@ class Page {
         puts(result);
   
         $("#graph_img").attr("src", result.path);
+        $("#graph_img_link").attr("href", result.path);
   
       }, (errors)=>{
         __g.unguard();
