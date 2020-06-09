@@ -198,17 +198,6 @@ end
 
 # --------------------------------
 
-get "/" do
-  <<-EOB
-  <pre>
-    <a href="/devel/projects">devel</a>
-    <a href="/prod/projects">prod</a>
-  </pre>
-  EOB
-end
-
-# --------------------------------
-
 ENDPOINT_MAP = {
   :devel => "http://localhost:65432",
   :prod => "http://localhost:65432",
@@ -261,6 +250,16 @@ def get_client(env)
 end
 
 # --------------------------------
+
+get "/" do
+  <<-EOB
+  <pre>
+    <a href="/devel/projects">devel</a>
+    <a href="/prod/projects">prod</a>
+  </pre>
+  EOB
+end
+
 
 get "/:env/projects" do
   _render_dyn_js("project/page_index")
