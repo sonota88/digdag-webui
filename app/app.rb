@@ -579,7 +579,7 @@ digraph gname {
 }
   EOB
 
-  puts_e src
+  # puts_e src
 
   src_path = File.join(__dir__, "public/graph/tmp.txt")
 
@@ -621,10 +621,10 @@ get "/api/:env/attempts/:id/graph" do
   _api_v2 (params) do |_params|
     client = get_client(env)
 
-    pp_e [
-      "client.get_tasks_of_attempt(att_id)",
-      client.get_tasks_of_attempt(att_id)
-    ]
+    # pp_e [
+    #   "client.get_tasks_of_attempt(att_id)",
+    #   client.get_tasks_of_attempt(att_id)
+    # ]
 
     tasks = client.get_tasks_of_attempt(att_id)
       .map{ |api_task|
