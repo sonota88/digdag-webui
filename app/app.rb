@@ -381,8 +381,10 @@ end
 
 
 def make_graph_make_label(t)
+  label = "< "
+
   name = t.full_name.split("+").last
-  label = "+" + name
+  label += "+" + name
 
   if t.is_group
     label += "(G)"
@@ -390,14 +392,19 @@ def make_graph_make_label(t)
 
   case t.state
   when "error"
-    label += " / st=E"
+    label += "<br />"
+    label += "st=E"
   when "group_error"
-    label += " / st=GE"
+    label += "<br />"
+    label += "st=GE"
   when "success"
     # do nothing
   else
-    label += " / st=#{t.state}"
+    label += "<br />"
+    label += "st=#{t.state}"
   end
+
+  label += " >"
 
   label
 end
@@ -429,7 +436,7 @@ def make_graph(tasks, img_path)
       end
 
     node_def = %Q!  #{t.id} [ !
-    node_def += %Q! label = "#{label}" !
+    node_def += %Q! label = #{label} !
     node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
     node_def += %Q! ,style = "#{ styles.join(", ") }" !
