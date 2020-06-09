@@ -465,6 +465,27 @@ def make_graph_make_label(t)
 end
 
 def make_graph(tasks, img_path)
+  node_map = {}
+
+  tasks.each{ |t|
+    node_map[t.id] = TaskNode.new(t)
+  }
+
+  tasks.each{ |t|
+    if t.parent_id
+      tn_p = node_map[t.parent_id]
+      tn_c = node_map[t.id]
+      tn_p.add_child(tn_c)
+    end
+  }
+
+  tn_root = node_map.values
+    .find{ |tn| tn.root? }
+
+  subgraph_lines = tn_root.to_graph()
+
+  # --------
+
   node_defs = []
   tasks.each{|t|
     label = make_graph_make_label(t)
@@ -528,6 +549,8 @@ digraph gname {
   edge [
     color = "#666666"
   ]
+
+#{ subgraph_lines.join("\n") }
 
   # node_id [ label = "..." ]
   #{node_defs.join("\n")}
