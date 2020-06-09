@@ -1,3 +1,28 @@
+class Graph {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , h("button"
+        , { onclick: ()=>{ __p.onclick_showGraph(); } }
+        , "show graph"
+        )
+      , h("a", { id: "graph_img_link", href: state.graph.src }, "image")
+
+      , ` / ${state.graph.zoom} `
+      , h("button", { onclick: ()=>{ __p.onclick_graphZoomOut(); } }, "-")
+      , h("button", { onclick: ()=>{ __p.onclick_graphZoomIn(); } }, "+")
+
+      , h("br")
+
+      , h("img", { id: "graph_img"
+                   , width: `${state.graph.zoom}%`
+                   , src: state.graph.src
+                 })
+      )
+    );
+  }
+}
+
 class View {
   static render(state){
     return TreeBuilder.build(h =>
@@ -17,22 +42,7 @@ class View {
 
       , h("hr")
 
-      , h("button"
-        , { onclick: ()=>{ __p.onclick_showGraph(); } }
-        , "show graph"
-        )
-      , h("a", { id: "graph_img_link", href: state.graph.src }, "image")
-
-      , ` / ${state.graph.zoom} `
-      , h("button", { onclick: ()=>{ __p.onclick_graphZoomOut(); } }, "-")
-      , h("button", { onclick: ()=>{ __p.onclick_graphZoomIn(); } }, "+")
-
-      , h("br")
-
-      , h("img", { id: "graph_img"
-                   , width: `${state.graph.zoom}%`
-                   , src: state.graph.src
-                 })
+      , Graph.render(state)
       )
     );
   }
