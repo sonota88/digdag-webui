@@ -406,7 +406,7 @@ def make_graph(tasks, img_path)
   tasks.each{|t|
     label = make_graph_make_label(t)
 
-    fillcolor =
+    bg_color =
       case t.state
       when "error"       then "#ff8888"
       when "group_error" then "#ffaa88"
@@ -418,7 +418,7 @@ def make_graph(tasks, img_path)
         end
       end
 
-    node_defs << %Q!  #{t.id} [ label = "#{label}", fillcolor = "#{fillcolor}" ]!
+    node_defs << %Q!  #{t.id} [ label = "#{label}", fillcolor = "#{bg_color}" ]!
   }
 
   deps = []
