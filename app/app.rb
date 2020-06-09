@@ -376,28 +376,32 @@ get "/api/:env/attempts/:id" do
 end
 
 
-def make_graph(tasks, img_path)
+def make_graph_make_label(t)
+  name = t.full_name.split("+").last
+  label = "+" + name
 
+  if t.is_group
+    label += "(G)"
+  end
+
+  case t.state
+  when "error"
+    label += " / st=E"
+  when "group_error"
+    label += " / st=GE"
+  when "success"
+    # do nothing
+  else
+    label += " / st=#{t.state}"
+  end
+
+  label
+end
+
+def make_graph(tasks, img_path)
   node_defs = []
   tasks.each{|t|
-    name = t.full_name.split("+").last
-    # label = t.full_name
-    label = "+" + name
-
-    if t.is_group
-      label += "(G)"
-    end
-
-    case t.state
-    when "error"
-      label += " / st=E"
-    when "group_error"
-      label += " / st=GE"
-    when "success"
-      # do nothing
-    else
-      label += " / st=#{t.state}"
-    end
+    label = make_graph_make_label(t)
 
     fillcolor =
       case t.state
