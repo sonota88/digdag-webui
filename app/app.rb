@@ -510,9 +510,14 @@ def make_graph(tasks, img_path)
 
     bg_color =
       case t.state
-      when "error"       then "#ff8888"
-      when "group_error" then "#ffaa88"
-      else
+      when "running"       then "#ccff00"
+      when "planned"       then "#88eeff"
+      when "blocked"       then "#ccffff"
+      when "retry_waiting" then "#ddaaff"
+      when "error"         then "#ffbbbb"
+      when "group_error"   then "#ffdddd"
+      when "canceled"      then "#ddcc88"
+      else # success
         if t.is_group
           "#dddddd"
         else
