@@ -21,7 +21,7 @@ class View {
         , { onclick: ()=>{ __p.onclick_showGraph(); } }
         , "show graph"
         )
-      , h("a", { id: "graph_img_link", href: "#"}, "image")
+      , h("a", { id: "graph_img_link", href: state.graph.src }, "image")
 
       , ` / ${state.graph.zoom} `
       , h("button", { onclick: ()=>{ __p.onclick_graphZoomOut(); } }, "-")
@@ -30,7 +30,8 @@ class View {
       , h("br")
 
       , h("img", { id: "graph_img"
-                   , width: "100%"
+                   , width: `${state.graph.zoom}%`
+                   , src: state.graph.src
                  })
       )
     );
@@ -46,9 +47,10 @@ class Page {
         session: {
           id: "0"
         }
-      }
-      ,graph: {
-        zoom: 100
+      },
+      graph: {
+        src: null,
+        zoom: 50
       }
     };
   }
@@ -102,19 +104,15 @@ class Page {
       {},
       (result)=>{
         puts(result);
-  
-        $("#graph_img").attr("src", result.path);
-        $("#graph_img_link").attr("href", result.path);
+
+        this.state.graph.src = result.path;
+        this.render();
   
       }, (errors)=>{
         __g.unguard();
         __g.printApiErrors(errors);
         alert("Check console.");
       });
-  }
-
-  resizeGraph(){
-    $("#graph_img").css("width", this.state.graph.zoom + "%");
   }
 
   onclick_showGraph(){
@@ -126,12 +124,12 @@ class Page {
     if (this.state.graph.zoom < 10) {
       this.state.graph.zoom = 10;
     }
-    this.resizeGraph();
+    this.render();
   }
 
   onclick_graphZoomIn(){
     this.state.graph.zoom += 10;
-    this.resizeGraph();
+    this.render();
   }
 }
 
