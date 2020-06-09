@@ -83,14 +83,12 @@ class Page {
 
   showGraph(){
     puts("onclick_showGraph");
-    __g.guard();
 
     __g.api_v2(
       "get",
       `/api/${this.env}/attempts/${this.attemptId}/graph`,
       {},
       (result)=>{
-        __g.unguard();
         puts(result);
   
         $("#graph_img").attr("src", result.path);
