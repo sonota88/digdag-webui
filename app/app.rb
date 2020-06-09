@@ -236,6 +236,10 @@ module DigdagUtils
 
   class Task
     attr_reader :cancel_requested
+
+    # "stateParams": {
+    #   "retry_count": 1
+    # },
   end
 end
 
