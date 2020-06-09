@@ -457,12 +457,6 @@ def make_graph_make_label(t)
   label += "+" + name
 
   case t.state
-  when "error"
-    label += "<br />"
-    label += "st=E"
-  when "group_error"
-    label += "<br />"
-    label += "st=GE"
   when "success"
     # do nothing
   else
