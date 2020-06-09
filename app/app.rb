@@ -562,8 +562,6 @@ digraph gname {
   node [
     fontname = "monospace";
     style = "filled, rounded";
-    color = "#444444";
-    fillcolor = "#eeeeee";
     shape = "box";
   ]
 
