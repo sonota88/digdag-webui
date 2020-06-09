@@ -89,7 +89,7 @@ class Page {
       this.showGraph();
       setInterval(
         ()=>{ this.showGraph(); }
-        ,10000
+        ,1000 * 60 * 5
       );
 
     }, (errors)=>{
