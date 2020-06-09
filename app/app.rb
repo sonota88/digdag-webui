@@ -8,6 +8,7 @@ set :method_override, true
 
 require "pp"
 require "json"
+require "fileutils"
 require "digdag_client"
 require "digdag_utils"
 
@@ -482,10 +483,35 @@ digraph gname {
   system %Q! dot -Tsvg "#{src_path}" -o "#{img_path}" !
 end
 
+def graph_del_old
+  dir = File.join(__dir__, "public/graph/")
+
+  paths = Dir.glob(dir + "*").to_a
+
+  num_files_max = 100
+  return if paths.size < num_files_max
+
+  paths_desc =
+    paths
+      .sort_by{ |path| File.stat(path).mtime }
+      .reverse
+
+  recent_files = paths_desc[0...num_files_max]
+
+  paths
+    .reject{ |path| recent_files.include?(path) }
+    .each_with_index{ |path, i|
+      FileUtils.rm(path)
+      puts_e "deleted #{i}: #{path}"
+    }
+end
+
 
 get "/api/:env/attempts/:id/graph" do
   env = params[:env].to_sym
   att_id = params[:id]
+
+  graph_del_old()
 
   _api_v2 (params) do |_params|
     client = get_client(env)
