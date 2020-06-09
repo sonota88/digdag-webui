@@ -418,8 +418,16 @@ def make_graph(tasks, img_path)
         end
       end
 
+    border_color =
+      if t.state == "error"
+        "#ee0000"
+      else
+        bg_color
+      end
+
     node_def = %Q!  #{t.id} [ !
     node_def += %Q! label = "#{label}" !
+    node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
     node_def += %Q! ]!
     node_defs << node_def
