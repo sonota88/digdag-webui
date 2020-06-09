@@ -35,14 +35,14 @@ class View {
 
       , h("hr")
 
+      , Graph.render(state)
+
+      , h("hr")
+
       , h("textarea"
         , { style: { width: "90%", height: "10rem" } }
         , JSON.stringify(state.attempt, null, "    ")
         )
-
-      , h("hr")
-
-      , Graph.render(state)
       )
     );
   }
