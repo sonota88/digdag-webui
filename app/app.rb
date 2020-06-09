@@ -388,7 +388,11 @@ end
 class TaskNode
   extend Forwardable
 
-  def_delegators :@task, :id, :parent_id, :is_group
+  def_delegators(
+    :@task,
+    :id, :parent_id, :is_group, :full_name, :state,
+    :cancel_requested, :upstreams
+  )
 
   def initialize(task)
     @children = []
@@ -532,7 +536,7 @@ def make_graph(tasks, img_path)
   subgraph_lines = tn_root.to_graph()
 
   node_defs = []
-  tasks.each{|t|
+  node_map.each{ |id, t|
     label = make_graph_make_label(t)
 
     styles = %w(rounded filled bold)
@@ -556,7 +560,7 @@ def make_graph(tasks, img_path)
   }
 
   deps = []
-  tasks.each{|t|
+  node_map.each{ |id, t|
     if t.parent_id
       deps << "  #{t.parent_id} -> #{t.id};"
     end
