@@ -396,7 +396,7 @@ class TaskNode
     :cancel_requested, :upstreams
   )
 
-  attr_reader :node_id
+  attr_reader :node_id, :upstream_node_ids
   attr_accessor :parent_node_id
 
   def initialize(task)
@@ -407,6 +407,7 @@ class TaskNode
     @node_id = "n" + @@node_id_max.to_s
 
     @parent_node_id = nil
+    @upstream_node_ids = []
   end
 
   def add_child(c)
@@ -457,6 +458,7 @@ class TaskNode
     {
       nid: @node_id,
       parent_nid: @parent_node_id,
+      up_nids: @upstream_node_ids,
       task: {
         is_g: @task.is_group,
       }
@@ -547,6 +549,10 @@ def make_node_map(tasks)
     if tn.parent_id
       tn.parent_node_id = id_map[tn.parent_id]
     end
+
+    tn.upstreams.each{ |tid|
+      tn.upstream_node_ids << id_map[tid]
+    }
   }
 
   node_map = {}
