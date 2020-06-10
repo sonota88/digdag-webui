@@ -232,6 +232,18 @@ module DigdagUtils
   end
 
   class Workflow
+    def self.from_api_response(data)
+      project = DigdagUtils::Project.new(
+        id: data["project"]["id"],
+        name: data["project"]["name"],
+      )
+
+      new(
+        id:   data["id"],
+        name: data["name"],
+        project: project
+      )
+    end
   end
 
   class Session
