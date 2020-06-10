@@ -536,21 +536,21 @@ def make_graph(tasks, img_path)
   subgraph_lines = tn_root.to_graph()
 
   node_defs = []
-  node_map.each{ |id, t|
-    label = make_graph_make_label(t)
+  node_map.each{ |id, tn|
+    label = make_graph_make_label(tn)
 
     styles = %w(rounded filled bold)
 
-    bg_color = task_bg_color_v2(t)
+    bg_color = task_bg_color_v2(tn)
 
     border_color =
-      if t.state == "error"
+      if tn.state == "error"
         "#ee0000"
       else
         bg_color
       end
 
-    node_def = %Q!  #{t.id} [ !
+    node_def = %Q!  #{tn.id} [ !
     node_def += %Q! label = #{label} !
     node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
@@ -560,13 +560,13 @@ def make_graph(tasks, img_path)
   }
 
   deps = []
-  node_map.each{ |id, t|
-    if t.parent_id
-      deps << "  #{t.parent_id} -> #{t.id};"
+  node_map.each{ |id, tn|
+    if tn.parent_id
+      deps << "  #{tn.parent_id} -> #{tn.id};"
     end
 
-    t.upstreams.each{|uid|
-      deps << %Q!  #{t.id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
+    tn.upstreams.each{|uid|
+      deps << %Q!  #{tn.id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
     }
   }
 
