@@ -412,8 +412,20 @@ get "/api/:env/attempts/:id" do
     api_att = client.get_attempt(att_id)
     att = DigdagUtils::Attempt.from_api_response(api_att)
 
+    pj = DigdagUtils::Project.new(
+      id:   api_att["project"]["id"],
+      name: api_att["project"]["name"],
+    )
+    wf = DigdagUtils::Workflow.new(
+      id:   api_att["workflow"]["id"],
+      name: api_att["workflow"]["name"],
+    )
+
     {
       endpoint: ENDPOINT_MAP[env],
+      project: pj.to_plain,
+      workflow: wf.to_plain,
+      session: att.session.to_plain,
       attempt: att.to_plain,
     }
   end
