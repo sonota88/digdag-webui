@@ -451,31 +451,31 @@ class TaskNode
   end
 end
 
-def make_graph_make_label(t)
+def make_graph_make_label(tn)
   label = "< "
 
   label += "("
-  label += t.id
+  label += tn.id
 
-  if t.is_group
+  if tn.is_group
     label += " G"
   end
 
   label += ")"
 
   label += "<br />"
-  name = t.full_name.split("+").last
+  name = tn.full_name.split("+").last
   label += "+" + name
 
-  case t.state
+  case tn.state
   when "success"
     # do nothing
   else
     label += "<br />"
-    label += "st=#{t.state}"
+    label += "st=#{tn.state}"
   end
 
-  if t.cancel_requested
+  if tn.cancel_requested
     label += "<br />"
     label += "cancel_requested"
   end
