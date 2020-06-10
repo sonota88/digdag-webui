@@ -301,6 +301,7 @@ get "/api/:env/projects/:id" do
       }
 
     {
+      endpoint: ENDPOINT_MAP[env],
       workflows: wfs.map(&:to_plain)
     }
   end
@@ -333,6 +334,7 @@ get "/api/:env/workflows/:id" do
       }
 
     {
+      endpoint: ENDPOINT_MAP[env],
       project: wf.project.to_plain,
       sessions: sessions.map(&:to_plain)
     }
@@ -357,6 +359,7 @@ get "/api/:env/sessions/:id" do
       }
 
     {
+      endpoint: ENDPOINT_MAP[env],
       workflow: attempts[0].session.workflow.to_plain,
       attempts: attempts.map(&:to_plain)
     }
@@ -379,6 +382,7 @@ get "/api/:env/attempts/:id" do
     att = DigdagUtils::Attempt.from_api_response(api_att)
 
     {
+      endpoint: ENDPOINT_MAP[env],
       attempt: att.to_plain,
     }
   end
