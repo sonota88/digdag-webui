@@ -455,6 +455,38 @@ class TaskNode
     lines
   end
 
+  def to_graph_v2(depth=0)
+    next_depth = depth + 1
+
+    lines = []
+    if is_group
+      lines << indent(depth, "subgraph cluster_#{@node_id} {")
+      lines << indent(depth, %Q!  color = "#cccccc"; !)
+      # lines << %Q!    fillcolor = "#f8f8f8"; !
+      lines << indent(depth, %Q!  style = "rounded"; !)
+
+      lines << indent(depth, "  #{@node_id};")
+
+      @children.each{ |child|
+        lines += child.to_graph_v2(next_depth)
+      }
+
+      if 2 <= @children.size
+        rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
+        lines << indent(depth, "  { rank=same; #{rank_same} }")
+      end
+
+      lines << indent(depth, "} # subgraph cluster_#{@node_id}")
+    else
+      lines << indent(depth, "#{@node_id};")
+      @children.each{ |child|
+        lines += child.to_graph_v2(next_depth)
+      }
+    end
+
+    lines
+  end
+
   def debug
     {
       nid: @node_id,
@@ -621,7 +653,7 @@ end
 def make_graph(tasks, img_path)
   node_map = make_node_map(tasks)
   tn_root = node_map.values.find{ |tn| tn.root? }
-  subgraph_lines = tn_root.to_graph()
+  subgraph_lines = tn_root.to_graph_v2()
 
   node_defs = []
   node_map.each{ |id, tn|
