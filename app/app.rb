@@ -529,16 +529,27 @@ def task_bg_color_v2(t)
 end
 
 def make_node_map(tasks)
-  node_map = {}
+  # id => node_id
+  id_map = {}
 
-  tasks.each{ |t|
-    node_map[t.id] = TaskNode.new(t)
+  tnodes = tasks.map{ |t|
+    TaskNode.new(t)
+  }
+  tnodes.each{ |tn|
+    id_map[tn.id] = tn.node_id
   }
 
-  tasks.each{ |t|
+  node_map = {}
+
+  tnodes.each{ |t|
+    node_map[t.node_id] = t
+  }
+
+  tnodes.each{ |t|
     if t.parent_id
-      tn_p = node_map[t.parent_id]
-      tn_c = node_map[t.id]
+      parent_node_id = id_map[t.parent_id]
+      tn_p = node_map[parent_node_id]
+      tn_c = node_map[t.node_id]
       tn_p.add_child(tn_c)
     end
   }
