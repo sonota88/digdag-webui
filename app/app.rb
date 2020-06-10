@@ -396,16 +396,17 @@ class TaskNode
     :cancel_requested, :upstreams
   )
 
-  attr_reader :node_id, :upstream_node_ids
+  attr_reader :task, :node_id, :upstream_node_ids
   attr_accessor :parent_node_id
 
-  def initialize(task)
+  def initialize(task, is_dummy: false)
     @children = []
     @task = task
 
     @@node_id_max += 1
     @node_id = "n" + @@node_id_max.to_s
 
+    @is_dummy = is_dummy
     @parent_node_id = nil
     @upstream_node_ids = []
   end
@@ -459,6 +460,7 @@ class TaskNode
       nid: @node_id,
       parent_nid: @parent_node_id,
       up_nids: @upstream_node_ids,
+      is_d: @is_dummy,
       task: {
         is_g: @task.is_group,
       }
@@ -468,6 +470,9 @@ end
 
 def make_graph_make_label(tn)
   label = "< "
+
+  label += tn.node_id
+  label += " "
 
   label += "("
   label += tn.id
@@ -558,11 +563,25 @@ def make_node_map(tasks)
   node_map = {}
 
   tnodes.each{ |tn|
-    node_map[tn.node_id] = tn
+    if tn.is_group
+      dummy = TaskNode.new(tn.task, is_dummy: true)
+      id_map[dummy.node_id] = dummy
+      parent_node_id = id_map[ tn.task.parent_id ]
+      dummy.parent_node_id = parent_node_id
+      node_map[dummy.node_id] = dummy
+
+      group = tn
+      group.parent_node_id = dummy.node_id # ダミーをグループの親にする
+      node_map[group.node_id] = group
+    else
+      node_map[tn.node_id] = tn
+    end
   }
 
+  tnodes = node_map.values
+
   tnodes.each{ |tn|
-    if tn.parent_id
+    if tn.parent_node_id
       tn_p = node_map[tn.parent_node_id]
       tn_c = node_map[tn.node_id]
       tn_p.add_child(tn_c)
