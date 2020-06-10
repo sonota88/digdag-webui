@@ -732,8 +732,8 @@ def make_graph(tasks, img_path)
       deps << "  #{tn.parent_node_id} -> #{tn.node_id};"
     end
 
-    tn.upstream_node_ids.each{|uid|
-      deps << %Q!  #{tn.node_id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
+    tn.upstream_node_ids.each{|up_nid|
+      deps << %Q!  #{tn.node_id} -> #{up_nid} [ style = "dashed", arrowhead = "vee" ];!
     }
   }
 
