@@ -396,7 +396,7 @@ class TaskNode
     :cancel_requested, :upstreams
   )
 
-  attr_reader :task, :node_id, :upstream_node_ids
+  attr_reader :task, :node_id, :upstream_node_ids, :is_dummy
   attr_accessor :parent_node_id
 
   def initialize(task, is_dummy: false)
@@ -470,6 +470,10 @@ end
 
 def make_graph_make_label(tn)
   label = "< "
+
+  if tn.is_dummy
+    label += "DUMMY "
+  end
 
   label += tn.node_id
   label += " "
