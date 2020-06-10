@@ -388,16 +388,37 @@ end
 class TaskNode
   extend Forwardable
 
+  @@node_id_max = 0
+
   def_delegators(
     :@task,
     :id, :parent_id, :is_group, :full_name, :state,
     :cancel_requested, :upstreams
   )
 
-  def initialize(task)
+  attr_reader :task, :node_id
+  attr_accessor :is_dummy, :parent_node_id, :upstream_node_ids
+
+  def initialize(task, is_dummy: false)
     @children = []
     @task = task
+
+    @@node_id_max += 1
+    @node_id = "n" + @@node_id_max.to_s
+
+    @is_dummy = is_dummy
+    @node_is_group = @task.is_group
+    @parent_node_id = nil
+    @upstream_node_ids = []
   end
+
+  # def parent_id
+  #   @parent_id || @task.parent_id
+  # end
+
+  # def parent_id=(id)
+  #   @parent_id = id
+  # end
 
   def add_child(c)
     @children << c
@@ -415,26 +436,29 @@ class TaskNode
     next_depth = depth + 1
 
     lines = []
-    if is_group
-      lines << indent(depth, "subgraph cluster_#{id} {")
-      lines << indent(depth, %Q!  color = "#eeeeee"; !)
+    child_nids = @children.map{|c| c.node_id }.join(", ")
+    lines << indent(depth, "# (#{@node_id}) g=#{@is_group}, d=#{@is_dummy}, child_nids=#{child_nids}")
+
+    if is_group && ! is_dummy
+      lines << indent(depth, "subgraph cluster_#{@node_id} {")
+      lines << indent(depth, %Q!  color = "#cccccc"; !)
       # lines << %Q!    fillcolor = "#f8f8f8"; !
       lines << indent(depth, %Q!  style = "rounded"; !)
 
-      lines << indent(depth, "  #{id};")
+      lines << indent(depth, "  #{@node_id};")
 
       @children.each{ |child|
         lines += child.to_graph(next_depth)
       }
 
       if 2 <= @children.size
-        rank_same = @children.map{ |c| '"' + c.id + '";' }.join(" ")
+        rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
         lines << indent(depth, "  { rank=same; #{rank_same} }")
       end
 
-      lines << indent(depth, "} # subgraph cluster_#{id}")
+      lines << indent(depth, "} # subgraph cluster_#{@node_id}")
     else
-      lines << indent(depth, "#{id};")
+      lines << indent(depth, "#{@node_id};")
       @children.each{ |child|
         lines += child.to_graph(next_depth)
       }
@@ -442,10 +466,64 @@ class TaskNode
 
     lines
   end
+
+  def to_graph_v2(depth=0)
+    next_depth = depth + 1
+
+    lines = []
+    child_nids = @children.map{|c| c.node_id }.join(", ")
+    lines << indent(depth, "# (#{@node_id}) g=#{@is_group}, d=#{@is_dummy}, child_nids=#{child_nids}")
+
+    if is_group && ! is_dummy
+      lines << indent(depth, "subgraph cluster_#{@node_id} {")
+      lines << indent(depth, %Q!  color = "#cccccc"; !)
+      # lines << %Q!    fillcolor = "#f8f8f8"; !
+      lines << indent(depth, %Q!  style = "rounded"; !)
+
+      lines << indent(depth, "  #{@node_id};")
+
+      if 2 <= @children.size
+        rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
+        lines << indent(depth, "  { rank=same; #{rank_same} }")
+      end
+
+      lines << indent(depth, "} # subgraph cluster_#{@node_id}")
+
+      @children.each{ |child|
+        lines += child.to_graph_v2(next_depth)
+      }
+
+    else
+      lines << indent(depth, "#{@node_id};")
+      @children.each{ |child|
+        lines += child.to_graph_v2(next_depth)
+      }
+    end
+
+    lines
+  end
+
+  def debug
+    {
+      nid: @node_id,
+      parent_nid: @parent_node_id,
+      up_nids: @upstream_node_ids,
+      is_d: @is_dummy,
+      is_g: @node_is_group,
+      kids: @children.map{|c| c.node_id },
+      task: {
+        is_g: @task.is_group,
+      }
+    }
+  end
 end
 
 def make_graph_make_label(t)
   label = "< "
+
+  label += t.node_id
+  label += " "
+  label += "(DUMMY) " if t.is_dummy
 
   label += "("
   label += t.id
@@ -513,19 +591,85 @@ def task_bg_color_v2(t)
 end
 
 def make_node_map(tasks)
-  node_map = {}
+  # id => node_id
+  id_map = {}
 
-  tasks.each{ |t|
-    node_map[t.id] = TaskNode.new(t)
+  tnodes = tasks.map{ |t|
+    TaskNode.new(t)
+  }
+  tnodes.each{ |tn|
+    id_map[tn.id] = tn.node_id
   }
 
-  tasks.each{ |t|
-    if t.parent_id
-      tn_p = node_map[t.parent_id]
-      tn_c = node_map[t.id]
+  tnodes.each{ |tn|
+    if tn.parent_id
+      tn.parent_node_id = id_map[ tn.parent_id ]
+    end
+
+    tn.upstreams.each{ |tid|
+      tn.upstream_node_ids << id_map[tid]
+    }
+  }
+
+  node_map = {}
+
+  tnodes.each{ |tn|
+    if tn.is_group
+      dummy = TaskNode.new(tn.task, is_dummy: true)
+      id_map[dummy.node_id] = dummy
+      parent_node_id = id_map[ tn.task.parent_id ]
+      dummy.parent_node_id = parent_node_id
+      node_map[dummy.node_id] = dummy
+
+      group = tn
+      group.parent_node_id = dummy.node_id # ダミーをグループの親にする
+      node_map[group.node_id] = group
+    else
+      node_map[tn.node_id] = tn
+    end
+  }
+
+  tnodes = node_map.values
+
+  # グループへの依存をダミーへの依存に張替え (upstream)
+  tnodes.each{|tn|
+    new_up_nids = []
+    tn.upstream_node_ids.each{|up_nid|
+      up_tn = node_map[up_nid]
+      if up_tn.is_group
+        new_up_nids << up_tn.parent_node_id
+      else
+        new_up_nids << up_nid
+      end
+    }
+    tn.upstream_node_ids = new_up_nids
+  }
+
+  # グループからの依存をダミーからの依存に張替え (upstream)
+  tnodes.each{|tn|
+    if tn.is_group && ! tn.is_dummy
+      p_e [623, tn.debug]
+      up_nids = tn.upstream_node_ids
+      tn.upstream_node_ids = []
+      dummy = node_map[tn.parent_node_id]
+      dummy.upstream_node_ids = up_nids
+    end
+  }
+
+  tnodes.each{ |tn|
+    if tn.parent_node_id
+      # parent_node_id = id_map[tn.parent_id]
+      # tn_p = node_map[parent_node_id]
+      tn_p = node_map[tn.parent_node_id]
+      tn_c = node_map[tn.node_id]
+      # pp_e [545, tn_p, tn_c,
+      #       id_map[tn.parent_id]      
+      #      ]
       tn_p.add_child(tn_c)
     end
   }
+
+  node_map.each{|nid, tn| pp_e [572, tn.debug]}
 
   node_map
 end
@@ -533,24 +677,24 @@ end
 def make_graph(tasks, img_path)
   node_map = make_node_map(tasks)
   tn_root = node_map.values.find{ |tn| tn.root? }
-  subgraph_lines = tn_root.to_graph()
+  subgraph_lines = tn_root.to_graph_v2()
 
   node_defs = []
-  node_map.each{ |id, t|
-    label = make_graph_make_label(t)
+  node_map.each{ |id, tn|
+    label = make_graph_make_label(tn)
 
     styles = %w(rounded filled bold)
 
-    bg_color = task_bg_color_v2(t)
+    bg_color = task_bg_color_v2(tn)
 
     border_color =
-      if t.state == "error"
+      if tn.state == "error"
         "#ee0000"
       else
         bg_color
       end
 
-    node_def = %Q!  #{t.id} [ !
+    node_def = %Q!  #{tn.node_id} [ !
     node_def += %Q! label = #{label} !
     node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
@@ -560,13 +704,13 @@ def make_graph(tasks, img_path)
   }
 
   deps = []
-  node_map.each{ |id, t|
-    if t.parent_id
-      deps << "  #{t.parent_id} -> #{t.id};"
+  node_map.each{ |id, tn|
+    if tn.parent_node_id
+      deps << "  #{tn.parent_node_id} -> #{tn.node_id};"
     end
 
-    t.upstreams.each{|uid|
-      deps << %Q!  #{t.id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
+    tn.upstream_node_ids.each{|up_nid|
+      deps << %Q!  #{tn.node_id} -> #{up_nid} [ style = "dashed", arrowhead = "vee" ];!
     }
   }
 
