@@ -32,7 +32,15 @@ class View {
         , { href: `/${__p.env}/projects/${state.project.id}` }
         , "プロジェクトに戻る"
         )
-      , h("hr")
+
+      , h("br")
+      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+      , " "
+      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+      , ` / pj:${state.project.name}`
+      , ` ＞ wf:${state.workflow.name}`
+
+      , h("h2", {}, "Sessions")
       , Sessions.render(state.sessions)
       )
     );

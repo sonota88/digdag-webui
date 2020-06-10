@@ -359,6 +359,7 @@ get "/api/:env/workflows/:id" do
     {
       endpoint: ENDPOINT_MAP[env],
       project: wf.project.to_plain,
+      workflow: wf.to_plain,
       sessions: sessions.map(&:to_plain)
     }
   end
