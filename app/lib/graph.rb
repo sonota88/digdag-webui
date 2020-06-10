@@ -115,7 +115,7 @@ class Graph
     end
   end
 
-  def make_graph_make_label(tn)
+  def make_label(tn)
     label = "< "
 
     if tn.is_dummy
@@ -272,7 +272,7 @@ class Graph
 
     node_defs = []
     node_map.each{ |id, tn|
-      label = make_graph_make_label(tn)
+      label = make_label(tn)
 
       styles = %w(rounded filled bold)
 
