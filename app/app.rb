@@ -541,15 +541,15 @@ def make_node_map(tasks)
 
   node_map = {}
 
-  tnodes.each{ |t|
-    node_map[t.node_id] = t
+  tnodes.each{ |tn|
+    node_map[tn.node_id] = tn
   }
 
-  tnodes.each{ |t|
-    if t.parent_id
-      parent_node_id = id_map[t.parent_id]
+  tnodes.each{ |tn|
+    if tn.parent_id
+      parent_node_id = id_map[tn.parent_id]
       tn_p = node_map[parent_node_id]
-      tn_c = node_map[t.node_id]
+      tn_c = node_map[tn.node_id]
       tn_p.add_child(tn_c)
     end
   }
