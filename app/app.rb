@@ -388,15 +388,22 @@ end
 class TaskNode
   extend Forwardable
 
+  @@node_id_max = 0
+
   def_delegators(
     :@task,
     :id, :parent_id, :is_group, :full_name, :state,
     :cancel_requested, :upstreams
   )
 
+  attr_reader :node_id
+
   def initialize(task)
     @children = []
     @task = task
+
+    @@node_id_max += 1
+    @node_id = "n" + @@node_id_max.to_s
   end
 
   def add_child(c)
