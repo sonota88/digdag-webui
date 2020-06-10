@@ -83,28 +83,6 @@ class Page {
       .empty()
       .append(View.render(this.state));
   }
-
-  // onclick_showGraph(){
-  //   puts("onclick_showGraph");
-  //   __g.guard();
-  // 
-  //   __g.api_v2(
-  //     "get",
-  //     `/api/${this.env}/workflows/${this.workflowId}/graph`,
-  //     {},
-  //     (result)=>{
-  //       __g.unguard();
-  //       puts(result);
-  // 
-  //       $("#graph_img").attr("src", result.path);
-  // 
-  //     }, (errors)=>{
-  //       __g.unguard();
-  //       __g.printApiErrors(errors);
-  //       alert("Check console.");
-  //     });
-  //   
-  // }
 }
 
 __g.ready(new Page());
