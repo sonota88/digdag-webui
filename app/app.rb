@@ -449,6 +449,15 @@ class TaskNode
 
     lines
   end
+
+  def debug
+    {
+      nid: @node_id,
+      task: {
+        is_g: @task.is_group,
+      }
+    }
+  end
 end
 
 def make_graph_make_label(tn)
