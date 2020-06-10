@@ -519,6 +519,10 @@ class TaskNode
 end
 
 def make_graph_make_label(t)
+  if t.is_dummy
+    return "<(#{t.node_id})>"
+  end
+
   label = "< "
 
   label += t.node_id
