@@ -29,8 +29,15 @@ class View {
         , "wfに戻る"
         )
 
-      , h("hr")
+      , h("br")
+      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+      , " "
+      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+      , ` / pj:${state.project.name}`
+      , ` ＞ wf:${state.workflow.name}`
+      , ` ＞ s${__p.sessionId}`
 
+      , h("h2", {}, "Attempts")
       , Attempts.render(state.attempts)
       )
     );

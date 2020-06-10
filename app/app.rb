@@ -377,6 +377,12 @@ get "/api/:env/sessions/:id" do
   _api_v2 (params) do |_params|
     client = get_client(env)
 
+    sess = client.get_session(sess_id)
+
+    pj = DigdagUtils::Project.from_api_response(
+      sess["project"]
+    )
+
     attempts = client.get_session_attempts(sess_id, nil)["attempts"]
       .map{ |api_att|
         DigdagUtils::Attempt.from_api_response(api_att)
@@ -384,6 +390,7 @@ get "/api/:env/sessions/:id" do
 
     {
       endpoint: ENDPOINT_MAP[env],
+      project: pj.to_plain,
       workflow: attempts[0].session.workflow.to_plain,
       attempts: attempts.map(&:to_plain)
     }
