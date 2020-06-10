@@ -467,16 +467,16 @@ class TaskNode
 
       lines << indent(depth, "  #{@node_id};")
 
-      @children.each{ |child|
-        lines += child.to_graph_v2(next_depth)
-      }
-
       if 2 <= @children.size
         rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
         lines << indent(depth, "  { rank=same; #{rank_same} }")
       end
 
       lines << indent(depth, "} # subgraph cluster_#{@node_id}")
+
+      @children.each{ |child|
+        lines += child.to_graph_v2(next_depth)
+      }
     else
       lines << indent(depth, "#{@node_id};")
       @children.each{ |child|
