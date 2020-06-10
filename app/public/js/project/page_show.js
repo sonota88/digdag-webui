@@ -24,7 +24,14 @@ class View {
       h("div", {}
       , h("h1", {}, __p.getTitle())
       , h("a", { href: `/${__p.env}/projects` }, "プロジェクト一覧に戻る")
-      , h("hr")
+
+      , h("br")
+      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+      , " "
+      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+      , ` / pj:${state.project.name}`
+
+      , h("h2", {}, "Workflows")
       , Workflows.render(state)
       )
     );

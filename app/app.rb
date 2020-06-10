@@ -301,6 +301,10 @@ get "/api/:env/projects/:id" do
   _api_v2 (params) do |_params|
     client = get_client(env)
 
+    pj = DigdagUtils::Project.from_api_response(
+      client.get_project(pj_id)
+    )
+
     wfs = client.get_workflows(pj_id)
       .map{ |api_wf|
         DigdagUtils::Workflow.from_api_response(api_wf)
@@ -308,6 +312,7 @@ get "/api/:env/projects/:id" do
 
     {
       endpoint: ENDPOINT_MAP[env],
+      project: pj.to_plain,
       workflows: wfs.map(&:to_plain)
     }
   end
