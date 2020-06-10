@@ -396,8 +396,8 @@ class TaskNode
     :cancel_requested, :upstreams
   )
 
-  attr_reader :task, :node_id, :upstream_node_ids, :is_dummy
-  attr_accessor :parent_node_id
+  attr_reader :task, :node_id, :is_dummy
+  attr_accessor :parent_node_id, :upstream_node_ids
 
   def initialize(task, is_dummy: false)
     @children = []
@@ -583,6 +583,19 @@ def make_node_map(tasks)
   }
 
   tnodes = node_map.values
+
+  # グループへの依存をダミーへの依存に付け替え (upstream)
+  tnodes.each{ |tn|
+    tn.upstream_node_ids =
+      tn.upstream_node_ids.map{ |up_nid|
+        up_tn = node_map[up_nid]
+        if up_tn.is_group
+          up_tn.parent_node_id
+        else
+          up_nid
+        end
+      }
+  }
 
   tnodes.each{ |tn|
     if tn.parent_node_id
