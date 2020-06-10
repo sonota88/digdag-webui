@@ -432,20 +432,20 @@ class TaskNode
       # lines << %Q!    fillcolor = "#f8f8f8"; !
       lines << indent(depth, %Q!  style = "rounded"; !)
 
-      lines << indent(depth, "  #{id};")
+      lines << indent(depth, "  #{@node_id};")
 
       @children.each{ |child|
         lines += child.to_graph(next_depth)
       }
 
       if 2 <= @children.size
-        rank_same = @children.map{ |c| '"' + c.id + '";' }.join(" ")
+        rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
         lines << indent(depth, "  { rank=same; #{rank_same} }")
       end
 
       lines << indent(depth, "} # subgraph cluster_#{@node_id}")
     else
-      lines << indent(depth, "#{id};")
+      lines << indent(depth, "#{@node_id};")
       @children.each{ |child|
         lines += child.to_graph(next_depth)
       }
@@ -592,7 +592,7 @@ def make_graph(tasks, img_path)
         bg_color
       end
 
-    node_def = %Q!  #{tn.id} [ !
+    node_def = %Q!  #{tn.node_id} [ !
     node_def += %Q! label = #{label} !
     node_def += %Q! ,color = "#{border_color}" !
     node_def += %Q! ,fillcolor = "#{bg_color}" !
@@ -603,12 +603,12 @@ def make_graph(tasks, img_path)
 
   deps = []
   node_map.each{ |id, tn|
-    if tn.parent_id
-      deps << "  #{tn.parent_id} -> #{tn.id};"
+    if tn.parent_node_id
+      deps << "  #{tn.parent_node_id} -> #{tn.node_id};"
     end
 
-    tn.upstreams.each{|uid|
-      deps << %Q!  #{tn.id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
+    tn.upstream_node_ids.each{|uid|
+      deps << %Q!  #{tn.node_id} -> #{uid} [ style = "dashed", arrowhead = "vee" ];!
     }
   }
 
