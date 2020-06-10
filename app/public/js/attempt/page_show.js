@@ -105,6 +105,10 @@ class Page {
       .append(View.render(this.state));
   }
 
+  getOfficialUiUrl(){
+    return `${this.state.endpoint}/${__g.getEnv()}/attempts/${this.attemptId}`;
+  }
+
   showGraph(){
     puts("onclick_showGraph");
     __g.guard();

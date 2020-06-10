@@ -74,6 +74,10 @@ class Page {
       .empty()
       .append(View.render(this.state));
   }
+
+  getOfficialUiUrl(){
+    return `${this.state.endpoint}/${__g.getEnv()}/projects/${this.projectId}`;
+  }
 }
 
 __g.ready(new Page());
