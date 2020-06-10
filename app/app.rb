@@ -597,6 +597,16 @@ def make_node_map(tasks)
       }
   }
 
+  # グループからの依存をダミーからの依存に付け替え (upstream)
+  tnodes.each{ |tn|
+    if tn.is_group && ! tn.is_dummy
+      up_nids = tn.upstream_node_ids
+      tn.upstream_node_ids = []
+      dummy = node_map[tn.parent_node_id]
+      dummy.upstream_node_ids = up_nids
+    end
+  }
+
   tnodes.each{ |tn|
     if tn.parent_node_id
       tn_p = node_map[tn.parent_node_id]
