@@ -397,6 +397,7 @@ class TaskNode
   )
 
   attr_reader :node_id
+  attr_accessor :parent_node_id
 
   def initialize(task)
     @children = []
@@ -404,6 +405,8 @@ class TaskNode
 
     @@node_id_max += 1
     @node_id = "n" + @@node_id_max.to_s
+
+    @parent_node_id = nil
   end
 
   def add_child(c)
@@ -453,6 +456,7 @@ class TaskNode
   def debug
     {
       nid: @node_id,
+      parent_nid: @parent_node_id,
       task: {
         is_g: @task.is_group,
       }
@@ -539,6 +543,12 @@ def make_node_map(tasks)
     id_map[tn.id] = tn.node_id
   }
 
+  tnodes.each{ |tn|
+    if tn.parent_id
+      tn.parent_node_id = id_map[tn.parent_id]
+    end
+  }
+
   node_map = {}
 
   tnodes.each{ |tn|
@@ -547,8 +557,7 @@ def make_node_map(tasks)
 
   tnodes.each{ |tn|
     if tn.parent_id
-      parent_node_id = id_map[tn.parent_id]
-      tn_p = node_map[parent_node_id]
+      tn_p = node_map[tn.parent_node_id]
       tn_c = node_map[tn.node_id]
       tn_p.add_child(tn_c)
     end
