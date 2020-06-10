@@ -225,6 +225,12 @@ module Digdag
 end
 
 module DigdagUtils
+  class Project
+    def self.from_api_response(data)
+      from_api_data(data)
+    end
+  end
+
   class Workflow
   end
 
