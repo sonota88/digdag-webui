@@ -38,17 +38,18 @@ class View {
     return TreeBuilder.build(h =>
       h("div", {}
       , h("h1", {}, __p.getTitle())
-      , h("a"
-        , { href: `/${__p.env}/workflows/${state.workflow.id}` }
-        , "wfに戻る"
-        )
 
-      , h("br")
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
       , " "
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+
       , ` / pj:${state.project.name}`
-      , ` ＞ wf:${state.workflow.name}`
+      , " ＞ "
+      , h("a", {
+            href: `/${__p.env}/workflows/${state.workflow.id}`
+          }
+        , `wf:${state.workflow.name}`
+        )
       , ` ＞ s${__p.sessionId}`
 
       , h("h2", {}, "Attempts")
