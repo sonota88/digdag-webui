@@ -63,6 +63,32 @@ class View {
 
       , h("h2", {}, "Sessions")
       , Sessions.render(state.sessions)
+
+      , h("div", { id: "console_frame_box"
+            , style: {
+                display: "none"
+              , position: "fixed"
+              , top: "5%"
+              , left: "5%"
+              , width: "90%"
+              , height: "90%"
+              , background: "#ffffff"
+              , "box-shadow": "0px 0px 3rem rgba(0,0,0, 0.3)"
+              , border: "solid 0.1rem #444"
+              , padding: "0.5rem"
+            }
+          }
+        , h("button", { onclick: ()=>{ __p.closeFrame(); } }, "×")
+        , h("br")
+        , h("iframe", { id: "console_frame"
+            , style: {
+                width: "100%"
+              , height: "80%"
+              , border: "dashed 0.1rem #ddd"
+              }
+            }
+          )
+        )
       )
     );
   }
@@ -118,7 +144,21 @@ class Page {
   }
 
   onclick_retry(id){
-    puts("TODO", id);
+    const sess = this.state.sessions
+      .find((s)=> s.id === id );
+
+    const aid = sess.lastAttempt.id;
+
+    const $frameBox = $("#console_frame_box");
+    const $frame = $("#console_frame");
+    $frame.attr("src", `/${__g.getEnv()}/command/retry?attemptId=${aid}`);
+    $frameBox.show(); // TODO Use render
+  }
+
+  // TODO receive and show message
+  closeFrame(){
+    const $frameBox = $("#console_frame_box");
+    $frameBox.hide();
   }
 }
 
