@@ -5,6 +5,7 @@ class Attempts {
       , h("tr", {}
         , h("th", {}, "id")
         , h("th", {}, "status")
+        , h("th", {}, "")
         )
       , attempts.map(att =>
           h("tr", {}
@@ -15,6 +16,9 @@ class Attempts {
             )
           , h("td", {}
             , __g.AttemptStatus.render(att)
+            )
+          , h("td", {}
+            , h("button", {}, "TODO retry")
             )
           )
         )
