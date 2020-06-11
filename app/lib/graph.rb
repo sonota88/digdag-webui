@@ -54,7 +54,7 @@ class Graph
           lines += child.to_graph(next_depth)
         }
 
-        if 2 <= @children.size
+        if 1 <= @children.size
           rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
           lines << indent(depth, "  { rank=same; #{rank_same} }")
         end
@@ -82,7 +82,7 @@ class Graph
 
         lines << indent(depth, "  #{@node_id};")
 
-        if 2 <= @children.size
+        if 1 <= @children.size
           rank_same = @children.map{ |c| '"' + c.node_id + '";' }.join(" ")
           lines << indent(depth, "  { rank=same; #{rank_same} }")
         end
