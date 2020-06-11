@@ -534,3 +534,8 @@ get "/api/:env/attempts/:id/graph" do
     }
   end
 end
+
+
+get "/:env/command/retry" do
+  _render_dyn_js("command/page_retry")
+end
