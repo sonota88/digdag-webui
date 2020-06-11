@@ -1,9 +1,20 @@
 class Attempts {
   static render(attempts){
+    function convertStatus(att){
+      if (att.cancelRequested && ! att.done) { return "canceling"; }
+      if (att.cancelRequested && att.done) { return "canceled"; }
+
+      if (! att.done) { return "running"; }
+      if (att.success) { return "success"; }
+
+      if (att.done && ! att.success) { return "error"; }
+    }
+
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
         , h("th", {}, "id")
+        , h("th", {}, "status")
         )
       , attempts.map(att =>
           h("tr", {}
@@ -11,6 +22,9 @@ class Attempts {
             , h("a", { href: `/${__p.env}/attempts/${att.id}` }
               , att.id
               )
+            )
+          , h("td", {}
+            , convertStatus(att)
             )
           )
         )
