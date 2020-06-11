@@ -83,7 +83,7 @@ class Page {
   }
 
   getOfficialUiUrl(){
-    return `${this.state.endpoint}/${__g.getEnv()}/projects/${this.projectId}`;
+    return `${this.state.endpoint}/projects/${this.projectId}`;
   }
 }
 

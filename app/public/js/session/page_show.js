@@ -105,7 +105,7 @@ class Page {
   }
 
   getOfficialUiUrl(){
-    return `${this.state.endpoint}/${__g.getEnv()}/sessions/${this.sessionId}`;
+    return `${this.state.endpoint}/sessions/${this.sessionId}`;
   }
 }
 

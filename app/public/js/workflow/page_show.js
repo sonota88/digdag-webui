@@ -141,7 +141,7 @@ class Page {
   }
 
   getOfficialUiUrl(){
-    return `${this.state.endpoint}/${__g.getEnv()}/workflows/${this.workflowId}`;
+    return `${this.state.endpoint}/workflows/${this.workflowId}`;
   }
 
   onclick_retry(id){

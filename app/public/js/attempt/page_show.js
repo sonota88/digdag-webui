@@ -114,7 +114,7 @@ class Page {
   }
 
   getOfficialUiUrl(){
-    return `${this.state.endpoint}/${__g.getEnv()}/attempts/${this.attemptId}`;
+    return `${this.state.endpoint}/attempts/${this.attemptId}`;
   }
 
   showGraph(){
