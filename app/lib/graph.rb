@@ -1,9 +1,12 @@
 # coding: utf-8
 class Graph
+
+  def initialize
+    @node_id_max = 0
+  end
+
   class TaskNode
     extend Forwardable
-
-    @@node_id_max = 0
 
     def_delegators(
       :@task,
@@ -14,12 +17,11 @@ class Graph
     attr_reader :task, :node_id, :is_dummy
     attr_accessor :parent_node_id, :upstream_node_ids
 
-    def initialize(task, is_dummy: false)
+    def initialize(task, node_id:, is_dummy: false)
       @children = []
       @task = task
 
-      @@node_id_max += 1
-      @node_id = "n" + @@node_id_max.to_s
+      @node_id = node_id
 
       @is_dummy = is_dummy
       @parent_node_id = nil
@@ -192,12 +194,17 @@ class Graph
     end
   end
 
+  def next_node_id
+    @node_id_max += 1
+    "n#{@node_id_max}"
+  end
+
   def make_node_map(tasks)
     # id => node_id
     id_map = {}
 
     tnodes = tasks.map{ |t|
-      TaskNode.new(t)
+      TaskNode.new(t, node_id: next_node_id)
     }
     tnodes.each{ |tn|
       id_map[tn.id] = tn.node_id
@@ -217,7 +224,7 @@ class Graph
 
     tnodes.each{ |tn|
       if tn.is_group
-        dummy = TaskNode.new(tn.task, is_dummy: true)
+        dummy = TaskNode.new(tn.task, node_id: tn.node_id + "_d", is_dummy: true)
         id_map[dummy.node_id] = dummy
         parent_node_id = id_map[ tn.task.parent_id ]
         dummy.parent_node_id = parent_node_id
