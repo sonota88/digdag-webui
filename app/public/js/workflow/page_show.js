@@ -1,10 +1,22 @@
 class Sessions {
   static render(sessions){
+    function convertStatus(lastAttempt){
+      const la = lastAttempt;
+      if (la.cancelRequested && ! la.done) { return "canceling"; }
+      if (la.cancelRequested && la.done) { return "canceled"; }
+
+      if (! la.done) { return "running"; }
+      if (la.success) { return "success"; }
+
+      if (la.done && ! la.success) { return "error"; }
+    }
+
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
         , h("th", {}, "id")
         , h("th", {}, "time")
+        , h("th", {}, "status")
         )
       , sessions.map(session =>
           h("tr", {}
@@ -15,6 +27,9 @@ class Sessions {
             )
           , h("td", {}
             , session.time
+            )
+          , h("td", {}
+            , convertStatus(session.lastAttempt)
             )
           )
         )
