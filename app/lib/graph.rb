@@ -119,7 +119,8 @@ class Graph
     label = "< "
 
     if tn.is_dummy
-      label += "DUMMY "
+      # label += "DUMMY "
+      return "<(#{tn.node_id})>"
     end
 
     label += tn.node_id
