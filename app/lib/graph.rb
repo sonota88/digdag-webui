@@ -142,7 +142,8 @@ class Graph
     when "success"
       # do nothing
     else
-      label += "<br />"
+      # label += "<br />"
+      label += " / "
       label += "st=#{tn.state}"
     end
 
