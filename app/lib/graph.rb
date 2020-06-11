@@ -42,7 +42,7 @@ class Graph
       next_depth = depth + 1
 
       lines = []
-      if is_group
+      if is_group && ! @is_dummy
         lines << indent(depth, "subgraph cluster_#{@node_id} {")
         lines << indent(depth, %Q!  color = "#cccccc"; !)
         # lines << %Q!    fillcolor = "#f8f8f8"; !
@@ -74,7 +74,7 @@ class Graph
       next_depth = depth + 1
 
       lines = []
-      if is_group
+      if is_group && ! @is_dummy
         lines << indent(depth, "subgraph cluster_#{@node_id} {")
         lines << indent(depth, %Q!  color = "#cccccc"; !)
         # lines << %Q!    fillcolor = "#f8f8f8"; !
