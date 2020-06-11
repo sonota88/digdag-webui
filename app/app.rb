@@ -250,6 +250,42 @@ module DigdagUtils
   end
 
   class Session
+    def initialize(
+      id: nil,
+      time: nil,
+      attempts: nil,
+      last_attempt: nil,
+      workflow: nil
+    )
+      @id = id
+      @time = time
+      @attempts = attempts
+      @workflow = workflow
+      @last_attempt = last_attempt
+    end
+
+    def self.from_api_response(data)
+      new(
+        id:   data["id"],
+        time: data["sessionTime"],
+        last_attempt: data["lastAttempt"]
+      )
+    end
+
+    def to_plain
+      plain = {
+        id: @id,
+        time: @time,
+        attempts: @attempts,
+        last_attempt: @last_attempt,
+      }
+
+      if @workflow
+        plain[:workflow] = @workflow.to_plain
+      end
+
+      plain
+    end
   end
 
   class Attempt
