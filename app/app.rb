@@ -202,9 +202,15 @@ end
 
 # --------------------------------
 
-ENDPOINT_MAP = {
-  :devel => "http://localhost:65432",
-  :prod => "http://localhost:65432",
+CONFIG = JSON.parse(
+  File.read(
+    File.join(__dir__, "config.json")
+  )
+)
+
+ENDPOINT_MAP = {}
+CONFIG["envs"].each{ |env|
+  ENDPOINT_MAP[env["name"].to_sym] = env["endpoint"]
 }
 
 def endpoint(env)
