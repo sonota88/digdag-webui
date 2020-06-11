@@ -49,16 +49,17 @@ class View {
     return TreeBuilder.build(h =>
       h("div", {}
       , h("h1", {}, __p.getTitle())
-      , h("a"
-        , { href: `/${__p.env}/projects/${state.project.id}` }
-        , "プロジェクトに戻る"
-        )
 
-      , h("br")
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
       , " "
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
-      , ` / pj:${state.project.name}`
+
+      , " / "
+      , h("a", {
+            href: `/${__p.env}/projects/${state.project.id}`
+          }
+        , `pj:${state.project.name}`
+        )
       , ` ＞ wf:${state.workflow.name}`
 
       , h("h2", {}, "Sessions")
