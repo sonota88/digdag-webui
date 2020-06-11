@@ -105,9 +105,40 @@ const __g = {
       if (att.done && ! att.success) { return "error"; }
     }
 
+    // TODO => make style
+    static getColor(att){
+      if (att.cancelRequested && ! att.done) {
+        // canceling
+        return "#aa4";
+      }
+      if (att.cancelRequested && att.done) {
+        // canceled
+        return "#aa4";
+      }
+
+      if (! att.done) {
+        // running
+        return "#aa4";
+      }
+      if (att.success) {
+        // success
+        return "#888";
+      }
+
+      if (att.done && ! att.success) {
+        // error
+        return "#f00";
+      }
+    }
+
     static render(att){
       return TreeBuilder.build(h =>
-        h("span", {}, this.toStatusStr(att))
+        h("span", {
+          style: {
+            color: this.getColor(att)
+          }
+        }
+      , this.toStatusStr(att))
       );
     }
   }
