@@ -2,5 +2,6 @@
   "envs": [
     { "name": "devel", "endpoint": "http://localhost:65432" },
     { "name": "prod" , "endpoint": "http://localhost:65432" }
-  ]
+  ],
+  "digdagCommand": "/.../bin/digdag"
 }
