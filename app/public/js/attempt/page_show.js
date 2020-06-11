@@ -105,11 +105,7 @@ class Page {
 
       this.render();
 
-      // this.showGraph();
-      setInterval(
-        ()=>{ this.showGraph(); }
-        ,1000 * this.state.graph.intervalSec
-      );
+      this.showGraph();
 
     }, (errors)=>{
       __g.unguard();
@@ -144,10 +140,7 @@ class Page {
         $("#graph_img").attr("src", result.path);
         $("#graph_img_link").attr("href", result.path);
   
-        this.graphRefreshTimer = setTimeout(
-          ()=>{ this.showGraph(); },
-          this.state.graph.intervalSec * 1000
-        );
+        this.showGraph();
 
       }, (errors)=>{
         __g.unguard();
@@ -156,13 +149,22 @@ class Page {
       });
   }
 
-  showGraph(){
+  showGraph(opts){
+    let _opts = opts || {};
     clearTimeout(this.graphRefreshTimer);
-    this._showGraph();
+
+    if (_opts.immediate) {
+      this._showGraph();
+    }
+
+    this.graphRefreshTimer = setTimeout(
+      ()=>{ this._showGraph(); },
+      this.state.graph.intervalSec * 1000
+    );
   }
 
   onclick_showGraph(){
-    this.showGraph();
+    this.showGraph({ immediate: true });
   }
 
   onclick_graphZoomOut(){
@@ -181,13 +183,13 @@ class Page {
   onchange_intervalMin(ev){
     const min = parseFloat(ev.target.value);
     let sec = Math.round(min * 60);
-    if (sec < 10) {
-      sec = 10;
+    if (sec < 30) {
+      sec = 30;
     }
 
     this.state.graph.intervalSec = sec;
 
-    this.showGraph();
+    this.showGraph({ immediate: true });
   }
 }
 
