@@ -95,7 +95,7 @@ class Page {
 
       this.render();
 
-      this.showGraph();
+      // this.showGraph();
       setInterval(
         ()=>{ this.showGraph(); }
         ,1000 * 60 * 5
