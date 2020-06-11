@@ -17,6 +17,7 @@ class Sessions {
         , h("th", {}, "id")
         , h("th", {}, "time")
         , h("th", {}, "status")
+        , h("th", {}, "")
         )
       , sessions.map(session =>
           h("tr", {}
@@ -30,6 +31,11 @@ class Sessions {
             )
           , h("td", {}
             , convertStatus(session.lastAttempt)
+            )
+          , h("td", {}
+            , h("button", {
+                  onclick: ()=>{ __p.onclick_retry(session.id); }
+                }, "retry")
             )
           )
         )
@@ -109,6 +115,10 @@ class Page {
 
   getOfficialUiUrl(){
     return `${this.state.endpoint}/${__g.getEnv()}/workflows/${this.workflowId}`;
+  }
+
+  onclick_retry(id){
+    puts("TODO", id);
   }
 }
 
