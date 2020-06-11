@@ -89,3 +89,28 @@ const __g = {
     return env;
   }
 };
+
+// --------------------------------
+// Components
+
+(()=>{
+  class AttemptStatus {
+    static toStatusStr(att){
+      if (att.cancelRequested && ! att.done) { return "canceling"; }
+      if (att.cancelRequested && att.done) { return "canceled"; }
+
+      if (! att.done) { return "running"; }
+      if (att.success) { return "success"; }
+
+      if (att.done && ! att.success) { return "error"; }
+    }
+
+    static render(att){
+      return TreeBuilder.build(h =>
+        h("span", {}, this.toStatusStr(att))
+      );
+    }
+  }
+
+  __g.AttemptStatus = AttemptStatus;
+})()
