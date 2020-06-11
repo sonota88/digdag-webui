@@ -8,7 +8,7 @@ class View {
              }
            }
          ,
-`${__p.attemptId} \\
+`{digdag_cmd} retry ${__p.attemptId} \\
   --latest-revision \\
   --resume \\
   -e {endpoint}
