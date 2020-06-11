@@ -539,3 +539,10 @@ end
 get "/:env/command/retry" do
   _render_dyn_js("command/page_retry")
 end
+
+post "/api/:env/command/retry/exec" do
+  _api_v2 (params) do |_params|
+    {
+    }
+  end
+end
