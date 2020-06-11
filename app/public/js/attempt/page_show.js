@@ -12,6 +12,14 @@ class Graph {
       , h("button", { onclick: ()=>{ __p.onclick_graphZoomOut(); } }, "-")
       , h("button", { onclick: ()=>{ __p.onclick_graphZoomIn(); } }, "+")
 
+      , " / interval (min)"
+      , h("input", {
+            value: state.graph.intervalSec / 60
+          , onchange: (ev)=>{ __p.onchange_intervalMin(ev); }
+          , style: { width: "4rem" }
+          }
+        )
+
       , h("br")
 
       , h("img", { id: "graph_img"
@@ -60,6 +68,8 @@ class Page {
   constructor(){
     this.env = __g.getEnv();
     this.attemptId = this.getAttemptId();
+    this.graphRefreshTimer = null;
+
     this.state = {
       attempt: {
         session: {
@@ -68,7 +78,8 @@ class Page {
       },
       graph: {
         src: null,
-        zoom: 50
+        zoom: 50,
+        intervalSec: 60 * 10
       }
     };
   }
@@ -97,7 +108,7 @@ class Page {
       // this.showGraph();
       setInterval(
         ()=>{ this.showGraph(); }
-        ,1000 * 60 * 5
+        ,1000 * this.state.graph.intervalSec
       );
 
     }, (errors)=>{
@@ -117,7 +128,7 @@ class Page {
     return `${this.state.endpoint}/attempts/${this.attemptId}`;
   }
 
-  showGraph(){
+  _showGraph(){
     puts("onclick_showGraph");
     __g.guard();
 
@@ -133,11 +144,21 @@ class Page {
         $("#graph_img").attr("src", result.path);
         $("#graph_img_link").attr("href", result.path);
   
+        this.graphRefreshTimer = setTimeout(
+          ()=>{ this.showGraph(); },
+          this.state.graph.intervalSec * 1000
+        );
+
       }, (errors)=>{
         __g.unguard();
         __g.printApiErrors(errors);
         alert("Check console.");
       });
+  }
+
+  showGraph(){
+    clearTimeout(this.graphRefreshTimer);
+    this._showGraph();
   }
 
   onclick_showGraph(){
@@ -155,6 +176,18 @@ class Page {
   onclick_graphZoomIn(){
     this.state.graph.zoom += 10;
     this.render();
+  }
+
+  onchange_intervalMin(ev){
+    const min = parseFloat(ev.target.value);
+    let sec = Math.round(min * 60);
+    if (sec < 10) {
+      sec = 10;
+    }
+
+    this.state.graph.intervalSec = sec;
+
+    this.showGraph();
   }
 }
 
