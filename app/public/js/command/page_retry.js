@@ -35,12 +35,49 @@ class View {
 }
 
 class Page {
+  constructor(){
+    this.env = __g.getEnv();
+    this.attemptId = this.getAttemptId();
+    this.state = {
+    };
+  }
+
   getTitle(){
     return "command/retry";
   }
 
-  init(){
+  getAttemptId(){
+    return new URL(location.href).searchParams.get("attemptId");
+  }
 
+  init(){
+    puts("init");
+    __g.unguard();
+    this.render();
+  }
+
+  render(){
+    $("#main")
+      .empty()
+      .append(View.render(this.state));
+  }
+
+  onclick_run(){
+    __g.guard();
+
+    __g.api_v2("post", `/api/${this.env}/command/retry/exec`, {
+        args: $("#input_box").val()
+      }, (result)=>{
+      __g.unguard();
+      puts(result);
+
+      window.parent.__p.closeFrame();
+
+    }, (errors)=>{
+      __g.unguard();
+      __g.printApiErrors(errors);
+      alert("Check console.");
+    });
   }
 }
 
