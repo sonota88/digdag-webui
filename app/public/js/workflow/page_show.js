@@ -1,16 +1,5 @@
 class Sessions {
   static render(sessions){
-    function convertStatus(lastAttempt){
-      const la = lastAttempt;
-      if (la.cancelRequested && ! la.done) { return "canceling"; }
-      if (la.cancelRequested && la.done) { return "canceled"; }
-
-      if (! la.done) { return "running"; }
-      if (la.success) { return "success"; }
-
-      if (la.done && ! la.success) { return "error"; }
-    }
-
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
@@ -30,7 +19,7 @@ class Sessions {
             , session.time
             )
           , h("td", {}
-            , convertStatus(session.lastAttempt)
+            , __g.AttemptStatus.render(session.lastAttempt)
             )
           , h("td", {}
             , h("button", {

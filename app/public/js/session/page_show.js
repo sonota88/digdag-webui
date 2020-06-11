@@ -1,15 +1,5 @@
 class Attempts {
   static render(attempts){
-    function convertStatus(att){
-      if (att.cancelRequested && ! att.done) { return "canceling"; }
-      if (att.cancelRequested && att.done) { return "canceled"; }
-
-      if (! att.done) { return "running"; }
-      if (att.success) { return "success"; }
-
-      if (att.done && ! att.success) { return "error"; }
-    }
-
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
@@ -24,7 +14,7 @@ class Attempts {
               )
             )
           , h("td", {}
-            , convertStatus(att)
+            , __g.AttemptStatus.render(att)
             )
           )
         )
