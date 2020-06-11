@@ -124,9 +124,11 @@ class Page {
     return `${this.state.endpoint}/attempts/${this.attemptId}`;
   }
 
-  _showGraph(){
+  _showGraph(opts){
     puts("onclick_showGraph");
     __g.guard();
+
+    const _opts = opts || { enqueue: true }
 
     __g.api_v2(
       "get",
@@ -140,7 +142,9 @@ class Page {
         $("#graph_img").attr("src", result.path);
         $("#graph_img_link").attr("href", result.path);
   
-        this.showGraph();
+        if (_opts.enqueue) {
+          this.showGraph();
+        }
 
       }, (errors)=>{
         __g.unguard();
@@ -150,11 +154,11 @@ class Page {
   }
 
   showGraph(opts){
-    let _opts = opts || {};
+    let _opts = opts || { immediate: false };
     clearTimeout(this.graphRefreshTimer);
 
     if (_opts.immediate) {
-      this._showGraph();
+      this._showGraph({ enqueue: false });
     }
 
     this.graphRefreshTimer = setTimeout(
