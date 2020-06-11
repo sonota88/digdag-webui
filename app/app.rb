@@ -368,7 +368,7 @@ get "/api/:env/projects/:id" do
       }
 
     {
-      endpoint: ENDPOINT_MAP[env],
+      endpoint: endpoint(env),
       project: pj.to_plain,
       workflows: wfs.map(&:to_plain)
     }
@@ -402,7 +402,7 @@ get "/api/:env/workflows/:id" do
       }
 
     {
-      endpoint: ENDPOINT_MAP[env],
+      endpoint: endpoint(env),
       project: wf.project.to_plain,
       workflow: wf.to_plain,
       sessions: sessions.map(&:to_plain)
@@ -434,7 +434,7 @@ get "/api/:env/sessions/:id" do
       }
 
     {
-      endpoint: ENDPOINT_MAP[env],
+      endpoint: endpoint(env),
       project: pj.to_plain,
       workflow: attempts[0].session.workflow.to_plain,
       attempts: attempts.map(&:to_plain)
@@ -467,7 +467,7 @@ get "/api/:env/attempts/:id" do
     )
 
     {
-      endpoint: ENDPOINT_MAP[env],
+      endpoint: endpoint(env),
       project: pj.to_plain,
       workflow: wf.to_plain,
       session: att.session.to_plain,
