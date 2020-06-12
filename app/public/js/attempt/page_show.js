@@ -39,8 +39,16 @@ class View {
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
       , " "
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
-      , ` / pj:${state.project.name}`
-      , ` ＞ wf:${state.workflow.name}`
+      , " / "
+      , h("a"
+        , { href: `/${__p.env}/projects/${state.project.id}` }
+        , `pj:${state.project.name}`
+        )
+      , " ＞ "
+      , h("a"
+        , { href: `/${__p.env}/workflows/${state.workflow.id}` }
+        , `wf:${state.workflow.name}`
+        )
       , " ＞ "
       , h("a", {
             href: `/${__p.env}/sessions/${state.attempt.session.id}`
