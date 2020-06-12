@@ -37,7 +37,11 @@ class View {
       , " "
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
 
-      , ` / pj:${state.project.name}`
+      , " / "
+      , h("a"
+        , { href: `/${__p.env}/projects/${state.project.id}` }
+        , `pj:${state.project.name}`
+        )
       , " ＞ "
       , h("a", {
             href: `/${__p.env}/workflows/${state.workflow.id}`
