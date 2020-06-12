@@ -273,7 +273,7 @@ module DigdagUtils
     def self.from_api_response(data)
       new(
         id:   data["id"],
-        time: data["sessionTime"],
+        time: Time.parse(data["sessionTime"]),
         last_attempt: data["lastAttempt"]
       )
     end
@@ -281,7 +281,7 @@ module DigdagUtils
     def to_plain
       plain = {
         id: @id,
-        time: @time,
+        time: @time.getlocal.iso8601,
         attempts: @attempts,
         last_attempt: @last_attempt,
       }
