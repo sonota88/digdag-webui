@@ -1,5 +1,10 @@
 class Sessions {
   static render(state){
+    const toYmdHm = (timeStr)=>{
+      const m = timeStr.match(/^....-(..-..)T(..:..)/);
+      return `${m[1]} ${m[2]}`
+    };
+
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
@@ -15,8 +20,8 @@ class Sessions {
               , session.id
               )
             )
-          , h("td", {}
-            , session.time
+          , h("td", { title: session.time }
+            , toYmdHm(session.time)
             )
           , h("td", {}
             , __g.AttemptStatus.render(session.lastAttempt)
