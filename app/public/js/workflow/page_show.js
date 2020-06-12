@@ -1,5 +1,5 @@
 class Sessions {
-  static render(sessions){
+  static render(state){
     return TreeBuilder.build(h =>
       h("table", {}
       , h("tr", {}
@@ -8,7 +8,7 @@ class Sessions {
         , h("th", {}, "status")
         , h("th", {}, "")
         )
-      , sessions.map(session =>
+      , state.sessions.map(session =>
           h("tr", {}
           , h("td", {}
             , h("a", { href: `/${__p.env}/sessions/${session.id}` }
@@ -21,7 +21,14 @@ class Sessions {
           , h("td", {}
             , __g.AttemptStatus.render(session.lastAttempt)
             )
-          , h("td", {}
+          , h("td", {
+                style: {
+                  background:
+                    (session.id === state.focusedSessionId)
+                    ? "#fd6"
+                    : "transparent"
+                }
+              }
             , h("button", {
                   onclick: ()=>{ __p.onclick_retry(session.id); }
                 }, "retry")
@@ -52,7 +59,7 @@ class View {
       , ` ＞ wf:${state.workflow.name}`
 
       , h("h2", {}, "Sessions")
-      , Sessions.render(state.sessions)
+      , Sessions.render(state)
 
       , h("div", { id: "console_frame_box"
             , style: {
@@ -93,7 +100,8 @@ class Page {
       sessions: [
         { id: 1, time: "t1" },
         { id: 2, time: "t2" },
-      ]
+      ],
+      focusedSessionId: null,
     };
   }
 
@@ -134,6 +142,7 @@ class Page {
   }
 
   onclick_retry(id){
+    this.state.focusedSessionId = id;
     const sess = this.state.sessions
       .find((s)=> s.id === id );
 
@@ -148,7 +157,9 @@ class Page {
   // TODO receive and show message
   closeFrame(){
     const $frameBox = $("#console_frame_box");
-    $frameBox.hide();
+    // $frameBox.hide();
+    // location.reload(); // retry 実行時のみリロード
+    this.render();
   }
 }
 
