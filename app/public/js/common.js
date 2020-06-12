@@ -109,16 +109,16 @@ const __g = {
     static getColor(att){
       if (att.cancelRequested && ! att.done) {
         // canceling
-        return "#aa4";
+        return "#a84";
       }
       if (att.cancelRequested && att.done) {
         // canceled
-        return "#aa4";
+        return "#a80";
       }
 
       if (! att.done) {
         // running
-        return "#aa4";
+        return "#2a0";
       }
       if (att.success) {
         // success
@@ -127,7 +127,7 @@ const __g = {
 
       if (att.done && ! att.success) {
         // error
-        return "#f00";
+        return "#e00";
       }
     }
 
