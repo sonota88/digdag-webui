@@ -47,7 +47,7 @@ class Page {
   }
 
   getAttemptId(){
-    return new URL(location.href).searchParams.get("attemptId");
+    return __g.getSearchParams().get("attemptId");
   }
 
   init(){

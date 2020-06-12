@@ -76,6 +76,10 @@ const __g = {
     });
   },
 
+  getSearchParams: (url = location.href)=>{
+    return new URL(location.href).searchParams;
+  },
+
   getEnv: ()=>{
     const parts = location.href.split("/");
     const env = parts[3]
