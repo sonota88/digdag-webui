@@ -1,56 +1,3 @@
-class LastAttempt {
-  static calcDurationSec(la) {
-    const t0 = AppTime.fromIso8601(la.createdAt);
-
-    let t1;
-    if (la.finishedAt == null) {
-      t1 = AppTime.now();
-    } else {
-      t1 = AppTime.fromIso8601(la.finishedAt);
-    }
-
-    const msec = t1.getTime() - t0.getTime();
-    return msec / 1000;
-  }
-
-  static render(la) {
-    const makeDuration = (la)=>{
-      const sec = this.calcDurationSec(la);
-      return AppTime.formatDuration(sec);
-    };
-
-    return TreeBuilder.build(h =>
-      h("pre", {}
-        , h("a", { href: `../attempts/${la.id}` }, la.id)
-
-        , " | "
-        , AppTime.fromIso8601(la.createdAt).toYmdHm()
-        , " ~ "
-        , la.finishedAt
-          ? AppTime.fromIso8601(la.finishedAt).toYmdHm()
-          : "...        "
-
-        , " | "
-        , makeDuration(la)
-      )
-    );
-  }
-
-  static makeDurationBar(la){
-    const min = this.calcDurationSec(la) / 60;
-
-    if (min < 60) {
-      return ".".repeat(min / 10);
-    } else if (min < 60 * 24) {
-      const hour = min / 60;
-      const full = "-|".repeat(24);
-      return full.substring(0, Math.floor(hour * 2));
-    } else {
-      return ">=24h";
-    }
-  }
-}
-
 class Sessions {
   static render(state){
     const toYmdHm = (timeStr)=>{
@@ -94,10 +41,10 @@ class Sessions {
             , toYmdHm(session.time)
             )
           , h("td", {}
-            , LastAttempt.render(session.lastAttempt)
+            , __g.Attempt.render(session.lastAttempt)
             )
           , h("td", {}
-            , LastAttempt.makeDurationBar(session.lastAttempt)
+            , __g.Attempt.makeDurationBar(session.lastAttempt)
             )
           )
         )
