@@ -75,8 +75,7 @@ class RetryDialog {
     return TreeBuilder.build(h =>
       h("div", { id: "console_frame_box"
           , style: {
-              display: "none"
-            , position: "fixed"
+              position: "fixed"
             , top: "5%"
             , left: "5%"
             , width: "90%"
@@ -118,7 +117,7 @@ class View {
       , h("h2", {}, "Sessions")
       , Sessions.render(state)
 
-      , RetryDialog.render(state)
+      , state.showRetryDialog ? RetryDialog.render(state) : null
 
       // , Dialog.render({
       //       id: "console_frame_box_v2"
@@ -150,6 +149,7 @@ class Page {
         { id: 2, time: "t2" },
       ],
       focusedSessionId: null,
+      showRetryDialog: false,
     };
   }
 
@@ -192,15 +192,15 @@ class Page {
 
   onclick_retry(id){
     this.state.focusedSessionId = id;
+    this.state.showRetryDialog = true;
+    this.render();
+
     const sess = this.state.sessions
       .find((s)=> s.id === id );
-
     const aid = sess.lastAttempt.id;
-
-    const $frameBox = $("#console_frame_box");
     const $frame = $("#console_frame");
+
     $frame.attr("src", `/${__g.getEnv()}/command/retry?attemptId=${aid}`);
-    $frameBox.show(); // TODO Use render
   }
 
   // TODO receive and show message
@@ -208,6 +208,7 @@ class Page {
     const $frameBox = $("#console_frame_box");
     // $frameBox.hide();
     // location.reload(); // retry 実行時のみリロード
+    this.state.showRetryDialog = false;
     this.render();
   }
 }
