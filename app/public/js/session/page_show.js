@@ -30,7 +30,7 @@ class Attempts {
             , __g.Attempt.renderTime(att)
             )
           , h("td", {}
-            , __g.Attempt.makeDurationBar(att)
+            , __g.Attempt.renderDurationBar(att)
             )
           )
         )

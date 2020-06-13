@@ -235,7 +235,7 @@ const __g = {
       );
     }
 
-    static makeDurationBar(la){
+    static renderDurationBar(la){
       const min = this.calcDurationSec(la) / 60;
 
       if (min < 60) {
