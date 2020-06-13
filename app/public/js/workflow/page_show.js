@@ -43,7 +43,7 @@ class LastAttempt {
       return ".".repeat(min / 10);
     } else if (min < 60 * 24) {
       const hour = min / 60;
-      const full = "_|".repeat(24);
+      const full = "-|".repeat(24);
       return full.substring(0, Math.floor(hour * 2));
     } else {
       return ">=24h";
