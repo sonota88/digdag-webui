@@ -281,10 +281,14 @@ module DigdagUtils
     def to_plain
       plain = {
         id: @id,
-        time: @time.getlocal.iso8601,
+        time: @time,
         attempts: @attempts,
         last_attempt: @last_attempt,
       }
+
+      if @time
+        plain[:time] = @time.getlocal.iso8601
+      end
 
       if @workflow
         plain[:workflow] = @workflow.to_plain
