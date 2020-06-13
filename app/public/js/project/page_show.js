@@ -2,10 +2,21 @@ class Workflows {
   static render(state){
     const wfs = state.workflows;
 
+    // asc
+    const sorted = wfs.sort((a, b)=>{
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
     return TreeBuilder.build(h =>
       h("div", {}
       , h("table", {}
-        , wfs.map(wf =>
+        , sorted.map(wf =>
             h("tr", {}
             , h("td", {}
               , h("a", { href: `/${__p.env}/workflows/${wf.id}` }, wf.name)
@@ -43,9 +54,11 @@ class Page {
     this.env = __g.getEnv();
     this.projectId = this.getProjectId();
     this.state = {
+      project: {},
       workflows: [
         { id: 1, name: "wf1" },
         { id: 2, name: "wf2" },
+        { id: 3, name: "0_wf1" },
       ]
     };
   }
