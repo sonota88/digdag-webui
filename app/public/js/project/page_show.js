@@ -64,7 +64,7 @@ class Page {
   }
 
   getTitle(){
-    return "project";
+    return "Project";
   }
 
   getProjectId(){

@@ -93,7 +93,7 @@ class Page {
   }
 
   getTitle(){
-    return "attempt";
+    return "Attempt";
   }
 
   getAttemptId(){

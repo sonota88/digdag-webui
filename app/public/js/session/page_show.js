@@ -91,7 +91,7 @@ class Page {
   }
 
   getTitle(){
-    return "session";
+    return "Session";
   }
 
   getSessionId(){

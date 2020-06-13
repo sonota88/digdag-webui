@@ -121,7 +121,7 @@ class Page {
   }
 
   getTitle(){
-    return "workflow";
+    return "Workflow";
   }
 
   getWorkflowId(){

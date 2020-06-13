@@ -61,7 +61,7 @@ class Page {
   }
 
   getTitle(){
-    return "projects";
+    return "Projects";
   }
 
   init(){
