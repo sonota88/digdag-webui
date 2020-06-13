@@ -113,11 +113,16 @@ const __g = {
     });
   },
 
+  // TODO feedback to template
+  updateTitle: (title)=>{
+    document.title = title + " | my-digdag-webui";
+  },
+
   ready: (page)=>{
     window.__p = page;
     document.addEventListener("DOMContentLoaded", ()=>{
       page.init();
-      document.title = page.getTitle() + " | my-digdag-webui";
+      __g.updateTitle(page.getTitle());
     });
   },
 
