@@ -241,78 +241,18 @@ end
 
 module DigdagUtils
   class Project
-    def self.from_api_response(data)
-      from_api_data(data)
-    end
   end
 
   class Workflow
-    def self.from_api_response(data)
-      project = DigdagUtils::Project.new(
-        id: data["project"]["id"],
-        name: data["project"]["name"],
-      )
-
-      new(
-        id:   data["id"],
-        name: data["name"],
-        project: project
-      )
-    end
   end
 
   class Session
-    def initialize(
-      id: nil,
-      time: nil,
-      attempts: nil,
-      last_attempt: nil,
-      workflow: nil
-    )
-      @id = id
-      @time = time
-      @attempts = attempts
-      @workflow = workflow
-      @last_attempt = last_attempt
-    end
-
-    def self.from_api_response(data)
-      new(
-        id:   data["id"],
-        time: Time.parse(data["sessionTime"]),
-        last_attempt: data["lastAttempt"]
-      )
-    end
-
-    def to_plain
-      plain = {
-        id: @id,
-        time: @time,
-        attempts: @attempts,
-        last_attempt: @last_attempt,
-      }
-
-      if @time
-        plain[:time] = @time.getlocal.iso8601
-      end
-
-      if @workflow
-        plain[:workflow] = @workflow.to_plain
-      end
-
-      plain
-    end
   end
 
   class Attempt
   end
 
   class Task
-    attr_reader :cancel_requested
-
-    # "stateParams": {
-    #   "retry_count": 1
-    # },
   end
 end
 
@@ -350,7 +290,7 @@ get "/api/:env/projects" do
 
     pjs = client.get_projects()
       .map{ |api_pj|
-        DigdagUtils::Project.from_api_data(api_pj)
+        DigdagUtils::Project.from_api_response(api_pj)
       }
 
     {
