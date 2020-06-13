@@ -14,7 +14,8 @@ table {
   margin: 1rem 0;
 }
 th, td {
-  border: solid 1px #ccc;
+  border: solid 0.1rem;
+  border-color: #ccc #e8e8e8;
   padding: 0.1rem 0.5rem;
 }
 th {
