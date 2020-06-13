@@ -31,16 +31,11 @@ class Graph {
   }
 }
 
-class View {
+class Breadcrumbs {
   static render(state){
     return TreeBuilder.build(h =>
-      h("div", {}
-      , h("h1", {}, __p.getTitle())
-      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
-      , " "
-      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
-      , " / "
-      , h("a"
+      [
+        h("a"
         , { href: `/${__p.env}/projects/${state.project.id}` }
         , `pj:${state.project.name}`
         )
@@ -56,7 +51,21 @@ class View {
         , `s${state.session.id}`
         )
       , ` ＞ a${__p.attemptId}`
+      ]
+    );
+  }
+}
 
+class View {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , h("h1", {}, __p.getTitle())
+      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+      , " "
+      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+      , " / "
+      , Breadcrumbs.render(state)
       , h("hr")
 
       , Graph.render(state)
