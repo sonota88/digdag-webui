@@ -6,6 +6,7 @@ class Attempts {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
+        , h("th", {}, "session time")
         )
       , attempts.map(att =>
           h("tr", {}
@@ -19,6 +20,9 @@ class Attempts {
             )
           , h("td", {}
             , h("button", {}, "TODO retry")
+            )
+          , h("td", {}
+            , AppTime.fromIso8601(att.session.time).toYmdHm()
             )
           )
         )
