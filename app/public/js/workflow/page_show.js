@@ -150,6 +150,7 @@ class Page {
     $("#main")
       .empty()
       .append(View.render(this.state));
+    __g.updateTitle(`wf:${this.state.workflow.name} (pj:${this.state.project.name})`);
   }
 
   getOfficialUiUrl(){

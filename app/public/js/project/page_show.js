@@ -93,6 +93,7 @@ class Page {
     $("#main")
       .empty()
       .append(View.render(this.state));
+    __g.updateTitle("pj:" + this.state.project.name);
   }
 
   getOfficialUiUrl(){
