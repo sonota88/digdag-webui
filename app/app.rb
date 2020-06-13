@@ -81,11 +81,13 @@ def _render(name, context)
   erb.result ErbContext.hash_to_binding(context)
 end
 
+def get_favicon_file_name(env)
+  env_config = CONFIG["envs"].find{ |_env| _env["name"].to_sym == env }
+  env_config.fetch("favicon", "favicon.png")
+end
 
 def _render_dyn(body, context={})
-  env = context[:env]
-  env_config = CONFIG["envs"].find{ |_env| _env["name"].to_sym == env }
-  context[:favicon] = env_config.fetch("favicon", "favicon.png")
+  context[:favicon] = get_favicon_file_name(context[:env])
 
   header = File.read("views/_header.html")
   footer = File.read("views/_footer.html")
