@@ -35,6 +35,20 @@ class LastAttempt {
       )
     );
   }
+
+  static makeDurationBar(la){
+    const min = this.calcDurationSec(la) / 60;
+
+    if (min < 60) {
+      return ".".repeat(min / 10);
+    } else if (min < 60 * 24) {
+      const hour = min / 60;
+      const full = "_|".repeat(24);
+      return full.substring(0, Math.floor(hour * 2));
+    } else {
+      return ">=24h";
+    }
+  }
 }
 
 class Sessions {
@@ -52,6 +66,7 @@ class Sessions {
         , h("th", {}, "status")
         , h("th", {}, "")
         , h("th", {}, "last attempt")
+        , h("th", {}, "duration")
         )
       , state.sessions.map(session =>
           h("tr", {}
@@ -80,6 +95,9 @@ class Sessions {
             )
           , h("td", {}
             , LastAttempt.render(session.lastAttempt)
+            )
+          , h("td", {}
+            , LastAttempt.makeDurationBar(session.lastAttempt)
             )
           )
         )
