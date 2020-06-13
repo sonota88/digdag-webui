@@ -33,7 +33,7 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
-      , h("h1", {}, __p.getTitle())
+      , h("h1", {}, __p.getTitle() + ": " + state.project.name)
       , h("a", { href: `/${__p.env}/projects` }, "プロジェクト一覧に戻る")
 
       , h("br")
