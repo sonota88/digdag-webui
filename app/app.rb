@@ -240,6 +240,22 @@ module Digdag
 end
 
 module DigdagUtils
+  def self.from_plain_time(str)
+    if str
+      Time.parse(str)
+    else
+      nil
+    end
+  end
+
+  def self.to_plain_time(t)
+    if t
+      t.getlocal.iso8601
+    else
+      nil
+    end
+  end
+
   class Project
   end
 
