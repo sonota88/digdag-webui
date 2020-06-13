@@ -83,6 +83,10 @@ end
 
 
 def _render_dyn(body, context={})
+  env = context[:env]
+  env_config = CONFIG["envs"].find{ |_env| _env["name"].to_sym == env }
+  context[:favicon] = env_config.fetch("favicon", "favicon.png")
+
   header = File.read("views/_header.html")
   footer = File.read("views/_footer.html")
   erb = ERB.new(header + body + footer)
@@ -95,7 +99,7 @@ def _render_dyn_js(js_name, context={})
     <script src="/js/#{js_name}.js"></script>
   EOB
 
-  _render_dyn(body)
+  _render_dyn(body, context)
 end
 
 
@@ -331,7 +335,10 @@ end
 
 
 get "/:env/projects" do
-  _render_dyn_js("project/page_index")
+  _render_dyn_js(
+    "project/page_index",
+    { env: params[:env].to_sym }
+  )
 end
 
 get "/api/:env/projects" do
@@ -352,7 +359,10 @@ end
 
 
 get "/:env/projects/:id" do
-  _render_dyn_js("project/page_show")
+  _render_dyn_js(
+    "project/page_show",
+    { env: params[:env].to_sym }
+  )
 end
 
 get "/api/:env/projects/:id" do
@@ -381,7 +391,10 @@ end
 
 
 get "/:env/workflows/:id" do
-  _render_dyn_js("workflow/page_show")
+  _render_dyn_js(
+    "workflow/page_show",
+    { env: params[:env].to_sym }
+  )
 end
 
 get "/api/:env/workflows/:id" do
@@ -416,7 +429,10 @@ end
 
 
 get "/:env/sessions/:id" do
-  _render_dyn_js("session/page_show")
+  _render_dyn_js(
+    "session/page_show",
+    { env: params[:env].to_sym }
+  )
 end
 
 get "/api/:env/sessions/:id" do
@@ -448,7 +464,10 @@ end
 
 
 get "/:env/attempts/:id" do
-  _render_dyn_js("attempt/page_show")
+  _render_dyn_js(
+    "attempt/page_show",
+    { env: params[:env].to_sym }
+  )
 end
 
 get "/api/:env/attempts/:id" do
@@ -541,7 +560,10 @@ end
 
 
 get "/:env/command/retry" do
-  _render_dyn_js("command/page_retry")
+  _render_dyn_js(
+    "command/page_retry",
+    { env: params[:env].to_sym }
+  )
 end
 
 post "/api/:env/command/retry/exec" do
