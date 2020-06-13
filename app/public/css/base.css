@@ -41,6 +41,10 @@ button {
   margin: 0.3rem;
 }
 
+pre {
+  margin: 0.3rem;
+}
+
 #guard_layer {
   background: rgba(120,120,120, 0.2);
   position: fixed;
