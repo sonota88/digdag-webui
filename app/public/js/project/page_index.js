@@ -9,10 +9,21 @@ class SearchResult {
       filtered = state.projects
     }
 
+    // asc
+    const sorted = filtered.sort((a, b)=>{
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
     return TreeBuilder.build(h =>
       h("div", {}
       , h("table", {}
-        , filtered.map(pj =>
+        , sorted.map(pj =>
             h("tr", {}
             , h("td", {}
               , h("a", { href: `/${__p.env}/projects/${pj.id}` }, pj.name)
