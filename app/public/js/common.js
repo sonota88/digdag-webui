@@ -6,6 +6,51 @@ function _parseInt(str){
   return parseInt(str, 10);
 }
 
+class AppTime {
+  constructor(date){
+    this.date = date;
+  }
+
+  static now(){
+    return new AppTime(new Date());
+  }
+
+  static fromIso8601(str){
+    const date = new Date(Date.parse(str));
+    return new AppTime(date);
+  }
+
+  static formatDuration(deltaSec){
+    const deltaSec2 = Math.floor(deltaSec);
+
+    if (deltaSec2 < 60) {
+      return __g.pad2(deltaSec2) + "s";
+    }
+
+    const min = Math.floor(deltaSec2 / 60);
+    const sec2 = deltaSec2 % 60;
+    if (min < 60) {
+      return `${ __g.pad2(min) }m ${ __g.pad2(sec2) }s`;
+    }
+
+    const hour = Math.floor(min / 60);
+    const min2 = min % 60;
+    return `${ __g.pad2(hour) }h ${ __g.pad2(min2) }m ${ __g.pad2(sec2) }s`;
+  }
+
+  toYmdHm(){
+    const mon  = __g.pad2(this.date.getMonth());
+    const day  = __g.pad2(this.date.getDay());
+    const hour = __g.pad2(this.date.getHours());
+    const min  = __g.pad2(this.date.getMinutes());
+    return `${mon}-${day} ${hour}:${min}`;
+  }
+
+  getTime(){
+    return this.date.getTime();
+  }
+}
+
 const __g = {
   api: function(method, path, data, fnOk, fnNg){
     var _data = {
