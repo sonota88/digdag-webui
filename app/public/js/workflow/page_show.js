@@ -70,6 +70,38 @@ class Breadcrumbs {
   }
 }
 
+class RetryDialog {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", { id: "console_frame_box"
+          , style: {
+              display: "none"
+            , position: "fixed"
+            , top: "5%"
+            , left: "5%"
+            , width: "90%"
+            , height: "90%"
+            , background: "#ffffff"
+            , "box-shadow": "0px 0px 3rem rgba(0,0,0, 0.3)"
+            , border: "solid 0.1rem #444"
+            , padding: "0.5rem"
+          }
+        }
+      , h("button", { onclick: ()=>{ __p.closeFrame(); } }, "×")
+      , h("br")
+      , h("iframe", { id: "console_frame"
+          , style: {
+              width: "100%"
+            , height: "80%"
+            , border: "dashed 0.1rem #ddd"
+            }
+          }
+        )
+      )
+    );
+  }
+}
+
 class View {
   static render(state){
     return TreeBuilder.build(h =>
@@ -86,31 +118,22 @@ class View {
       , h("h2", {}, "Sessions")
       , Sessions.render(state)
 
-      , h("div", { id: "console_frame_box"
-            , style: {
-                display: "none"
-              , position: "fixed"
-              , top: "5%"
-              , left: "5%"
-              , width: "90%"
-              , height: "90%"
-              , background: "#ffffff"
-              , "box-shadow": "0px 0px 3rem rgba(0,0,0, 0.3)"
-              , border: "solid 0.1rem #444"
-              , padding: "0.5rem"
-            }
-          }
-        , h("button", { onclick: ()=>{ __p.closeFrame(); } }, "×")
-        , h("br")
-        , h("iframe", { id: "console_frame"
-            , style: {
-                width: "100%"
-              , height: "80%"
-              , border: "dashed 0.1rem #ddd"
-              }
-            }
-          )
-        )
+      , RetryDialog.render(state)
+
+      // , Dialog.render({
+      //       id: "console_frame_box_v2"
+      //     , onclose: ()=>{ alert("close"); }
+      //     }
+      //   , h("iframe", { id: "console_frame"
+      //       , style: {
+      //           width: "100%"
+      //         , height: "80%"
+      //         , border: "dashed 0.1rem #ddd"
+      //         }
+      //       }
+      //     )
+      //   )
+
       )
     );
   }
