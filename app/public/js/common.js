@@ -212,7 +212,7 @@ const __g = {
       return msec / 1000;
     }
 
-    static render(la) {
+    static renderTime(la) {
       const makeDuration = (la)=>{
         const sec = this.calcDurationSec(la);
         return AppTime.formatDuration(sec);

@@ -41,7 +41,7 @@ class Sessions {
             , toYmdHm(session.time)
             )
           , h("td", {}
-            , __g.Attempt.render(session.lastAttempt)
+            , __g.Attempt.renderTime(session.lastAttempt)
             )
           , h("td", {}
             , __g.Attempt.makeDurationBar(session.lastAttempt)
