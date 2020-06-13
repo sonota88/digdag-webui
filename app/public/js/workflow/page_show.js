@@ -41,7 +41,14 @@ class Sessions {
             , toYmdHm(session.time)
             )
           , h("td", {}
-            , __g.Attempt.renderTime(session.lastAttempt)
+            , h("pre", {}
+              , h("a"
+                , { href: `../attempts/${session.lastAttempt.id}` }
+                , session.lastAttempt.id
+                )
+              , " | "
+              , __g.Attempt.renderTime(session.lastAttempt)
+              )
             )
           , h("td", {}
             , __g.Attempt.renderDurationBar(session.lastAttempt)

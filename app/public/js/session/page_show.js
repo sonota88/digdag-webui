@@ -27,7 +27,9 @@ class Attempts {
             , AppTime.fromIso8601(att.session.time).toYmdHm()
             )
           , h("td", {}
-            , __g.Attempt.renderTime(att)
+            , h("pre", {}
+              , __g.Attempt.renderTime(att)
+              )
             )
           , h("td", {}
             , __g.Attempt.renderDurationBar(att)

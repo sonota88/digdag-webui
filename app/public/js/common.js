@@ -219,10 +219,7 @@ const __g = {
       };
 
       return TreeBuilder.build(h =>
-        h("pre", {}
-          , h("a", { href: `../attempts/${la.id}` }, la.id)
-
-          , " | "
+        h("span", {}
           , AppTime.fromIso8601(la.createdAt).toYmdHm()
           , " ~ "
           , la.finishedAt
