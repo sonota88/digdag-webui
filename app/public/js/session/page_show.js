@@ -37,6 +37,26 @@ class Attempts {
   }
 }
 
+class Breadcrumbs {
+  static render(state){
+    return TreeBuilder.build(h =>
+      [
+        h("a"
+        , { href: `/${__p.env}/projects/${state.project.id}` }
+        , `pj:${state.project.name}`
+        )
+      , " ＞ "
+      , h("a", {
+            href: `/${__p.env}/workflows/${state.workflow.id}`
+          }
+        , `wf:${state.workflow.name}`
+        )
+      , ` ＞ s${__p.sessionId}`
+      ]
+    );
+  }
+}
+
 class View {
   static makeSessionInfo(sess){
     const lines = [];
@@ -54,17 +74,7 @@ class View {
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
 
       , " / "
-      , h("a"
-        , { href: `/${__p.env}/projects/${state.project.id}` }
-        , `pj:${state.project.name}`
-        )
-      , " ＞ "
-      , h("a", {
-            href: `/${__p.env}/workflows/${state.workflow.id}`
-          }
-        , `wf:${state.workflow.name}`
-        )
-      , ` ＞ s${__p.sessionId}`
+      , Breadcrumbs.render(state)
 
       , h("pre", {}
         , this.makeSessionInfo(state.attempts[0].session)
