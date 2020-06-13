@@ -1,21 +1,21 @@
 class LastAttempt {
+  static calcDurationSec(la) {
+    const t0 = AppTime.fromIso8601(la.createdAt);
+
+    let t1;
+    if (la.finishedAt == null) {
+      t1 = AppTime.now();
+    } else {
+      t1 = AppTime.fromIso8601(la.finishedAt);
+    }
+
+    const msec = t1.getTime() - t0.getTime();
+    return msec / 1000;
+  }
+
   static render(la) {
-    const calcDurationSec = (la)=>{
-      const t0 = AppTime.fromIso8601(la.createdAt);
-
-      let t1;
-      if (la.finishedAt == null) {
-        t1 = AppTime.now();
-      } else {
-        t1 = AppTime.fromIso8601(la.finishedAt);
-      }
-
-      const msec = t1.getTime() - t0.getTime();
-      return msec / 1000;
-    };
-
     const makeDuration = (la)=>{
-      const sec = calcDurationSec(la);
+      const sec = this.calcDurationSec(la);
       return AppTime.formatDuration(sec);
     };
 
