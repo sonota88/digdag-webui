@@ -62,9 +62,9 @@ class Sessions {
       h("table", {}
       , h("tr", {}
         , h("th", {}, "id")
-        , h("th", {}, "time")
         , h("th", {}, "status")
         , h("th", {}, "")
+        , h("th", {}, "time")
         , h("th", {}, "last attempt")
         , h("th", {}, "duration")
         )
@@ -74,9 +74,6 @@ class Sessions {
             , h("a", { href: `/${__p.env}/sessions/${session.id}` }
               , session.id
               )
-            )
-          , h("td", { title: session.time }
-            , toYmdHm(session.time)
             )
           , h("td", {}
             , __g.AttemptStatus.render(session.lastAttempt)
@@ -92,6 +89,9 @@ class Sessions {
             , h("button", {
                   onclick: ()=>{ __p.onclick_retry(session.id); }
                 }, "retry")
+            )
+          , h("td", { title: session.time }
+            , toYmdHm(session.time)
             )
           , h("td", {}
             , LastAttempt.render(session.lastAttempt)
