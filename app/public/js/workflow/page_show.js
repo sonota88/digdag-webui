@@ -1,3 +1,42 @@
+class LastAttempt {
+  static render(la) {
+    const calcDurationSec = (la)=>{
+      const t0 = AppTime.fromIso8601(la.createdAt);
+
+      let t1;
+      if (la.finishedAt == null) {
+        t1 = AppTime.now();
+      } else {
+        t1 = AppTime.fromIso8601(la.finishedAt);
+      }
+
+      const msec = t1.getTime() - t0.getTime();
+      return msec / 1000;
+    };
+
+    const makeDuration = (la)=>{
+      const sec = calcDurationSec(la);
+      return AppTime.formatDuration(sec);
+    };
+
+    return TreeBuilder.build(h =>
+      h("pre", {}
+        , h("a", { href: `../attempts/${la.id}` }, la.id)
+
+        , " | "
+        , AppTime.fromIso8601(la.createdAt).toYmdHm()
+        , " ~ "
+        , la.finishedAt
+          ? AppTime.fromIso8601(la.finishedAt).toYmdHm()
+          : "...        "
+
+        , " | "
+        , makeDuration(la)
+      )
+    );
+  }
+}
+
 class Sessions {
   static render(state){
     const toYmdHm = (timeStr)=>{
@@ -12,6 +51,7 @@ class Sessions {
         , h("th", {}, "time")
         , h("th", {}, "status")
         , h("th", {}, "")
+        , h("th", {}, "last attempt")
         )
       , state.sessions.map(session =>
           h("tr", {}
@@ -37,6 +77,9 @@ class Sessions {
             , h("button", {
                   onclick: ()=>{ __p.onclick_retry(session.id); }
                 }, "retry")
+            )
+          , h("td", {}
+            , LastAttempt.render(session.lastAttempt)
             )
           )
         )
