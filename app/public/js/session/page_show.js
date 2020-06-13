@@ -6,7 +6,6 @@ class Attempts {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
-        , h("th", {}, "session time")
         , h("th", {}, "attempt time")
         , h("th", {}, "")
         )
@@ -24,9 +23,6 @@ class Attempts {
             , h("button", {}, "TODO retry")
             )
           , h("td", {}
-            , AppTime.fromIso8601(att.session.time).toYmdHm()
-            )
-          , h("td", {}
             , h("pre", {}
               , __g.Attempt.renderTime(att)
               )
@@ -42,6 +38,12 @@ class Attempts {
 }
 
 class View {
+  static makeSessionInfo(sess){
+    const lines = [];
+    lines.push("session time: " + AppTime.fromIso8601(sess.time).toYmdHm());
+    return lines.join("\n");
+  }
+
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
@@ -63,6 +65,10 @@ class View {
         , `wf:${state.workflow.name}`
         )
       , ` ＞ s${__p.sessionId}`
+
+      , h("pre", {}
+        , this.makeSessionInfo(state.attempts[0].session)
+        )
 
       , h("h2", {}, "Attempts")
       , Attempts.render(state.attempts)
