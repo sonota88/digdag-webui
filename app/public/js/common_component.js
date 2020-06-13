@@ -183,3 +183,66 @@ class MyToggleCheckbox {
     return $(ev.target).prop("checked");
   }
 }
+
+// --------------------------------
+
+// TODO feedback to template
+/*
+Dialog.render({
+  id: "foo_dialog"
+, onclose: ()=>{ alert("onclose"); }
+, content: [ "FDSA", h(...) ]
+})
+*/
+class Dialog {
+  static render(opts, ...content){
+    return TreeBuilder.build(h =>
+      h("div"
+      , {
+          id: opts.id
+        , style: {
+            position: "fixed"
+          , left: "0"
+          , top: "0"
+          , width: "100vw"
+          , height: "100vh"
+          , background: "rgba(127,127,127, 0.2)"
+          , "z-index": "10"
+          }
+        }
+      , h("div", {
+          style: {
+              position: "fixed"
+            , left: "10vw"
+            , top: "10vh"
+            , width: "80vw"
+            , height: "80vh"
+            , background: "#fff"
+            , "box-shadow": "0rem 0rem 2rem rgba(0,0,0, 0.2)"
+            , border: "solid 0.1rem #888"
+            }
+          }
+        , h("div", { style: { height: "3rem"
+            , "border-bottom": "solid 0.1rem #ddd"
+            , background: "#f8f8f8"
+            }
+          }
+          , h("button", {
+                onclick: ()=>{ opts.onclose(); }
+              }
+            , "×"
+            )
+          , "{header}"
+          )
+        , h("div", { style: {
+                height: "calc(80vh - 3rem)"
+              , padding: "1rem"
+              }
+            }
+          , ...content
+          )
+        )
+      )
+    );
+  }
+}
