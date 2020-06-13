@@ -55,6 +55,21 @@ class Sessions {
   }
 }
 
+class Breadcrumbs {
+  static render(state){
+    return TreeBuilder.build(h =>
+      [
+        h("a", {
+            href: `/${__p.env}/projects/${state.project.id}`
+          }
+        , `pj:${state.project.name}`
+        )
+      , ` ＞ wf:${state.workflow.name}`
+      ]
+    );
+  }
+}
+
 class View {
   static render(state){
     return TreeBuilder.build(h =>
@@ -66,12 +81,7 @@ class View {
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
 
       , " / "
-      , h("a", {
-            href: `/${__p.env}/projects/${state.project.id}`
-          }
-        , `pj:${state.project.name}`
-        )
-      , ` ＞ wf:${state.workflow.name}`
+      , Breadcrumbs.render(state)
 
       , h("h2", {}, "Sessions")
       , Sessions.render(state)
