@@ -40,7 +40,7 @@ class AppTime {
 
   toYmdHm(){
     const mon  = __g.pad2(this.date.getMonth() + 1);
-    const day  = __g.pad2(this.date.getDay());
+    const day  = __g.pad2(this.date.getDate());
     const hour = __g.pad2(this.date.getHours());
     const min  = __g.pad2(this.date.getMinutes());
     return `${mon}-${day} ${hour}:${min}`;
