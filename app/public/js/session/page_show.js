@@ -26,7 +26,7 @@ class Attempts {
           , h("td", {}
             , __g.Attempt.isKillable(att)
               ? h("button", {
-                    onclick: ()=>{ __p.kill(att.id); }
+                    onclick: ()=>{ __p.onclick_kill(att.id); }
                   }
                 , "kill"
                 )
@@ -146,7 +146,7 @@ class Page {
     return `${this.state.endpoint}/sessions/${this.sessionId}`;
   }
 
-  kill(aid){
+  onclick_kill(aid){
     if (! confirm("Are you sure to kill?")) {
       return;
     }
