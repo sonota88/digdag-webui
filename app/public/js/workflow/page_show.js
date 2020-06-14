@@ -6,6 +6,7 @@ class Sessions {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
+        , h("th", {}, "")
         , h("th", {}, "time")
         , h("th", {}, "last attempt")
         , h("th", {}, "duration")
@@ -31,6 +32,18 @@ class Sessions {
             , h("button", {
                   onclick: ()=>{ __p.onclick_retry(session.id); }
                 }, "retry")
+            )
+          , h("td", {
+                style: {
+                  background:
+                    (session.id === state.focusedSessionId)
+                    ? "#fd6"
+                    : "transparent"
+                }
+              }
+            , h("button", {
+                  onclick: ()=>{ __p.onclick_select(session.id); }
+                }, "frame")
             )
           , h("td", { title: session.time }
             , AppTime.fromIso8601(session.time).toYmdHm()
@@ -92,6 +105,29 @@ class RetryDialog {
   }
 }
 
+class SessionPane {
+  static render(state){
+    return TreeBuilder.build(h =>
+      BottomPane.render(
+        {
+          onclose: ()=>{ __p.closeSessionFrame(); }
+        , show: state.showSessionPane
+        }
+      , h("iframe", {
+            id: "console_frame"
+          , src: __p.getSessionUrl()
+          , style: {
+              width: "100%"
+            , height: "100%"
+            , border: "dashed 0.1rem #ddd"
+            }
+          }
+        )
+      )
+    );
+  }
+}
+
 class View {
   static render(state){
     return TreeBuilder.build(h =>
@@ -110,7 +146,7 @@ class View {
 
       , state.showRetryDialog ? RetryDialog.render(state) : null
 
-
+      , SessionPane.render(state)
       )
     );
   }
@@ -128,6 +164,7 @@ class Page {
       ],
       focusedSessionId: null,
       showRetryDialog: false,
+      showSessionPane: false,
     };
   }
 
@@ -175,6 +212,13 @@ class Page {
     return `/${__g.getEnv()}/command/retry?attemptId=${aid}`;
   }
 
+  getSessionUrl(){
+    const sess = this.state.sessions
+      .find((s)=> s.id === this.state.focusedSessionId );
+    if (! sess) { return null; }
+    return `/${__g.getEnv()}/sessions/${sess.id}`;
+  }
+
   onclick_retry(id){
     this.state.focusedSessionId = id;
     this.state.showRetryDialog = true;
@@ -185,6 +229,17 @@ class Page {
   closeFrame(){
     // location.reload(); // retry 実行時のみリロード
     this.state.showRetryDialog = false;
+    this.render();
+  }
+
+  onclick_select(sid){
+    this.state.focusedSessionId = sid;
+    this.state.showSessionPane = true;
+    this.render();
+  }
+
+  closeSessionFrame(){
+    this.state.showSessionPane = false;
     this.render();
   }
 }
