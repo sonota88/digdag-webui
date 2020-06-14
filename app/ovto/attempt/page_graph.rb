@@ -21,6 +21,8 @@ class Page < Ovto::App
       }.fail{ |e|
         p e
       }
+
+      nil
     end
   end
 
@@ -36,10 +38,11 @@ class Page < Ovto::App
         o "img", { src: state.img_path }
       end
     end
+  end
 
-    def setup
-      puts "setup"
-    end
+  def setup
+    puts "setup"
+    actions.refresh()
   end
 end
 
