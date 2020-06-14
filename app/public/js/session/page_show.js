@@ -6,7 +6,6 @@ class Attempts {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
-        , h("th", {}, "")
         , h("th", {}, "attempt time")
         , h("th", {}, "")
         )
@@ -19,9 +18,6 @@ class Attempts {
             )
           , h("td", {}
             , __g.AttemptStatus.render(att)
-            )
-          , h("td", {}
-            , h("button", {}, "TODO retry")
             )
           , h("td", {}
             , __g.Attempt.isKillable(att)
@@ -90,6 +86,28 @@ class View {
         , this.makeSessionInfo(state.attempts[0].session)
         )
 
+      , h("h2", {}, "Retry attempt")
+
+      , h("textarea", {
+            id: "input_box"
+          , style: {
+              width: "50%"
+            , height: "4rem"
+            }
+          }
+, `{digdag_cmd} retry ${ __p.getLastAttempt().id } \
+ --latest-revision \
+ --resume \
+ --endpoint {endpoint}
+`
+        )
+      , h("br")
+      , h("button", {
+            onclick: ()=>{ __p.onclick_retry("aid"); }
+          }
+        , "run"
+        )
+
       , h("h2", {}, "Attempts")
       , Attempts.render(state.attempts)
       )
@@ -142,8 +160,28 @@ class Page {
       .append(View.render(this.state));
   }
 
+  getLastAttempt(){
+    return this.state.attempts[0];
+  }
+
   getOfficialUiUrl(){
     return `${this.state.endpoint}/sessions/${this.sessionId}`;
+  }
+
+  onclick_retry(aid){
+    __g.api_v2("post", `/api/${this.env}/command/retry/exec`, {
+        args: $("#input_box").val()
+      }, (result)=>{
+      __g.unguard();
+      puts(result);
+
+      window.parent.__p.closeFrame();
+
+    }, (errors)=>{
+      __g.unguard();
+      __g.printApiErrors(errors);
+      alert("Check console.");
+    });
   }
 
   onclick_kill(aid){
