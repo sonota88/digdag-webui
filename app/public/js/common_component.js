@@ -270,7 +270,7 @@ class BottomPane {
             , bottom: "0"
             , width: "70vw"
             , height: "50vh"
-            , background: "rgba(127,127,127, 0.2)"
+            // , background: "rgba(127,127,127, 0.2)"
             , "z-index": "10"
             }
           }
@@ -278,8 +278,8 @@ class BottomPane {
             style: {
                 position: "fixed"
               , left: "30vw"
-              , bottom: "0"
-              , width: "70vw"
+              , bottom: "0.1rem"
+              , width: "69vw"
               , height: "50vh"
               , background: "#fff"
               , "box-shadow": "0rem 0rem 2rem rgba(0,0,0, 0.2)"
@@ -299,7 +299,7 @@ class BottomPane {
             )
           , h("div", { style: {
                   height: "calc(50vh - 3rem)"
-                , padding: "1rem"
+                , padding: "0"
                 }
               }
             , ...content

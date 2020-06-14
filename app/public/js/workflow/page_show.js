@@ -80,7 +80,8 @@ class SessionPane {
           , style: {
               width: "100%"
             , height: "100%"
-            , border: "dashed 0.1rem #ddd"
+            // , border: "dashed 0.1rem #ddd"
+            , border: "none"
             }
           }
         )
