@@ -302,14 +302,14 @@ class BottomPane {
               , "×"
               )
             , h("button", {
-                  onclick: ()=>{ alert("reload frame"); }
+                  onclick: ()=>{ opts.reload(); }
                   , style: {
                     margin: "0rem 0.2rem"
                   , padding: "0rem"
                   , height: "1.8rem"
                   }
                 }
-              , "TODO reload"
+              , "reload"
               )
             )
           , h("div", { style: {

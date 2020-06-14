@@ -72,6 +72,9 @@ class SessionPane {
       BottomPane.render(
         {
           onclose: ()=>{ __p.closeSessionFrame(); }
+        , reload: ()=>{
+            $("#console_frame").attr("src", __p.getSessionUrl() + "?frame=1");
+          }
         , show: state.showSessionPane
         }
       , h("iframe", {
