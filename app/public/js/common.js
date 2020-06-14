@@ -250,6 +250,12 @@ const __g = {
         return ">=24h";
       }
     }
+
+    static isKillable(att){
+      if (att.cancelRequested) { return false; }
+      if (att.done) { return false; }
+      return true;
+    }
   }
   __g.Attempt = Attempt;
 })()

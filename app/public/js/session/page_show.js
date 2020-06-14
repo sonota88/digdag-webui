@@ -24,11 +24,13 @@ class Attempts {
             , h("button", {}, "TODO retry")
             )
           , h("td", {}
-            , h("button", {
-                  onclick: ()=>{ __p.kill(att.id); }
-                }
-              , "kill"
-              )
+            , __g.Attempt.isKillable(att)
+              ? h("button", {
+                    onclick: ()=>{ __p.kill(att.id); }
+                  }
+                , "kill"
+                )
+              : null
             )
           , h("td", {}
             , h("pre", {}
