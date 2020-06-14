@@ -6,7 +6,6 @@ class Sessions {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
-        , h("th", {}, "")
         , h("th", {}, "time")
         , h("th", {}, "last attempt")
         , h("th", {}, "duration")
@@ -20,18 +19,6 @@ class Sessions {
             )
           , h("td", {}
             , __g.AttemptStatus.render(session.lastAttempt)
-            )
-          , h("td", {
-                style: {
-                  background:
-                    (session.id === state.focusedSessionId)
-                    ? "#fd6"
-                    : "transparent"
-                }
-              }
-            , h("button", {
-                  onclick: ()=>{ __p.onclick_retry(session.id); }
-                }, "retry")
             )
           , h("td", {
                 style: {
@@ -83,28 +70,6 @@ class Breadcrumbs {
   }
 }
 
-class RetryDialog {
-  static render(state){
-    return TreeBuilder.build(h =>
-      Dialog.render(
-        {
-          onclose: ()=>{ __p.closeFrame(); }
-        }
-      , h("iframe", {
-            id: "console_frame"
-          , src: __p.getCommandRetryUrl()
-          , style: {
-              width: "100%"
-            , height: "100%"
-            , border: "dashed 0.1rem #ddd"
-            }
-          }
-        )
-      )
-    );
-  }
-}
-
 class SessionPane {
   static render(state){
     return TreeBuilder.build(h =>
@@ -144,8 +109,6 @@ class View {
       , h("h2", {}, "Sessions")
       , Sessions.render(state)
 
-      , state.showRetryDialog ? RetryDialog.render(state) : null
-
       , SessionPane.render(state)
       )
     );
@@ -163,7 +126,6 @@ class Page {
         { id: 2, time: "t2" },
       ],
       focusedSessionId: null,
-      showRetryDialog: false,
       showSessionPane: false,
     };
   }
@@ -205,31 +167,11 @@ class Page {
     return `${this.state.endpoint}/workflows/${this.workflowId}`;
   }
 
-  getCommandRetryUrl(){
-    const sess = this.state.sessions
-      .find((s)=> s.id === this.state.focusedSessionId );
-    const aid = sess.lastAttempt.id;
-    return `/${__g.getEnv()}/command/retry?attemptId=${aid}`;
-  }
-
   getSessionUrl(){
     const sess = this.state.sessions
       .find((s)=> s.id === this.state.focusedSessionId );
     if (! sess) { return null; }
     return `/${__g.getEnv()}/sessions/${sess.id}`;
-  }
-
-  onclick_retry(id){
-    this.state.focusedSessionId = id;
-    this.state.showRetryDialog = true;
-    this.render();
-  }
-
-  // TODO receive and show message
-  closeFrame(){
-    // location.reload(); // retry 実行時のみリロード
-    this.state.showRetryDialog = false;
-    this.render();
   }
 
   onclick_select(sid){
