@@ -75,12 +75,16 @@ class View {
       h("div", {}
       , h("h1", {}, __p.getTitle())
 
-      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
-      , " "
-      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+      , __p.isFrame
+        ? null
+        : [
+              h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+            , " "
+            , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
 
-      , " / "
-      , Breadcrumbs.render(state)
+            , " / "
+            , Breadcrumbs.render(state)
+          ]
 
       , h("pre", {}
         , this.makeSessionInfo(state.attempts[0].session)
@@ -119,6 +123,7 @@ class Page {
   constructor(){
     this.env = __g.getEnv();
     this.sessionId = this.getSessionId();
+    this.isFrame = __g.getSearchParams().get("frame") === "1";
     this.state = {
       workflow: { id: "0" },
       attempts: [

@@ -115,7 +115,7 @@ class SessionPane {
         }
       , h("iframe", {
             id: "console_frame"
-          , src: __p.getSessionUrl()
+          , src: __p.getSessionUrl() + "?frame=1"
           , style: {
               width: "100%"
             , height: "100%"

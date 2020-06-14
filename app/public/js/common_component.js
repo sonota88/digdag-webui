@@ -259,7 +259,7 @@ class BottomPane {
             // , background: "#ff0"
             }
           }
-        , "spacer"
+        // , "spacer"
         )
       , h("div"
         , {
