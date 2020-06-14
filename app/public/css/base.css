@@ -46,6 +46,10 @@ pre {
   margin: 0.3rem;
 }
 
+tr:hover {
+  background: #d8f4f8;
+}
+
 #guard_layer {
   background: rgba(120,120,120, 0.2);
   position: fixed;
