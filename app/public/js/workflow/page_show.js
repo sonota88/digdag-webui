@@ -89,6 +89,7 @@ class RetryDialog {
       , h("button", { onclick: ()=>{ __p.closeFrame(); } }, "×")
       , h("br")
       , h("iframe", { id: "console_frame"
+          , src: __p.getCommandRetryUrl()
           , style: {
               width: "100%"
             , height: "80%"
@@ -201,15 +202,10 @@ class Page {
     this.state.focusedSessionId = id;
     this.state.showRetryDialog = true;
     this.render();
-
-    const $frame = $("#console_frame");
-    $frame.attr("src", this.getCommandRetryUrl());
   }
 
   // TODO receive and show message
   closeFrame(){
-    const $frameBox = $("#console_frame_box");
-    // $frameBox.hide();
     // location.reload(); // retry 実行時のみリロード
     this.state.showRetryDialog = false;
     this.render();
