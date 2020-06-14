@@ -16,7 +16,6 @@ class Page < Ovto::App
       # TODO embed attempt id
       Ovto.fetch("/api/devel/attempts/1/graph_ovto").then{ |data|
         actions.update_img_path(
-          state: state,
           path: data["path"]
         )
       }.fail{ |e|
