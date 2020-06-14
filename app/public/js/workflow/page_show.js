@@ -93,6 +93,8 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , __g.EnvBanner.render()
+
       , h("h1", {}, __p.getTitle() + ": " + state.workflow.name)
 
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")

@@ -60,7 +60,10 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , __g.EnvBanner.render()
+
       , h("h1", {}, __p.getTitle())
+
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
       , " "
       , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")

@@ -258,4 +258,53 @@ const __g = {
     }
   }
   __g.Attempt = Attempt;
+
+
+  class EnvBanner {
+    static render() {
+      const env = __g.getEnv();
+
+      let bg = null;
+      let color = null;
+      if (env === "prod") {
+        bg = "#b6f";
+        color = "#408"
+      } else {
+        bg = "#ddd";
+        color = "#444"
+      }
+
+      return TreeBuilder.build(h =>
+        h("div", {
+            style: {
+              position: "fixed",
+              top: "0",
+              left: "0",
+              width: "100vw",
+              height: "0.2rem",
+              background: bg,
+            }
+          }
+        , h("div", {
+              style: {
+                position: "fixed",
+                top: "0",
+                left: "45vw",
+                width: "10vw",
+                height: "1.5rem",
+                background: bg,
+                color: color,
+                padding: "0",
+                "font-size": "1rem",
+                "font-weight": "bold",
+                "text-align": "center",
+              }
+            }
+          , env
+          )
+        )
+      );
+    }
+  }
+  __g.EnvBanner = EnvBanner;
 })()

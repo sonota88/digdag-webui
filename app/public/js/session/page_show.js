@@ -73,6 +73,8 @@ class View {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , __g.EnvBanner.render()
+
       , h("h1", {}, __p.getTitle())
 
       , __p.isFrame
