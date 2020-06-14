@@ -38,12 +38,47 @@ class AppTime {
     return `${ __g.pad2(hour) }h ${ __g.pad2(min2) }m ${ __g.pad2(sec2) }s`;
   }
 
-  toYmdHm(){
+  toYmdHm_simple(){
     const mon  = __g.pad2(this.date.getMonth() + 1);
     const day  = __g.pad2(this.date.getDate());
     const hour = __g.pad2(this.date.getHours());
     const min  = __g.pad2(this.date.getMinutes());
     return `${mon}-${day} ${hour}:${min}`;
+  }
+
+  toYmdHm(){
+    const oddStyle = {
+      background: "#e8e8e8",
+      "box-shadow": "0 0 0 0.1rem #e8e8e8",
+      "border-radius": "0.2rem"
+    };
+
+    const mon  = __g.pad2(this.date.getMonth() + 1);
+    const day  = __g.pad2(this.date.getDate());
+    const hour = __g.pad2(this.date.getHours());
+    const min  = __g.pad2(this.date.getMinutes());
+
+    return TreeBuilder.build(h =>
+      h("span", {}
+      , (this.date.getMonth() + 1) % 2 == 0
+        ? mon
+        : h("span", { style: oddStyle }, mon)
+
+      , "-"
+
+      , this.date.getDate() % 2 == 0
+        ? day
+        : h("span", { style: oddStyle }, day)
+
+      , " "
+
+      , this.date.getHours() % 2 == 0
+        ? hour
+        : h("span", { style: oddStyle }, hour)
+
+      , `:${min}`
+      )
+    );
   }
 
   getTime(){
