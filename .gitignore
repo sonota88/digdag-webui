@@ -8,4 +8,5 @@ app/config.json
 
 /tmp/
 *.log
+*_ovto.js
 z_*

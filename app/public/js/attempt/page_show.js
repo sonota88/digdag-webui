@@ -20,6 +20,9 @@ class Graph {
           }
         )
 
+      , " / "
+      , h("a", { href: `${__p.attemptId}/graph_ovto` }, "ovto")
+
       , h("br")
 
       , h("img", { id: "graph_img"

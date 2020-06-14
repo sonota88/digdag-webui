@@ -518,6 +518,48 @@ get "/api/:env/attempts/:id/graph" do
 end
 
 
+get "/:env/attempts/:id/graph_ovto" do
+  <<~EOB
+    <script src="/js/attempt/page_graph_ovto.js"></script>
+    <div id="ovto"></div>
+    <div id="ovto-debug"></div>
+  EOB
+end
+
+get "/api/:env/attempts/:id/graph_ovto" do
+  pp_e params
+
+  env = params[:env].to_sym
+  att_id = params[:id]
+
+  graph_del_old()
+
+  client = get_client(env)
+
+  tasks = client.get_tasks_of_attempt(att_id)
+    .map{ |api_task|
+      p_e api_task
+      DigdagUtils::Task.from_api_response(api_task)
+    }
+
+  img_id = Time.now.to_i.to_s
+  img_path = File.join(
+    __dir__,
+    "public/graph/#{img_id}.svg",
+  )
+
+  graph = Graph.new
+  graph.make_graph(tasks, img_path)
+
+  content_type :json
+  JSON.generate(
+    {
+      path: "/graph/#{img_id}.svg"
+    }
+  )
+end
+
+
 get "/:env/command/retry" do
   _render_dyn_js(
     "command/page_retry",

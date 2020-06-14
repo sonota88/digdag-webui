@@ -1,0 +1,9 @@
+task :default => :build_js
+
+desc "Build JavaScript"
+task :build_js => ["public/js/attempt/page_graph_ovto.js"]
+
+file "public/js/attempt/page_graph_ovto.js" => ["ovto/attempt/page_graph.rb"] do |t|
+  src_file = t.prerequisites[0]
+  sh %Q! opal -I ovto --compile --gem ovto "#{src_file}" > "#{t.name}" !
+end
