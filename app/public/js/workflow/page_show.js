@@ -190,17 +190,20 @@ class Page {
     return `${this.state.endpoint}/workflows/${this.workflowId}`;
   }
 
+  getCommandRetryUrl(){
+    const sess = this.state.sessions
+      .find((s)=> s.id === this.state.focusedSessionId );
+    const aid = sess.lastAttempt.id;
+    return `/${__g.getEnv()}/command/retry?attemptId=${aid}`;
+  }
+
   onclick_retry(id){
     this.state.focusedSessionId = id;
     this.state.showRetryDialog = true;
     this.render();
 
-    const sess = this.state.sessions
-      .find((s)=> s.id === id );
-    const aid = sess.lastAttempt.id;
     const $frame = $("#console_frame");
-
-    $frame.attr("src", `/${__g.getEnv()}/command/retry?attemptId=${aid}`);
+    $frame.attr("src", this.getCommandRetryUrl());
   }
 
   // TODO receive and show message
