@@ -583,9 +583,9 @@ post "/api/:env/command/retry/exec" do
     digdag_cmd = File.expand_path(CONFIG["digdagCommand"])
 
     cmd = _params[:args]
-      .sub!('{digdag_cmd}', digdag_cmd)
-      .sub!('{endpoint}', endpoint(env))
-      .gsub!("\\" + "\n", " ")
+      .sub('{digdag_cmd}', digdag_cmd)
+      .sub('{endpoint}', endpoint(env))
+      .gsub("\\" + "\n", " ")
 
     out = `#{cmd}`
     # TODO check status
