@@ -294,12 +294,22 @@ class BottomPane {
             , h("button", {
                   onclick: ()=>{ opts.onclose(); }
                   , style: {
-                    margin: "0.1rem"
-                  , padding: "0.1rem"
+                    margin: "0rem 0.2rem"
+                  , padding: "0rem"
                   , height: "1.8rem"
                   }
                 }
               , "×"
+              )
+            , h("button", {
+                  onclick: ()=>{ alert("reload frame"); }
+                  , style: {
+                    margin: "0rem 0.2rem"
+                  , padding: "0rem"
+                  , height: "1.8rem"
+                  }
+                }
+              , "TODO reload"
               )
             )
           , h("div", { style: {
