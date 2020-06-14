@@ -286,19 +286,24 @@ class BottomPane {
               , border: "solid 0.1rem #888"
               }
             }
-          , h("div", { style: { height: "3rem"
+          , h("div", { style: { height: "2rem"
               , "border-bottom": "solid 0.1rem #ddd"
               , background: "#f8f8f8"
               }
             }
             , h("button", {
                   onclick: ()=>{ opts.onclose(); }
+                  , style: {
+                    margin: "0.1rem"
+                  , padding: "0.1rem"
+                  , height: "1.8rem"
+                  }
                 }
               , "×"
               )
             )
           , h("div", { style: {
-                  height: "calc(50vh - 3rem)"
+                  height: "calc(50vh - 2rem)"
                 , padding: "0"
                 }
               }
