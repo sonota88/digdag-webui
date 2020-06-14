@@ -3,6 +3,7 @@ require "ovto"
 class Page < Ovto::App
   class State < Ovto::State
     item :img_path, default: "/favicon.png"
+    item :refresh_interval_min, default: 10.0
   end
 
   class Actions < Ovto::Actions
@@ -24,6 +25,10 @@ class Page < Ovto::App
 
       nil
     end
+
+    def change_refresh_interval_min(state:, value: value)
+      { refresh_interval_min: value.to_f }
+    end
   end
 
   class MainComponent < Ovto::Component
@@ -34,6 +39,18 @@ class Page < Ovto::App
             onclick: ->(ev){ actions.refresh }
           }, "refresh"
         o "text", state.img_path
+        o "text", " / "
+
+        o "text", "interval_min"
+        o "input", {
+            value: state.refresh_interval_min,
+            onchange: ->(ev){
+              actions.change_refresh_interval_min(
+                value: Native(ev).target.value
+              )
+            }
+          }
+
         o "br"
         o "img", { src: state.img_path }
       end
