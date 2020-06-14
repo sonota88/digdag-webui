@@ -12,5 +12,8 @@ gem "digdag_client",
     :git => "https://github.com/sonota88/digdag_client.git",
     :branch => "wip"
 
+gem "ovto"
+gem "ifchanged"
+
 # development
 gem "rake", require: false
