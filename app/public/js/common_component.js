@@ -232,7 +232,6 @@ class Dialog {
               }
             , "×"
             )
-          , "{header}"
           )
         , h("div", { style: {
                 height: "calc(80vh - 3rem)"
