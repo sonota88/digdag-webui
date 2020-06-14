@@ -6,6 +6,7 @@ class Attempts {
         , h("th", {}, "id")
         , h("th", {}, "status")
         , h("th", {}, "")
+        , h("th", {}, "")
         , h("th", {}, "attempt time")
         , h("th", {}, "")
         )
@@ -21,6 +22,13 @@ class Attempts {
             )
           , h("td", {}
             , h("button", {}, "TODO retry")
+            )
+          , h("td", {}
+            , h("button", {
+                  onclick: ()=>{ __p.kill(att.id); }
+                }
+              , "kill"
+              )
             )
           , h("td", {}
             , h("pre", {}
@@ -134,6 +142,30 @@ class Page {
 
   getOfficialUiUrl(){
     return `${this.state.endpoint}/sessions/${this.sessionId}`;
+  }
+
+  kill(aid){
+    if (! confirm("Are you sure to kill?")) {
+      return;
+    }
+
+    __g.guard();
+
+    __g.api_v2("post", `/api/${this.env}/command/kill/exec`, {
+        attemptId: aid
+      }, (result)=>{
+      puts(result);
+
+      setTimeout(
+        ()=>{ location.reload(); },
+        1000
+      );
+
+    }, (errors)=>{
+      __g.unguard();
+      __g.printApiErrors(errors);
+      alert("Check console.");
+    });
   }
 }
 

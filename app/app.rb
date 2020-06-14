@@ -595,3 +595,22 @@ post "/api/:env/command/retry/exec" do
     }
   end
 end
+
+post "/api/:env/command/kill/exec" do
+  env = params[:env].to_sym
+
+  _api_v2 (params) do |_params|
+    aid = _params[:attempt_id]
+    digdag_cmd = File.expand_path(CONFIG["digdagCommand"])
+
+    cmd = %Q! "#{digdag_cmd}" kill #{aid}!
+    cmd += %Q! --endpoint "#{endpoint(env)}" !
+
+    out = `#{cmd}`
+    # TODO check status
+
+    {
+      out: out
+    }
+  end
+end
