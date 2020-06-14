@@ -20,16 +20,12 @@ class Sessions {
           , h("td", {}
             , __g.AttemptStatus.render(session.lastAttempt)
             )
-          , h("td", {
-                style: {
-                  background:
-                    (session.id === state.focusedSessionId)
-                    ? "#fd6"
-                    : "transparent"
-                }
-              }
+          , h("td", {}
             , h("button", {
                   onclick: ()=>{ __p.onclick_select(session.id); }
+                , "class": (session.id === state.focusedSessionId)
+                           ? "btn_selected"
+                           : ""
                 }, "frame")
             )
           , h("td", { title: session.time }

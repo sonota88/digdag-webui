@@ -90,3 +90,9 @@ pre {
   border-color: #aaa;
   background: #a0e8e8;
 }
+
+/* -------------------------------- */
+
+.btn_selected {
+  box-shadow: 0 0 0 0.2rem rgba(160, 232, 232, 1);
+}
