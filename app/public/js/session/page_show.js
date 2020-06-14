@@ -165,6 +165,7 @@ class Page {
     $("#main")
       .empty()
       .append(View.render(this.state));
+    __g.updateTitle("s" + this.sessionId);
   }
 
   getLastAttempt(){
