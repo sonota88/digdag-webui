@@ -574,7 +574,8 @@ get "/api/:env/attempts/:id/graph" do
     graph.make_graph(tasks, img_path)
 
     {
-      path: "/graph/#{img_id}.svg"
+      path: "/graph/#{img_id}.svg",
+      tasks: tasks.map(&:to_plain)
     }
   end
 end
