@@ -58,6 +58,7 @@ class Page < Ovto::App
 
     def boost(state:)
       {
+        next_refresh: Time.now,
         refresh_interval_delta: 2
       }
     end
@@ -85,18 +86,19 @@ class Page < Ovto::App
     def render(state:)
       o "div", { style: { "font-family" => "monospace" } } do
         o "h1", "Attemp(#{state.attempt_id}) tasks"
+
         o "button", {
             onclick: ->(ev){ actions.refresh }
           }, "refresh"
+
+        o "button", {
+            onclick: ->(ev){ actions.boost() }
+          }, "boost"
 
         o "text", "img_path (#{ state.img_path })"
         o "text", " / interval_delta (#{ interval_delta_display }) "
         o "text", " / rest (#{ rest_display }) "
         o "text", " / next_refresh (#{ state.next_refresh.strftime("%T") })"
-
-        o "button", {
-            onclick: ->(ev){ actions.boost() }
-          }, "boost"
 
         o "br"
         o "img", { src: state.img_path,
