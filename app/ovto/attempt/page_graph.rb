@@ -112,25 +112,21 @@ class Page < Ovto::App
 
   def setup
     puts "setup"
-    actions.refresh()
-    # puts `new URL(location.href)`
+
     url = `location.href`
     m = url.match(%r{/attempts/(\d+)/})
-    p m
     attempt_id = m[1]
     actions.update_attempt_id(attempt_id: attempt_id)
 
     actions.refresh()
 
-    %x{
-      setInterval(
-        ()=>{
-          #{ actions.update_rand() }
-          #{ actions.interval() }
-        },
-        2000
-      )
-    }
+    Native(`window`).setInterval(
+      ->{
+        actions.update_rand()
+        actions.interval()
+      },
+      2000
+    )
   end
 end
 
