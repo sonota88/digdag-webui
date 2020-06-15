@@ -177,7 +177,12 @@ class Page {
   }
 
   onclick_retry(aid){
+    if (! confirm("Are you sure to retry?")) {
+      return;
+    }
+
     __g.guard();
+
     __g.api_v2("post", `/api/${this.env}/command/retry/exec`, {
         args: $("#input_box").val()
       }, (result)=>{
