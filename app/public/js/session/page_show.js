@@ -177,13 +177,16 @@ class Page {
   }
 
   onclick_retry(aid){
+    __g.guard();
     __g.api_v2("post", `/api/${this.env}/command/retry/exec`, {
         args: $("#input_box").val()
       }, (result)=>{
-      __g.unguard();
       puts(result);
 
-      window.parent.__p.closeFrame();
+      setTimeout(
+        ()=>{ location.reload(); },
+        1000
+      );
 
     }, (errors)=>{
       __g.unguard();
