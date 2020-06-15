@@ -321,6 +321,17 @@ module DigdagUtils
   end
 
   class Task
+    def to_plain
+      {
+        id:               @id,
+        state:            @state,
+        full_name:        @full_name,
+        cancel_requested: @cancel_requested,
+        parent_id:        @parent_id,
+        upstreams:        @upstreams,
+        is_group:         @is_group
+      }
+    end
   end
 end
 
