@@ -62,6 +62,18 @@ class Page < Ovto::App
         refresh_interval_delta: 2
       }
     end
+
+    def zoom_out(state:)
+      {
+        width_percent: [state.width_percent - 10, 10].max
+      }
+    end
+
+    def zoom_in(state:)
+      {
+        width_percent: state.width_percent + 10
+      }
+    end
   end
 
   class MainComponent < Ovto::Component
@@ -99,6 +111,16 @@ class Page < Ovto::App
         o "text", " / interval_delta (#{ interval_delta_display }) "
         o "text", " / rest (#{ rest_display }) "
         o "text", " / next_refresh (#{ state.next_refresh.strftime("%T") })"
+
+        o "br"
+
+        o "button", {
+            onclick: ->(ev){ actions.zoom_out() }
+          }, "-"
+
+        o "button", {
+            onclick: ->(ev){ actions.zoom_in() }
+          }, "+"
 
         o "br"
         o "img", { src: state.img_path,
