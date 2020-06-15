@@ -80,8 +80,8 @@ class View {
         , JSON.stringify(state.attempt, null, "    ")
         )
 
-      , h("pre", { id: "tasks_json" }
-        , JSON.stringify(state.tasks)
+      , h("pre", { id: "state_dump" }
+        , JSON.stringify(state)
         )
       )
     );
@@ -145,8 +145,8 @@ class Page {
     __g.updateTitle("a" + this.attemptId);
   }
 
-  renderTasksJson(){
-    $("#tasks_json").text(JSON.stringify(this.state.tasks, null, "    "));
+  renderStateDump(){
+    $("#state_dump").text(JSON.stringify(this.state, null, "    "));
   }
 
   getOfficialUiUrl(){
@@ -171,7 +171,7 @@ class Page {
         this.state.tasks = result.tasks;
         $("#graph_img").attr("src", result.path);
         $("#graph_img_link").attr("href", result.path);
-        this.renderTasksJson();
+        this.renderStateDump();
   
         if (_opts.enqueue) {
           this.showGraph();
