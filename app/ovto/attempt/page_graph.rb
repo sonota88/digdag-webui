@@ -46,7 +46,7 @@ class Page < Ovto::App
             value: state.refresh_interval_min,
             onchange: ->(ev){
               actions.change_refresh_interval_min(
-                value: Native(ev).target.value
+                value: ev.target.value
               )
             }
           }
