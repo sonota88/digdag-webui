@@ -6,8 +6,8 @@ class Page < Ovto::App
     item :img_path, default: "/favicon.png"
     item :refresh_interval_delta, default: 60 * 5
     item :next_refresh, default: Time.now
-    item :rand_value, default: 0
     item :width_percent, default: 50
+    item :rest_sec, default: 2
   end
 
   class Actions < Ovto::Actions
@@ -30,10 +30,6 @@ class Page < Ovto::App
       nil
     end
 
-    def update_rand(state:)
-      { rand_value: rand(9999) }
-    end
-
     def interval(state:)
       if state.next_refresh < Time.now
         actions.refresh()
@@ -49,7 +45,9 @@ class Page < Ovto::App
         }
       end
 
-      nil
+      {
+        rest_sec: (state.next_refresh - Time.now).round
+      }
     end
 
     def update_attempt_id(state:, attempt_id: attempt_id)
@@ -59,7 +57,9 @@ class Page < Ovto::App
     end
 
     def boost(state:)
-      { refresh_interval_delta: 2 }
+      {
+        refresh_interval_delta: 2
+      }
     end
   end
 
@@ -74,29 +74,25 @@ class Page < Ovto::App
     end
 
     def rest_display
-      sec = (state.next_refresh - Time.now).round
-
-      if sec < 60
-        "%d sec" % sec
+      if state.rest_sec < 60
+        "%d sec" % state.rest_sec
       else
-        min = sec / 60.0
+        min = state.rest_sec / 60.0
         "%.02f min" % min
       end
     end
 
     def render(state:)
       o "div", { style: { "font-family" => "monospace" } } do
-        o "h1", "fdsa"
+        o "h1", "Attemp(#{state.attempt_id}) tasks"
         o "button", {
             onclick: ->(ev){ actions.refresh }
           }, "refresh"
 
         o "text", "img_path (#{ state.img_path })"
-        # o "text", " / interval_delta (#{ state.refresh_interval_delta / 60.0 } min) "
         o "text", " / interval_delta (#{ interval_delta_display }) "
         o "text", " / rest (#{ rest_display }) "
         o "text", " / next_refresh (#{ state.next_refresh.strftime("%T") })"
-        o "text", " / rand_value (#{ state.rand_value })"
 
         o "button", {
             onclick: ->(ev){ actions.boost() }
@@ -121,10 +117,7 @@ class Page < Ovto::App
     actions.refresh()
 
     Native(`window`).setInterval(
-      ->{
-        actions.update_rand()
-        actions.interval()
-      },
+      ->{ actions.interval() },
       2000
     )
   end
