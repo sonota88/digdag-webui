@@ -79,6 +79,10 @@ class View {
         , { style: { width: "90%", height: "10rem" } }
         , JSON.stringify(state.attempt, null, "    ")
         )
+
+      , h("pre", { id: "tasks_json" }
+        , JSON.stringify(state.tasks)
+        )
       )
     );
   }
@@ -141,6 +145,10 @@ class Page {
     __g.updateTitle("a" + this.attemptId);
   }
 
+  renderTasksJson(){
+    $("#tasks_json").text(JSON.stringify(this.state.tasks, null, "    "));
+  }
+
   getOfficialUiUrl(){
     return `${this.state.endpoint}/attempts/${this.attemptId}`;
   }
@@ -160,8 +168,10 @@ class Page {
         puts(result);
 
         this.state.graph.src = result.path;
+        this.state.tasks = result.tasks;
         $("#graph_img").attr("src", result.path);
         $("#graph_img_link").attr("href", result.path);
+        this.renderTasksJson();
   
         if (_opts.enqueue) {
           this.showGraph();
