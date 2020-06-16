@@ -18,15 +18,14 @@ class Page < Ovto::App
 
     def refresh(state:)
       puts "refresh"
-      # TODO embed env
-      # TODO embed attempt id
-      Ovto.fetch("/api/devel/attempts/#{state.attempt_id}/graph_ovto").then{ |data|
-        actions.update_img_path(
-          path: data["path"]
-        )
-      }.fail{ |e|
-        p e
-      }
+      Ovto.fetch("/api/#{state.env}/attempts/#{state.attempt_id}/graph_ovto")
+        .then{ |data|
+          actions.update_img_path(
+            path: data["path"]
+          )
+        }.fail{ |e|
+          p e
+        }
 
       nil
     end
