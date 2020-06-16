@@ -2,6 +2,7 @@ require "ovto"
 
 class Page < Ovto::App
   class State < Ovto::State
+    item :env, default: nil
     item :attempt_id, default: nil
     item :img_path, default: "/favicon.png"
     item :refresh_interval_delta, default: 60 * 5
@@ -50,7 +51,13 @@ class Page < Ovto::App
       }
     end
 
-    def update_attempt_id(state:, attempt_id: attempt_id)
+    def update_env(state:, env:)
+      {
+        env: env
+      }
+    end
+
+    def update_attempt_id(state:, attempt_id:)
       {
         attempt_id: attempt_id
       }
@@ -134,9 +141,11 @@ class Page < Ovto::App
     puts "setup"
 
     url = `location.href`
-    m = url.match(%r{/attempts/(\d+)/})
-    attempt_id = m[1]
+    m = url.match(%r{.+/(.+?)/attempts/(\d+)/})
+    env = m[1]
+    attempt_id = m[2]
     actions.update_attempt_id(attempt_id: attempt_id)
+    actions.update_env(env: env)
 
     actions.refresh()
 
