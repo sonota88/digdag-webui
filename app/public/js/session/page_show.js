@@ -77,14 +77,14 @@ class View {
 
       , h("h1", {}, __p.getTitle())
 
+      , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
+      , " "
+      , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
+
       , __p.isFrame
         ? null
         : [
-              h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
-            , " "
-            , h("a", { href: __p.getOfficialUiUrl(), target: "_blank" }, "[➚]")
-
-            , " / "
+              " / "
             , Breadcrumbs.render(state)
           ]
 
