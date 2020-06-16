@@ -103,7 +103,13 @@ class Page < Ovto::App
 
     def render(state:)
       o "div", { style: { "font-family" => "monospace" } } do
-        o "h1", "Attemp(#{state.attempt_id}) tasks"
+        o "h1", "Attempt (#{state.attempt_id}) tasks"
+
+        o "a",
+          { href: (`location.href`).sub(%r{/graph_ovto$}, "") },
+          (`location.href`).sub(%r{/graph_ovto$}, "")
+
+        o "br"
 
         o "button", {
             onclick: ->(ev){ actions.refresh }
