@@ -71,6 +71,8 @@ class View {
   }
 
   static render(state){
+    const sess = state.attempts[0].session;
+
     return TreeBuilder.build(h =>
       h("div", {}
       , __g.EnvBanner.render()
@@ -88,9 +90,9 @@ class View {
             , Breadcrumbs.render(state)
           ]
 
-      , h("pre", {}
-        , this.makeSessionInfo(state.attempts[0].session)
-        )
+      , h("br")
+      , "session time: "
+      , AppTime.fromIso8601(sess.time).toYmdHm()
 
       , h("h2", {}, "Retry attempt")
 
