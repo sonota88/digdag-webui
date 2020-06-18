@@ -59,7 +59,9 @@ class AppTime {
     const min  = __g.pad2(this.date.getMinutes());
 
     return TreeBuilder.build(h =>
-      h("span", {}
+      h("span", {
+          title: this.date.toLocaleString()
+        }
       , (this.date.getMonth() + 1) % 2 == 0
         ? mon
         : h("span", { style: oddStyle }, mon)
