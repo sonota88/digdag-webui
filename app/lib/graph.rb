@@ -78,9 +78,9 @@ class Graph
       lines = []
       if is_group && ! @is_dummy
         lines << indent(depth, "subgraph cluster_#{@node_id} {")
-        lines << indent(depth, %Q!  color = "#cccccc"; !)
-        # lines << %Q!    fillcolor = "#f8f8f8"; !
-        lines << indent(depth, %Q!  style = "rounded"; !)
+        lines << indent(depth, %Q!  color = "#dddddd"; !)
+        lines << indent(depth, %Q!  fillcolor = "#ffffff"; !)
+        lines << indent(depth, %Q!  style = "rounded, filled"; !)
 
         lines << indent(depth, "  #{@node_id};")
 
@@ -319,6 +319,7 @@ class Graph
     graph [
       rankdir = LR;
       fontname = "monospace";
+      bgcolor = "#f4f4f4";
     ]
 
     node [
