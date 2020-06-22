@@ -133,6 +133,15 @@ class Page < Ovto::App
 
           o "br"
 
+          o "span", {
+              style: {
+                width: "2rem", display: "inline-block"
+              }
+            },
+            "#{ state.width_percent }%"
+
+          o "text", {}, " "
+
           o "button", {
               onclick: ->(ev){ actions.zoom_out() }
             }, "-"
