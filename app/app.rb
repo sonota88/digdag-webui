@@ -520,12 +520,17 @@ end
 
 get "/:env/attempts/:id/graph_ovto" do
   env = params[:env].to_sym
+  attempt_id = params[:id]
+
   context = {}
   context[:env] = env
   context[:favicon] = get_favicon_file_name(env)
+  context[:attempt_id] = attempt_id
 
   erb = ERB.new(<<~EOB)
     <head>
+      <meta charset="utf-8" />
+      <title>a<%= attempt_id %> (<%= env %>)</title>
       <link rel="shortcut icon" href="/<%= favicon %>" type="image/png" />
       <script src="/js/attempt/page_graph_ovto.js"></script>
     </head>
