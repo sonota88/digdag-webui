@@ -111,30 +111,37 @@ class Page < Ovto::App
 
         o "br"
 
-        o "button", {
-            onclick: ->(ev){ actions.refresh }
-          }, "refresh"
+        o "div", {
+            style: {
+              position: "sticky",
+              top: "0",
+              background: "rgba(255,255,255, 0.9)"
+            }
+          } do
+          o "button", {
+              onclick: ->(ev){ actions.refresh }
+            }, "refresh"
 
-        o "button", {
-            onclick: ->(ev){ actions.boost() }
-          }, "boost"
+          o "button", {
+              onclick: ->(ev){ actions.boost() }
+            }, "boost"
 
-        o "text", "img_path (#{ state.img_path })"
-        o "text", " / interval_delta (#{ interval_delta_display }) "
-        o "text", " / rest (#{ rest_display }) "
-        o "text", " / next_refresh (#{ state.next_refresh.strftime("%T") })"
+          o "text", "img_path (#{ state.img_path })"
+          o "text", " / interval_delta (#{ interval_delta_display }) "
+          o "text", " / rest (#{ rest_display }) "
+          o "text", " / next_refresh (#{ state.next_refresh.strftime("%T") })"
 
-        o "br"
+          o "br"
 
-        o "button", {
-            onclick: ->(ev){ actions.zoom_out() }
-          }, "-"
+          o "button", {
+              onclick: ->(ev){ actions.zoom_out() }
+            }, "-"
 
-        o "button", {
-            onclick: ->(ev){ actions.zoom_in() }
-          }, "+"
+          o "button", {
+              onclick: ->(ev){ actions.zoom_in() }
+            }, "+"
+        end
 
-        o "br"
         o "img", { src: state.img_path,
             style: { width: "#{ state.width_percent }%" }
           }
