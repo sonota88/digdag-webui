@@ -519,11 +519,21 @@ end
 
 
 get "/:env/attempts/:id/graph_ovto" do
-  <<~EOB
-    <script src="/js/attempt/page_graph_ovto.js"></script>
+  env = params[:env].to_sym
+  context = {}
+  context[:env] = env
+  context[:favicon] = get_favicon_file_name(env)
+
+  erb = ERB.new(<<~EOB)
+    <head>
+      <link rel="shortcut icon" href="/<%= favicon %>" type="image/png" />
+      <script src="/js/attempt/page_graph_ovto.js"></script>
+    </head>
     <div id="ovto"></div>
     <div id="ovto-debug"></div>
   EOB
+
+  erb.result ErbContext.hash_to_binding(context)
 end
 
 get "/api/:env/attempts/:id/graph_ovto" do
