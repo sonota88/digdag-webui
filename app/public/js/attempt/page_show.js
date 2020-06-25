@@ -74,6 +74,9 @@ class View {
       , Breadcrumbs.render(state)
       , h("hr")
 
+      , "session time: "
+      , AppTime.fromIso8601(state.attempt.session.time).toYmdHm()
+
       , Graph.render(state)
 
       , h("hr")
