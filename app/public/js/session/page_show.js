@@ -67,6 +67,21 @@ class RetryForm {
   static render(state){
     return TreeBuilder.build(h =>
       h("div", {}
+      , "mode: "
+
+      , MyRadioGroup.render(
+          "retry_mode"
+        , [
+            { text: "resume", value: "resume" }
+          , { text: "all", value: "all" }
+          ]
+        , {
+            selected: state.retry.mode
+          , onchange: (ev)=>{ __p.onchange_retryMode(ev); }
+          }
+        )
+
+      , h("br")
       , h("textarea", {
             id: "input_box"
           , style: {
@@ -236,6 +251,11 @@ class Page {
       __g.printApiErrors(errors);
       alert("Check console.");
     });
+  }
+
+  onchange_retryMode(ev){
+    this.state.retry.mode = MyRadioGroup.getValue(ev);
+    this.render();
   }
 }
 
