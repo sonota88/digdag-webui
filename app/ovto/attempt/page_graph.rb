@@ -4,7 +4,7 @@ class Page < Ovto::App
   class State < Ovto::State
     item :env, default: nil
     item :attempt_id, default: nil
-    item :img_path, default: "/favicon.png"
+    item :img_path, default: "/non_existent.png"
     item :refresh_interval_delta, default: 60 * 5
     item :next_refresh, default: Time.now
     item :width_percent, default: 50
