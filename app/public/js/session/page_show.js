@@ -63,6 +63,34 @@ class Breadcrumbs {
   }
 }
 
+class RetryForm {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , h("textarea", {
+            id: "input_box"
+          , style: {
+              width: "50%"
+            , height: "4rem"
+            }
+          }
+, `{digdag_cmd} retry ${ __p.getLastAttempt().id } \
+--latest-revision \
+--resume \
+--endpoint {endpoint}
+`
+        )
+      , h("br")
+      , h("button", {
+            onclick: ()=>{ __p.onclick_retry("aid"); }
+          }
+        , "run"
+        )
+      )
+    );
+  }
+}
+
 class View {
   static makeSessionInfo(sess){
     const lines = [];
@@ -95,26 +123,7 @@ class View {
       , AppTime.fromIso8601(sess.time).toYmdHm()
 
       , h("h2", {}, "Retry attempt")
-
-      , h("textarea", {
-            id: "input_box"
-          , style: {
-              width: "50%"
-            , height: "4rem"
-            }
-          }
-, `{digdag_cmd} retry ${ __p.getLastAttempt().id } \
- --latest-revision \
- --resume \
- --endpoint {endpoint}
-`
-        )
-      , h("br")
-      , h("button", {
-            onclick: ()=>{ __p.onclick_retry("aid"); }
-          }
-        , "run"
-        )
+      , RetryForm.render(state)
 
       , h("h2", {}, "Attempts")
       , Attempts.render(state.attempts)
