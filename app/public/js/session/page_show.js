@@ -76,7 +76,7 @@ class RetryForm {
           }
 , `{digdag_cmd} retry ${ __p.getLastAttempt().id } \
 --latest-revision \
---resume \
+--${ state.retry.mode } \
 --endpoint {endpoint}
 `
         )
@@ -142,7 +142,10 @@ class Page {
       attempts: [
         { id: 1 },
         { id: 2 },
-      ]
+      ],
+      retry: {
+        mode: "resume" // | all
+      }
     };
   }
 
