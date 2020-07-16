@@ -431,12 +431,18 @@ get "/api/:env/attempts/:id" do
       name: api_att["workflow"]["name"],
     )
 
+    tasks = client.get_tasks_of_attempt(att_id)
+      .map { |api_task|
+        DigdagUtils::Task.from_api_response(api_task)
+      }
+
     {
       endpoint: endpoint(env),
       project: pj.to_plain,
       workflow: wf.to_plain,
       session: att.session.to_plain,
       attempt: att.to_plain,
+      tasks: tasks.map(&:to_plain),
     }
   end
 end

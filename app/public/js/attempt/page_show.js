@@ -1,3 +1,34 @@
+class TaskList {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , h("table", {}
+        , h("tr", {}
+          , h("th", {}, "id")
+          , h("th", {}, "startedAt")
+          , h("th", {}, "updatedAt")
+          , h("th", {}, "retryAt")
+          , h("th", {}, "state")
+          , h("th", {}, "cancelRequested")
+          , h("th", {}, "fullName")
+          )
+        , state.tasks.map((task)=>
+            h("tr", {}
+            , h("td", {}, task.id)
+            , h("td", {}, task.startedAt)
+            , h("td", {}, task.updatedAt)
+            , h("td", {}, task.retryAt)
+            , h("td", {}, task.state)
+            , h("td", {}, task.cancelRequested)
+            , h("td", {}, task.fullName)
+            )
+          )
+        )
+      )
+    );
+  }
+}
+
 class Graph {
   static render(state){
     return TreeBuilder.build(h =>
@@ -79,6 +110,10 @@ class View {
 
       , Graph.render(state)
 
+      , h("h2", {}, "Tasks")
+
+      , TaskList.render(state)
+
       , h("hr")
 
       , h("textarea"
@@ -106,6 +141,26 @@ class Page {
           id: "0"
         }
       },
+      tasks: [
+        {
+          id: "1"
+        , updatedAt: "2020-07-15T23:39:55Z"
+        , state: "group_error"
+        , cancelRequested: false
+        , retryAt: null
+        , startedAt: null
+        , fullName: "+wf_test"
+        },
+        {
+          id: "2"
+        , updatedAt: "2020-07-15T23:39:55Z"
+        , state: "success"
+        , cancelRequested: false
+        , retryAt: null
+        , startedAt: "2020-07-15T23:39:55Z"
+        , fullName: "+wf_test^failure-alert"
+        }
+      ],
       graph: {
         src: null,
         zoom: 50,
