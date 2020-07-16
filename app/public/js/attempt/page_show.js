@@ -5,22 +5,22 @@ class TaskList {
       , h("table", {}
         , h("tr", {}
           , h("th", {}, "id")
+          , h("th", {}, "fullName")
+          , h("th", {}, "state")
+          , h("th", {}, "cancelRequested")
           , h("th", {}, "startedAt")
           , h("th", {}, "updatedAt")
           , h("th", {}, "retryAt")
-          , h("th", {}, "state")
-          , h("th", {}, "cancelRequested")
-          , h("th", {}, "fullName")
           )
         , state.tasks.map((task)=>
             h("tr", {}
             , h("td", {}, task.id)
+            , h("td", {}, task.fullName)
+            , h("td", {}, task.state)
+            , h("td", {}, task.cancelRequested)
             , h("td", {}, task.startedAt)
             , h("td", {}, task.updatedAt)
             , h("td", {}, task.retryAt)
-            , h("td", {}, task.state)
-            , h("td", {}, task.cancelRequested)
-            , h("td", {}, task.fullName)
             )
           )
         )
