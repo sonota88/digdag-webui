@@ -108,7 +108,9 @@ class View {
       , "session time: "
       , AppTime.fromIso8601(state.attempt.session.time).toYmdHm()
 
-      , Graph.render(state)
+      // , Graph.render(state)
+      , " / "
+      , h("a", { href: `${__p.attemptId}/graph_ovto` }, "ovto")
 
       , h("h2", {}, "Tasks")
 
