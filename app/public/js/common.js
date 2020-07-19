@@ -296,6 +296,32 @@ const __g = {
   }
   __g.Attempt = Attempt;
 
+  class TaskStatus {
+    static getColor(task){
+      if (task.state === "group_error"
+          || task.state === "error")
+      {
+        return "#e00";
+      } else if (task.state === "success") {
+        return "#888";
+      } else {
+        return "#000";
+      }
+    }
+
+    static render(task){
+      return TreeBuilder.build(h =>
+        h("span", {
+            style: {
+              color: this.getColor(task)
+            }
+          }
+        , task.state
+        )
+      );
+    }
+  }
+  __g.TaskStatus = TaskStatus;
 
   class EnvBanner {
     static render() {

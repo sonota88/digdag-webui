@@ -16,7 +16,7 @@ class TaskList {
             h("tr", {}
             , h("td", {}, task.id)
             , h("td", {}, task.fullName)
-            , h("td", {}, task.state)
+            , h("td", {}, __g.TaskStatus.render(task))
             , h("td", {}, task.cancelRequested)
             , h("td", {}, task.startedAt)
             , h("td", {}, task.updatedAt)
