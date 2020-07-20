@@ -1,5 +1,12 @@
 class TaskList {
   static render(state){
+    const fmtTime = (str)=>{
+      if (str == null) {
+        return "-";
+      }
+      return AppTime.fromIso8601(str).toYmdHm();
+    };
+
     return TreeBuilder.build(h =>
       h("div", {}
       , h("table", {}
@@ -18,9 +25,9 @@ class TaskList {
             , h("td", {}, task.fullName)
             , h("td", {}, __g.TaskStatus.render(task))
             , h("td", {}, task.cancelRequested)
-            , h("td", {}, task.startedAt)
-            , h("td", {}, task.updatedAt)
-            , h("td", {}, task.retryAt)
+            , h("td", {}, fmtTime(task.startedAt))
+            , h("td", {}, fmtTime(task.updatedAt))
+            , h("td", {}, fmtTime(task.retryAt  ))
             )
           )
         )
