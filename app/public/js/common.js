@@ -302,6 +302,12 @@ const __g = {
           || task.state === "error")
       {
         return "#e00";
+      } else if (task.state === "planned") {
+        return "#0a8";
+      } else if (task.state === "blocked") {
+        return "#08a";
+      } else if (task.state === "retry_waiting") {
+        return "#808";
       } else if (task.state === "success") {
         return "#888";
       } else {
