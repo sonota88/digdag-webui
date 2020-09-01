@@ -63,11 +63,18 @@ tr:hover {
   border: solid 0.2rem #fff;
   border-radius: 0.2rem;
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.3);
-  animation: spinner 2s infinite;
+  animation:
+    spinner 3s infinite,
+    fade_in 2.0s
+  ;
 }
 @keyframes spinner {
   0% { transform: rotate(  0deg); }
   100% { transform: rotate(360deg); }
+}
+@keyframes fade_in {
+  from { opacity: 0.0; }
+  to   { opacity: 1.0; }
 }
 
 /* common component */
