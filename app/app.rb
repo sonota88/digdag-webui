@@ -336,15 +336,42 @@ module DigdagUtils
         DigdagUtils.system(*args)
       end
 
-      def _curl(path, method: :get)
+      def _curl(path, method: :get, params: {})
         args = ["curl", "--silent", "-X", method.to_s.upcase]
         if @proxy_url
           args += ["--proxy", @proxy_url]
         end
-        args << @endpoint + "/api/" + path
+
+        path_with_params =
+          if method == :get
+            if params.empty?
+              path
+            else
+              path + "?" + params.to_a
+                .map{ |k, v| "#{k}=#{v}"} # TODO encode
+                .join("&")
+            end
+          else
+            path
+          end
+
+        args << @endpoint + "/api/" + path_with_params
 
         json = _system(*args)
         JSON.parse(json)
+      end
+
+      # TODO workflow
+      # TODO last_id
+      # TODO page_size
+      def get_project_sessions(id, params = {})
+        _curl("projects/#{id}/sessions", params: params)
+      end
+
+      def get_workflow(id: nil)
+        if id
+          _curl("workflows/#{id}")
+        end
       end
 
       def get_session(id)
@@ -455,18 +482,18 @@ get "/api/:env/workflows/:id" do
   wf_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = get_client(env)
+    client = get_curl_client(env)
 
     wf =
       DigdagUtils::Workflow.from_api_response(
-        client.get_workflow_by_id(wf_id)
+        client.get_workflow(id: wf_id)
       )
     pj_id = wf.project.id
 
-    sessions = client.get_sessions_of_project(
+    sessions = client.get_project_sessions(
       pj_id,
       workflow: wf.name
-    )
+    )["sessions"]
       .map{ |api_session|
         DigdagUtils::Session.from_api_response(api_session)
       }
