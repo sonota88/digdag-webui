@@ -10,7 +10,15 @@ class Sessions {
         , h("th", {}, "last attempt")
         , h("th", {}, "duration")
         )
-      , state.sessions.map(session =>
+      , state.sessions
+        .sort((a, b)=>{
+          if (a.time < b.time) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
+        .map(session =>
           h("tr", {}
           , h("td", {}
             , h("a", { href: `/${__p.env}/sessions/${session.id}` }
