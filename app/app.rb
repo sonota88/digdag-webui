@@ -361,6 +361,10 @@ module DigdagUtils
         JSON.parse(json)
       end
 
+      def get_projects
+        _curl("projects")
+      end
+
       def get_project(id)
         _curl("projects/#{id}")
       end
@@ -434,9 +438,9 @@ end
 get "/api/:env/projects" do
   env = params[:env].to_sym
   _api_v2 (params) do |_params|
-    client = get_client(env)
+    client = get_curl_client(env)
 
-    pjs = client.get_projects()
+    pjs = client.get_projects()["projects"]
       .map{ |api_pj|
         DigdagUtils::Project.from_api_response(api_pj)
       }
