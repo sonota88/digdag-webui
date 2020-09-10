@@ -361,11 +361,21 @@ module DigdagUtils
         JSON.parse(json)
       end
 
+      def get_project(id)
+        _curl("projects/#{id}")
+      end
+
       # TODO workflow
       # TODO last_id
       # TODO page_size
       def get_project_sessions(id, params = {})
         _curl("projects/#{id}/sessions", params: params)
+      end
+
+      # TODO revision
+      # TODO name
+      def get_project_workflows(id, params = {})
+        _curl("projects/#{id}/workflows", params: params)
       end
 
       def get_workflow(id: nil)
@@ -450,13 +460,13 @@ get "/api/:env/projects/:id" do
   pj_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = get_client(env)
+    client = get_curl_client(env)
 
     pj = DigdagUtils::Project.from_api_response(
       client.get_project(pj_id)
     )
 
-    wfs = client.get_workflows(pj_id)
+    wfs = client.get_project_workflows(pj_id)["workflows"]
       .map{ |api_wf|
         DigdagUtils::Workflow.from_api_response(api_wf)
       }
