@@ -347,6 +347,16 @@ module DigdagUtils
         JSON.parse(json)
       end
 
+      def get_session(id)
+        _curl("sessions/#{id}")
+      end
+
+      # TODO last_id
+      # TODO page_size
+      def get_session_attempts(id)
+        _curl("sessions/#{id}/attempts")
+      end
+
       def get_attempt(id)
         _curl("attempts/#{id}")
       end
@@ -483,7 +493,7 @@ get "/api/:env/sessions/:id" do
   sess_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = get_client(env)
+    client = get_curl_client(env)
 
     sess = client.get_session(sess_id)
 
@@ -491,7 +501,7 @@ get "/api/:env/sessions/:id" do
       sess["project"]
     )
 
-    attempts = client.get_session_attempts(sess_id, nil)["attempts"]
+    attempts = client.get_session_attempts(sess_id)["attempts"]
       .map{ |api_att|
         DigdagUtils::Attempt.from_api_response(api_att)
       }
