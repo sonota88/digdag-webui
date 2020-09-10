@@ -65,7 +65,7 @@ tr:hover {
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.3);
   animation:
     spinner 3s infinite,
-    fade_in 2.0s
+    fade_in 5.0s
   ;
 }
 @keyframes spinner {
