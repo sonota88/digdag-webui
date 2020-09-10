@@ -321,6 +321,52 @@ end
 
 # --------------------------------
 
+require "digdag_utils/client/client_base"
+
+module DigdagUtils
+  module Client
+    class CurlClient < ClientBase
+      def initialize(endpoint: nil, proxy_url: nil)
+        @endpoint = endpoint
+        @proxy_url = proxy_url
+      end
+
+      def _system(*args)
+        sleep 0.5
+        DigdagUtils.system(*args)
+      end
+
+      def _curl(path, method: :get)
+        args = ["curl", "--silent", "-X", method.to_s.upcase]
+        if @proxy_url
+          args += ["--proxy", @proxy_url]
+        end
+        args << @endpoint + "/api/" + path
+
+        json = _system(*args)
+        JSON.parse(json)
+      end
+
+      def get_attempt(id)
+        _curl("attempts/#{id}")
+      end
+
+      def get_attempt_tasks(id)
+        _curl("attempts/#{id}/tasks")
+      end
+    end
+  end
+end
+
+def get_curl_client(env, proxy_url: nil)
+  DigdagUtils::Client::CurlClient.new(
+    endpoint: endpoint(env),
+    proxy_url: proxy_url
+  )
+end
+
+# --------------------------------
+
 get "/" do
   <<-EOB
   <pre>
@@ -472,7 +518,7 @@ get "/api/:env/attempts/:id" do
   att_id = params[:id]
 
   _api_v2 (params) do |_params|
-    client = get_client(env)
+    client = get_curl_client(env)
 
     api_att = client.get_attempt(att_id)
     att = DigdagUtils::Attempt.from_api_response(api_att)
@@ -486,7 +532,7 @@ get "/api/:env/attempts/:id" do
       name: api_att["workflow"]["name"],
     )
 
-    tasks = client.get_tasks_of_attempt(att_id)
+    tasks = client.get_attempt_tasks(att_id)["tasks"]
       .map { |api_task|
         DigdagUtils::Task.from_api_response(api_task)
       }
