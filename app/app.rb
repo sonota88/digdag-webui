@@ -11,6 +11,7 @@ require "json"
 require "fileutils"
 require "digdag_client"
 require "digdag_utils"
+require "digdag_utils/client/curl_client"
 
 require "./lib/erb_context"
 require "./lib/myhash"
@@ -320,94 +321,6 @@ def get_client(env)
 end
 
 # --------------------------------
-
-require "digdag_utils/client/client_base"
-
-module DigdagUtils
-  module Client
-    class CurlClient < ClientBase
-      def initialize(endpoint: nil, proxy_url: nil)
-        @endpoint = endpoint
-        @proxy_url = proxy_url
-      end
-
-      def _system(*args)
-        sleep 0.5
-        DigdagUtils.system(*args)
-      end
-
-      def _curl(path, method: :get, params: {})
-        args = ["curl", "--silent", "-X", method.to_s.upcase]
-        if @proxy_url
-          args += ["--proxy", @proxy_url]
-        end
-
-        path_with_params =
-          if method == :get
-            if params.empty?
-              path
-            else
-              path + "?" + params.to_a
-                .map{ |k, v| "#{k}=#{v}"} # TODO encode
-                .join("&")
-            end
-          else
-            path
-          end
-
-        args << @endpoint + "/api/" + path_with_params
-
-        json = _system(*args)
-        JSON.parse(json)
-      end
-
-      def get_projects
-        _curl("projects")
-      end
-
-      def get_project(id)
-        _curl("projects/#{id}")
-      end
-
-      # TODO workflow
-      # TODO last_id
-      # TODO page_size
-      def get_project_sessions(id, params = {})
-        _curl("projects/#{id}/sessions", params: params)
-      end
-
-      # TODO revision
-      # TODO name
-      def get_project_workflows(id, params = {})
-        _curl("projects/#{id}/workflows", params: params)
-      end
-
-      def get_workflow(id: nil)
-        if id
-          _curl("workflows/#{id}")
-        end
-      end
-
-      def get_session(id)
-        _curl("sessions/#{id}")
-      end
-
-      # TODO last_id
-      # TODO page_size
-      def get_session_attempts(id)
-        _curl("sessions/#{id}/attempts")
-      end
-
-      def get_attempt(id)
-        _curl("attempts/#{id}")
-      end
-
-      def get_attempt_tasks(id)
-        _curl("attempts/#{id}/tasks")
-      end
-    end
-  end
-end
 
 def get_curl_client(env, proxy_url: nil)
   DigdagUtils::Client::CurlClient.new(
