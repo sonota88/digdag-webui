@@ -228,16 +228,16 @@ end
 # Patches
 
 module Digdag
-  class Client
-    module Workflow
-      # Project#get_workflow との衝突を避けるためのワークアラウンド
-      # 本来は Project#get_workflow の方をリネームして
-      # Workflow#get_workflow を生かすべき？
-      def get_workflow_by_id(id)
-        get("workflows/#{id}")
-      end
-    end
-  end
+  # class Client
+  #   module Workflow
+  #     # Project#get_workflow との衝突を避けるためのワークアラウンド
+  #     # 本来は Project#get_workflow の方をリネームして
+  #     # Workflow#get_workflow を生かすべき？
+  #     def get_workflow_by_id(id)
+  #       get("workflows/#{id}")
+  #     end
+  #   end
+  # end
 end
 
 module DigdagUtils
