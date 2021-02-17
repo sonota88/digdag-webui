@@ -304,7 +304,8 @@ get "/api/:env/projects" do
       }
 
     {
-      projects: pjs.map(&:to_plain)
+      projects: pjs.map(&:to_plain),
+      runnable_projects: CONFIG["runnableProjects"]
     }
   end
 end

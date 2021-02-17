@@ -26,7 +26,10 @@ class SearchResult {
         , sorted.map(pj =>
             h("tr", {}
             , h("td", {}
-              , h("a", { href: `/${__p.env}/projects/${pj.id}` }, pj.name)
+              , h("a"
+                , { href: `/${__p.env}/projects/${pj.id}` }
+                , __p.modifyProjectName(pj.name)
+                )
               )
             )
           )
@@ -102,6 +105,14 @@ class Page {
     const q = ev.target.value;
     this.state.q = (q === "") ? null : q;
     this.renderSearchResult();
+  }
+
+  modifyProjectName(name) {
+    if (this.state.runnableProjects.includes(name)) {
+      return "* " + name;
+    } else {
+      return name;
+    }
   }
 }
 
