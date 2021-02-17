@@ -15,9 +15,12 @@ class StartForm {
 --endpoint '${state.endpoint}'`
         )
       , h("br")
-      , h("button", {
+      , h("button"
+        , __g.filterAttrs({
             onclick: ()=>{ __p.onclick_start(); }
-          }, "run"
+          , disabled: ! __p.isRunnable()
+          })
+        , "run"
         )
       )
     );
@@ -199,6 +202,10 @@ class Page {
       .empty()
       .append(View.render(this.state));
     __g.updateTitle(`wf:${this.state.workflow.name} (pj:${this.state.project.name})`);
+  }
+
+  isRunnable() {
+    return this.state.runnableProjects.includes(this.state.project.name);
   }
 
   getOfficialUiUrl(){

@@ -96,9 +96,11 @@ class RetryForm {
 `
         )
       , h("br")
-      , h("button", {
+      , h("button"
+        , __g.filterAttrs({
             onclick: ()=>{ __p.onclick_retry("aid"); }
-          }
+          , disabled: ! __p.isRunnable()
+          })
         , "run"
         )
       )
@@ -195,6 +197,10 @@ class Page {
       .empty()
       .append(View.render(this.state));
     __g.updateTitle("s" + this.sessionId);
+  }
+
+  isRunnable() {
+    return this.state.runnableProjects.includes(this.state.project.name);
   }
 
   getLastAttempt(){

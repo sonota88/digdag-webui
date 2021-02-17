@@ -5,5 +5,8 @@
       "favicon": "favicon_prod.png"
     }
   ],
+  "runnableProjects": [
+    "pj1", "pj2", "..."
+  ],
   "digdagCommand": "/.../bin/digdag"
 }

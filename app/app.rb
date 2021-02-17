@@ -374,7 +374,8 @@ get "/api/:env/workflows/:id" do
       endpoint: endpoint(env),
       project: wf.project.to_plain,
       workflow: wf.to_plain,
-      sessions: sessions.map(&:to_plain)
+      sessions: sessions.map(&:to_plain),
+      runnable_projects: CONFIG["runnableProjects"]
     }
   end
 end
@@ -409,7 +410,8 @@ get "/api/:env/sessions/:id" do
       endpoint: endpoint(env),
       project: pj.to_plain,
       workflow: attempts[0].session.workflow.to_plain,
-      attempts: attempts.map(&:to_plain)
+      attempts: attempts.map(&:to_plain),
+      runnable_projects: CONFIG["runnableProjects"]
     }
   end
 end
