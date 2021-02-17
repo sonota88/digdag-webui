@@ -107,3 +107,19 @@ tr:hover {
 .btn_selected {
   box-shadow: 0 0 0 0.2rem rgba(160, 232, 232, 1);
 }
+
+.duration_bar {
+  font-size: 0.8rem;
+  border-radius: 0.1rem;
+  padding: 0.1rem;
+}
+
+.duration_bar_0 {
+  background-color: #f8f8f8;
+}
+.duration_bar_1 {
+  background-color: #f0f0f0;
+}
+.duration_bar_2 {
+  background-color: #e8e8e8;
+}

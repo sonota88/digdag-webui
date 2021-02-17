@@ -278,20 +278,32 @@ const __g = {
       );
     }
 
-    static renderDurationBar(la){
+    static _renderDurationBar(la) {
       const min = this.calcDurationSec(la) / 60;
 
       if (min < 0) {
-        return "?";
+        return [0, "?"];
       } else if (min < 60) {
-        return ".".repeat(min / 10);
+        return [1, ".".repeat(min / 10)];
       } else if (min < 60 * 24) {
         const hour = min / 60;
         const full = "-|".repeat(24);
-        return full.substring(0, Math.floor(hour * 2));
+        return [2, full.substring(0, Math.floor(hour * 2))];
       } else {
-        return ">=24h";
+        return [3, ">=24h"];
       }
+    }
+
+    static renderDurationBar(att) {
+      const [lv, s] = this._renderDurationBar(att);
+
+      return TreeBuilder.build(h =>
+        h("span", {
+            "class": `duration_bar duration_bar_${lv}`
+          }
+        , s
+        )
+      );
     }
 
     static isKillable(att){
