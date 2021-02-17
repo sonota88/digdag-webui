@@ -186,6 +186,24 @@ const __g = {
 
   pad2: (n)=>{
     return (n < 10 ? "0" : "") + n;
+  },
+
+  _FLAG_ATTR_KEYS: ["disabled", "readonly"],
+
+  filterAttrs: (attrs)=>{
+    const newAttrs = {};
+
+    for (const [k, v] of Object.entries(attrs)) {
+      if (__g._FLAG_ATTR_KEYS.includes(k)) {
+        if (v) {
+          newAttrs[k] = k;
+        }
+      } else {
+        newAttrs[k] = v;
+      }
+    }
+
+    return newAttrs;
   }
 };
 
