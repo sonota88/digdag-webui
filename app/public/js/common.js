@@ -23,13 +23,17 @@ class AppTime {
   static formatDuration(deltaSec){
     const deltaSec2 = Math.floor(deltaSec);
 
-    if (deltaSec2 < 60) {
+    if (deltaSec2 < 0) {
+      return "?";
+    } else if (deltaSec2 < 60) {
       return __g.pad2(deltaSec2) + "s";
     }
 
     const min = Math.floor(deltaSec2 / 60);
     const sec2 = deltaSec2 % 60;
-    if (min < 60) {
+    if (min < 0) {
+      return "?";
+    } else if (min < 60) {
       return `${ __g.pad2(min) }m ${ __g.pad2(sec2) }s`;
     }
 
@@ -277,7 +281,9 @@ const __g = {
     static renderDurationBar(la){
       const min = this.calcDurationSec(la) / 60;
 
-      if (min < 60) {
+      if (min < 0) {
+        return "?";
+      } else if (min < 60) {
         return ".".repeat(min / 10);
       } else if (min < 60 * 24) {
         const hour = min / 60;
