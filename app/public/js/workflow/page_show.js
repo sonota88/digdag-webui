@@ -1,3 +1,29 @@
+class StartForm {
+  static render(state){
+    return TreeBuilder.build(h =>
+      h("div", {}
+      , h("textarea"
+        , {
+            id: "start_form_input"
+          , style: {
+              width: "50%"
+            , height: "4rem"
+            }
+          }
+        , `{digdag_cmd} start '${state.project.name}' '${state.workflow.name}' \
+--session 'now' \
+--endpoint '${state.endpoint}'`
+        )
+      , h("br")
+      , h("button", {
+            onclick: ()=>{ __p.onclick_start(); }
+          }, "run"
+        )
+      )
+    );
+  }
+}
+
 class Sessions {
   static render(state){
     return TreeBuilder.build(h =>
@@ -116,6 +142,8 @@ class View {
       , " / "
       , Breadcrumbs.render(state)
 
+      , StartForm.render(state)
+
       , h("h2", {}, "Sessions")
       , Sessions.render(state)
 
@@ -188,6 +216,35 @@ class Page {
     this.state.focusedSessionId = sid;
     this.state.showSessionPane = true;
     this.render();
+  }
+
+  onclick_start() {
+    if (! confirm("Are you sure to start?")) {
+      return;
+    }
+
+    __g.guard();
+
+    __g.api_v2(
+      "post",
+      `/api/${this.env}/command/start/exec`,
+      {
+        args: $("#start_form_input").val()
+      },
+      (result)=>{
+        puts(result);
+
+        setTimeout(
+          ()=>{ location.reload(); },
+          1000
+        );
+      },
+      (errors)=>{
+        __g.unguard();
+        __g.printApiErrors(errors);
+        alert("Check console");
+      }
+    );
   }
 
   closeSessionFrame(){
