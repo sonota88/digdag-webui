@@ -161,6 +161,11 @@ class View {
       , " / "
       , Breadcrumbs.render(state)
 
+      , h("pre", {}, `
+revision: ${state.project.revision}
+`
+        )
+
       , StartForm.render(state)
 
       , h("h2", {}, "Sessions")
