@@ -215,6 +215,12 @@ CONFIG = JSON.parse(
   )
 )
 
+PROJECTS = JSON.parse(
+  File.read(
+    File.join(__dir__, "projects.json")
+  )
+)
+
 ENDPOINT_MAP = {}
 CONFIG["envs"].each{ |env|
   ENDPOINT_MAP[env["name"].to_sym] = env["endpoint"]
@@ -376,7 +382,8 @@ get "/api/:env/workflows/:id" do
       project: wf.project.to_plain,
       workflow: wf.to_plain,
       sessions: sessions.map(&:to_plain),
-      runnable_projects: CONFIG["runnableProjects"]
+      runnable_projects: CONFIG["runnableProjects"],
+      projects_config: PROJECTS,
     }
   end
 end

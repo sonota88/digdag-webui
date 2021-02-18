@@ -130,13 +130,29 @@ class SessionPane {
   }
 }
 
+function toDisplayProjectName(state, name){
+  const pj = state.projectsConfig.find(pj => pj.name === name);
+  if (pj) {
+    return pj.displayName;
+  } else {
+    return "?";
+  }
+}
+
 class View {
   static render(state){
+    function makeH1(state) {
+      return __p.getTitle()
+        + ": " + state.workflow.name
+        + " / " + toDisplayProjectName(state, state.project.name)
+      ;
+    }
+
     return TreeBuilder.build(h =>
       h("div", {}
       , __g.EnvBanner.render()
 
-      , h("h1", {}, __p.getTitle() + ": " + state.workflow.name)
+      , h("h1", {}, makeH1(state))
 
       , h("a", { href: __p.getOfficialUiUrl() }, "Official UI")
       , " "

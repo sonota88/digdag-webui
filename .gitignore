@@ -5,6 +5,7 @@ app/public/js_ext/
 app/public/css_ext/
 app/public/graph/
 app/config.json
+app/projects.json
 
 /tmp/
 *.log
