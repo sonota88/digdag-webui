@@ -585,6 +585,17 @@ get "/:env/command/retry" do
   )
 end
 
+def run_digdag_cmd(cmd)
+  output = `#{cmd} 2>&1`
+  status = $?
+
+  unless status.success?
+    raise "command failed (#{status.inspect}) (#{cmd}) (#{output})"
+  end
+
+  output
+end
+
 post "/api/:env/command/start/exec" do
   env = params[:env].to_sym
 
@@ -596,8 +607,7 @@ post "/api/:env/command/start/exec" do
       .sub('{endpoint}', endpoint(env))
       .gsub("\\" + "\n", " ")
 
-    out = `#{cmd}`
-    # TODO check status
+    out = run_digdag_cmd(cmd)
 
     {
       out: out
@@ -616,8 +626,7 @@ post "/api/:env/command/retry/exec" do
       .sub('{endpoint}', endpoint(env))
       .gsub("\\" + "\n", " ")
 
-    out = `#{cmd}`
-    # TODO check status
+    out = run_digdag_cmd(cmd)
 
     {
       out: out
@@ -635,8 +644,7 @@ post "/api/:env/command/kill/exec" do
     cmd = %Q! "#{digdag_cmd}" kill #{aid}!
     cmd += %Q! --endpoint "#{endpoint(env)}" !
 
-    out = `#{cmd}`
-    # TODO check status
+    out = run_digdag_cmd(cmd)
 
     {
       out: out
