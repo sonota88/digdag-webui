@@ -108,11 +108,19 @@ class Page {
   }
 
   modifyProjectName(name) {
+    let newName = "";
     if (this.state.runnableProjects.includes(name)) {
-      return "* " + name;
+      newName += "* " + name;
     } else {
-      return name;
+      newName += name;
     }
+
+    const pj = __p.state.projectsConfig.find(pj => pj.name === name);
+    if (pj) {
+      newName += " / " + pj.displayName;
+    }
+
+    return newName;
   }
 }
 
