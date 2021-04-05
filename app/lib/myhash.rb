@@ -34,7 +34,7 @@ class Myhash
     new_h
   end
 
-  def to_sym_key()
+  def to_sym_key
     new_h = {}
 
     @h.each do |k, v|
