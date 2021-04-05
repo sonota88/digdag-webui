@@ -57,6 +57,16 @@ class AppTime {
       "border-radius": "0.2rem"
     };
 
+    const modifyOddEven = (n, s) => {
+      if (n % 2 == 0) {
+        return s;
+      } else {
+        return TreeBuilder.build(h =>
+          h("span", { style: oddStyle }, s)
+        );
+      }
+    };
+
     const mon  = __g.pad2(this.date.getMonth() + 1);
     const day  = __g.pad2(this.date.getDate());
     const hour = __g.pad2(this.date.getHours());
@@ -66,21 +76,11 @@ class AppTime {
       h("span", {
           title: this.date.toLocaleString()
         }
-      , (this.date.getMonth() + 1) % 2 == 0
-        ? mon
-        : h("span", { style: oddStyle }, mon)
-
+      , modifyOddEven(this.date.getMonth() + 1, mon)
       , "-"
-
-      , this.date.getDate() % 2 == 0
-        ? day
-        : h("span", { style: oddStyle }, day)
-
+      , modifyOddEven(this.date.getDate(), day)
       , " "
-
-      , this.date.getHours() % 2 == 0
-        ? hour
-        : h("span", { style: oddStyle }, hour)
+      , modifyOddEven(this.date.getHours(), hour)
 
       , `:${min}`
       )
