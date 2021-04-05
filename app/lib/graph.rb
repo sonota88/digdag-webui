@@ -345,7 +345,7 @@ class Graph
 
     src_path = File.join(__dir__, "../public/graph/tmp.txt")
 
-    open(src_path, "wb"){ |f| f.puts src }
+    File.open(src_path, "wb"){ |f| f.puts src }
 
     system %Q! dot -Tsvg "#{src_path}" -o "#{img_path}" !
   end
