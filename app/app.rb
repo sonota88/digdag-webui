@@ -87,7 +87,7 @@ def get_favicon_file_name(env)
   env_config.fetch("favicon", "favicon.png")
 end
 
-def _render_dyn(body, context={})
+def _render_dyn(body, context = {})
   context[:favicon] = get_favicon_file_name(context[:env])
 
   header = File.read("views/_header.html")
@@ -96,7 +96,7 @@ def _render_dyn(body, context={})
   erb.result ErbContext.hash_to_binding(context)
 end
 
-def _render_dyn_js(js_name, context={})
+def _render_dyn_js(js_name, context = {})
   body = <<-EOB
     <div id="main"></div>
     <script src="/js/#{js_name}.js"></script>

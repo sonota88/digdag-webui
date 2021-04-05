@@ -40,7 +40,7 @@ class Graph
       ("  " * depth) + line
     end
 
-    def to_graph(depth=0)
+    def to_graph(depth = 0)
       next_depth = depth + 1
 
       lines = []
@@ -72,7 +72,7 @@ class Graph
       lines
     end
 
-    def to_graph_v2(depth=0)
+    def to_graph_v2(depth = 0)
       next_depth = depth + 1
 
       lines = []
