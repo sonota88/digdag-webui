@@ -87,6 +87,30 @@ class AppTime {
     );
   }
 
+  toYMdHm() {
+    const oddStyle = {
+      background: "#e8e8e8",
+      "box-shadow": "0 0 0 0.1rem #e8e8e8",
+      "border-radius": "0.2rem"
+    };
+
+    const year = this.date.getFullYear();
+    const mon  = __g.pad2(this.date.getMonth() + 1);
+    const day  = __g.pad2(this.date.getDate());
+    const hour = __g.pad2(this.date.getHours());
+    const min  = __g.pad2(this.date.getMinutes());
+
+    return TreeBuilder.build(h =>
+      h("span", {
+          title: this.date.toLocaleString()
+        }
+      , year
+      , "-"
+      , this.toMdHm()
+      )
+    );
+  }
+
   getTime(){
     return this.date.getTime();
   }
