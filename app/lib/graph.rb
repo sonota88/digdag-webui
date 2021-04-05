@@ -209,7 +209,7 @@ class Graph
       id_map[tn.id] = tn.node_id
     }
 
-    tnodes.each{ |tn|
+    tnodes.each do |tn|
       if tn.parent_id
         tn.parent_node_id = id_map[tn.parent_id]
       end
@@ -217,11 +217,11 @@ class Graph
       tn.upstreams.each{ |tid|
         tn.upstream_node_ids << id_map[tid]
       }
-    }
+    end
 
     node_map = {}
 
-    tnodes.each{ |tn|
+    tnodes.each do |tn|
       if tn.is_group
         dummy = TaskNode.new(tn.task, node_id: tn.node_id + "_d", is_dummy: true)
         id_map[dummy.node_id] = dummy
@@ -235,40 +235,40 @@ class Graph
       else
         node_map[tn.node_id] = tn
       end
-    }
+    end
 
     tnodes = node_map.values
 
     # グループへの依存をダミーへの依存に付け替え (upstream)
-    tnodes.each{ |tn|
+    tnodes.each do |tn|
       tn.upstream_node_ids =
-        tn.upstream_node_ids.map{ |up_nid|
+        tn.upstream_node_ids.map do |up_nid|
           up_tn = node_map[up_nid]
           if up_tn.is_group
             up_tn.parent_node_id
           else
             up_nid
           end
-        }
-    }
+        end
+    end
 
     # グループからの依存をダミーからの依存に付け替え (upstream)
-    tnodes.each{ |tn|
+    tnodes.each do |tn|
       if tn.is_group && ! tn.is_dummy
         up_nids = tn.upstream_node_ids
         tn.upstream_node_ids = []
         dummy = node_map[tn.parent_node_id]
         dummy.upstream_node_ids = up_nids
       end
-    }
+    end
 
-    tnodes.each{ |tn|
+    tnodes.each do |tn|
       if tn.parent_node_id
         tn_p = node_map[tn.parent_node_id]
         tn_c = node_map[tn.node_id]
         tn_p.add_child(tn_c)
       end
-    }
+    end
 
     node_map
   end
@@ -279,7 +279,7 @@ class Graph
     subgraph_lines = tn_root.to_graph_v2()
 
     node_defs = []
-    node_map.each{ |id, tn|
+    node_map.each do |id, tn|
       label = make_label(tn)
 
       styles = %w(rounded filled bold)
@@ -300,10 +300,10 @@ class Graph
       node_def += %Q! ,style = "#{ styles.join(", ") }" !
       node_def += %Q! ]!
       node_defs << node_def
-    }
+    end
 
     deps = []
-    node_map.each{ |id, tn|
+    node_map.each do |id, tn|
       if tn.parent_node_id
         deps << "  #{tn.parent_node_id} -> #{tn.node_id};"
       end
@@ -311,7 +311,7 @@ class Graph
       tn.upstream_node_ids.each{|up_nid|
         deps << %Q!  #{tn.node_id} -> #{up_nid} [ style = "dashed", arrowhead = "vee" ];!
       }
-    }
+    end
 
     src = <<-EOB
   digraph gname {
