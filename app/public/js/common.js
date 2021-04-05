@@ -117,6 +117,12 @@ class AppTime {
 }
 
 const __g = {
+
+  ENV_CONFIG: [
+    { name: "devel", bg: "#ddd", fg: "#444" },
+    { name: "prod" , bg: "#b6f", fg: "#408" }
+  ],
+
   api: function(method, path, data, fnOk, fnNg){
     var _data = {
       _method: method.toUpperCase()
@@ -391,17 +397,9 @@ const __g = {
 
   class EnvBanner {
     static render() {
-      const env = __g.getEnv();
+      const envName = __g.getEnv();
 
-      let bg = null;
-      let color = null;
-      if (env === "prod") {
-        bg = "#b6f";
-        color = "#408"
-      } else {
-        bg = "#ddd";
-        color = "#444"
-      }
+      const env = __g.ENV_CONFIG.find(it => it.name === envName);
 
       return TreeBuilder.build(h =>
         h("div", {
@@ -411,7 +409,7 @@ const __g = {
               left: "0",
               width: "100vw",
               height: "0.2rem",
-              background: bg,
+              background: env.bg,
             }
           }
         , h("div", {
@@ -421,15 +419,15 @@ const __g = {
                 left: "45vw",
                 width: "10vw",
                 height: "1.5rem",
-                background: bg,
-                color: color,
+                background: env.bg,
+                color: env.fg,
                 padding: "0",
                 "font-size": "1rem",
                 "font-weight": "bold",
                 "text-align": "center",
               }
             }
-          , env
+          , env.name
           )
         )
       );
