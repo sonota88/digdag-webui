@@ -445,11 +445,11 @@ get "/api/:env/attempts/:id" do
 
     pj = DigdagUtils::Project.new(
       id:   api_att["project"]["id"],
-      name: api_att["project"]["name"],
+      name: api_att["project"]["name"]
     )
     wf = DigdagUtils::Workflow.new(
       id:   api_att["workflow"]["id"],
-      name: api_att["workflow"]["name"],
+      name: api_att["workflow"]["name"]
     )
 
     tasks = client.get_attempt_tasks(att_id)["tasks"]
@@ -515,7 +515,7 @@ get "/api/:env/attempts/:id/graph" do
     img_id = Time.now.to_i.to_s
     img_path = File.join(
       __dir__,
-      "public/graph/#{img_id}.svg",
+      "public/graph/#{img_id}.svg"
     )
 
     graph = Graph.new
@@ -571,7 +571,7 @@ get "/api/:env/attempts/:id/graph_ovto" do
   img_id = Time.now.to_i.to_s
   img_path = File.join(
     __dir__,
-    "public/graph/#{img_id}.svg",
+    "public/graph/#{img_id}.svg"
   )
 
   graph = Graph.new
