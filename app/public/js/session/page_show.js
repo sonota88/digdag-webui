@@ -111,7 +111,7 @@ class RetryForm {
 class View {
   static makeSessionInfo(sess){
     const lines = [];
-    lines.push("session time: " + AppTime.fromIso8601(sess.time).toYmdHm());
+    lines.push("session time: " + AppTime.fromIso8601(sess.time).toMdHm());
     return lines.join("\n");
   }
 
@@ -137,7 +137,7 @@ class View {
 
       , h("br")
       , "session time: "
-      , AppTime.fromIso8601(sess.time).toYmdHm()
+      , AppTime.fromIso8601(sess.time).toMdHm()
 
       , h("h2", {}, "Retry attempt")
       , RetryForm.render(state)

@@ -42,7 +42,7 @@ class AppTime {
     return `${ __g.pad2(hour) }h ${ __g.pad2(min2) }m ${ __g.pad2(sec2) }s`;
   }
 
-  toYmdHm_simple(){
+  toMdHm_simple(){
     const mon  = __g.pad2(this.date.getMonth() + 1);
     const day  = __g.pad2(this.date.getDate());
     const hour = __g.pad2(this.date.getHours());
@@ -50,7 +50,7 @@ class AppTime {
     return `${mon}-${day} ${hour}:${min}`;
   }
 
-  toYmdHm(){
+  toMdHm(){
     const oddStyle = {
       background: "#e8e8e8",
       "box-shadow": "0 0 0 0.1rem #e8e8e8",
@@ -284,10 +284,10 @@ const __g = {
 
       return TreeBuilder.build(h =>
         h("span", {}
-          , AppTime.fromIso8601(la.createdAt).toYmdHm()
+          , AppTime.fromIso8601(la.createdAt).toMdHm()
           , " ~ "
           , la.finishedAt
-            ? AppTime.fromIso8601(la.finishedAt).toYmdHm()
+            ? AppTime.fromIso8601(la.finishedAt).toMdHm()
             : "...        "
 
           , " | "

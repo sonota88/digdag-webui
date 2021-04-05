@@ -4,7 +4,7 @@ class TaskList {
       if (str == null) {
         return "-";
       }
-      return AppTime.fromIso8601(str).toYmdHm();
+      return AppTime.fromIso8601(str).toMdHm();
     };
 
     return TreeBuilder.build(h =>
@@ -113,7 +113,7 @@ class View {
       , h("hr")
 
       , "session time: "
-      , AppTime.fromIso8601(state.attempt.session.time).toYmdHm()
+      , AppTime.fromIso8601(state.attempt.session.time).toMdHm()
 
       // , Graph.render(state)
       , " / "

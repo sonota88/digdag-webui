@@ -66,7 +66,7 @@ class Sessions {
                 }, "frame")
             )
           , h("td", { title: session.time }
-            , AppTime.fromIso8601(session.time).toYmdHm()
+            , AppTime.fromIso8601(session.time).toMdHm()
             )
           , h("td", {}
             , h("pre", {}
