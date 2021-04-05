@@ -7,20 +7,20 @@ function _parseInt(str){
 }
 
 class AppTime {
-  constructor(date){
+  constructor(date) {
     this.date = date;
   }
 
-  static now(){
+  static now() {
     return new AppTime(new Date());
   }
 
-  static fromIso8601(str){
+  static fromIso8601(str) {
     const date = new Date(Date.parse(str));
     return new AppTime(date);
   }
 
-  static formatDuration(deltaSec){
+  static formatDuration(deltaSec) {
     const deltaSec2 = Math.floor(deltaSec);
 
     if (deltaSec2 < 0) {
@@ -42,7 +42,7 @@ class AppTime {
     return `${ __g.pad2(hour) }h ${ __g.pad2(min2) }m ${ __g.pad2(sec2) }s`;
   }
 
-  toMdHm_simple(){
+  toMdHm_simple() {
     const mon  = __g.pad2(this.date.getMonth() + 1);
     const day  = __g.pad2(this.date.getDate());
     const hour = __g.pad2(this.date.getHours());
@@ -50,7 +50,7 @@ class AppTime {
     return `${mon}-${day} ${hour}:${min}`;
   }
 
-  toMdHm(){
+  toMdHm() {
     const oddStyle = {
       background: "#e8e8e8",
       "box-shadow": "0 0 0 0.1rem #e8e8e8",
@@ -111,7 +111,7 @@ class AppTime {
     );
   }
 
-  getTime(){
+  getTime() {
     return this.date.getTime();
   }
 }
